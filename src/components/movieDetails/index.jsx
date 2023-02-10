@@ -37,13 +37,13 @@ const MovieDetails = (props) => {
       </Typography>
 
       <Paper component="ul" sx={styles.chipSet}>
-        <li>
+        {/* <li> */}
           <Chip label="Genres" sx={styles.chipLabel} color="primary" />
-        </li>
+        {/* </li> */}
         {movie.genres.map((g) => (
-          <li key={g.name}>
+          // <li key={g.name}>
             <Chip label={g.name} />
-          </li>
+          // </li>
         ))}
       </Paper>
       <Paper component="ul" sx={styles.chipSet}>
@@ -57,6 +57,12 @@ const MovieDetails = (props) => {
           label={`${movie.vote_average} (${movie.vote_count}`}
         />
         <Chip label={`Released: ${movie.release_date}`} />
+      </Paper>
+      <Paper component="ul" sx={styles.chipSet}>
+          <Chip label="Production Countries" sx={styles.chipLabel} color="primary" />
+        {movie.production_countries.map((c) => (
+            <Chip label={c.name} />
+        ))}
       </Paper>
     </>
   );
