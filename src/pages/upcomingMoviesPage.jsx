@@ -4,11 +4,12 @@ import { getUpcomingMovies } from "../api/tmdb-api";
 import Spinner from "../components/spinner";
 import { useQuery } from "react-query";
 import useFiltering from "../hooks/useFiltering";
-import AddToFavouritesIcon from '../components/cardIcons/addToFavourites';
+import AddToMustWatchIcon from '../components/cardIcons/addToMustWatch';
 import MovieFilterUI, {
   titleFilter,
   genreFilter,
 } from "../components/movieFilterUI";
+import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 
 const titleFiltering = {
   name: "title",
@@ -55,7 +56,7 @@ const UpcomingMoviesPage = (props) => {
         title='Upcoming Movies'
         movies={displayedMovies}
         action={(movie) => {
-          return <AddToFavouritesIcon movie={movie} />
+          return <AddToMustWatchIcon movie={movie} />
         }}
       />
       <MovieFilterUI
