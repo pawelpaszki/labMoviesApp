@@ -9,17 +9,14 @@ const styles = {
   }
 };
 
-function MovieListPageTemplate({ movies, title, selectFavourite }) {
+function MovieListPageTemplate({ movies, title, action }) {
   return (
     <Grid container sx={styles.root}>
       <Grid item xs={12}>
         <Header title={title} />
       </Grid>
       <Grid item container spacing={5}>
-        <MovieList
-          selectFavourite={selectFavourite}
-          movies={movies}
-        ></MovieList>
+        <MovieList action={action} movies={movies} />
       </Grid>
     </Grid>
   );
