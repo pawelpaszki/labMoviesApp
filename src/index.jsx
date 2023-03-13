@@ -12,7 +12,7 @@ import { ReactQueryDevtools } from 'react-query/devtools';
 import MoviesContextProvider from "./contexts/moviesContext";
 import AddMovieReviewPage from './pages/addMovieReviewPage'
 import AuthProvider from "./contexts/AuthProvider";
-import AuthRoute from "./components/auth";
+import AuthRoute from "./components/authRoute";
 import Register from "./pages/register";
 import Login from "./pages/login";
 
