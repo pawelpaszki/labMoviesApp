@@ -11,6 +11,7 @@ import Menu from "@mui/material/Menu";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { useAuth } from "../../contexts/AuthProvider";
 
 const styles = {
   title: {
@@ -35,11 +36,27 @@ const SiteHeader = () => {
     { label: "Home", path: "/" },
     { label: "Favorites", path: "/movies/favourites" },
     { label: "Upcoming", path: "/upcoming" },
-    { label: "Option 4", path: "/" },
+    { label: "Logout", path: "logout" },
   ];
 
   const handleMenuSelect = (pageURL) => {
-    navigate(pageURL);
+    if (pageURL === "logout") {
+      handleLogout();
+    } else {
+      navigate(pageURL);
+    }
+  };
+
+  // auth
+  const { auth, signOut } = useAuth();
+
+  const handleLogout = async () => {
+    try {
+      await signOut();
+    } catch (error) {
+      console.log(error);
+    }
+    navigate("/login");
   };
 
   const handleMenu = (event) => {
