@@ -16,3 +16,10 @@ TMDB_KEY is required to run this application. Sign up [here](https://www.themovi
 In order to use your own supabase project for authentication you need to copy `.env.template` to `.env` and provide the values of your supabase project `url` and `anon key`.
 
 To access all parts of the web application you need to register with an unique email address and password.
+
+## Deployment
+This application can be easily deployed using [Vercel](https://vercel.com/). To do this you will need to fork this repository and give `vercel` GitHub permissions, so that it can be imported. In order for the app to run properly, these env variables with correct values need to be provided when deploying the app (all taken from the `.env.template` and described above)
+
+* `VITE_TMDB_KEY`
+* `VITE_REACT_APP_SUPABASE_URL`
+* `VITE_REACT_APP_SUPABASE_ANON_KEY`
