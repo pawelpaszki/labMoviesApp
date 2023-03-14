@@ -1,6 +1,6 @@
 import RegistrationForm from '../components/register'
 
-const Register = () => {
+const RegisterPage = () => {
   
 
   return (
@@ -10,4 +10,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default RegisterPage;

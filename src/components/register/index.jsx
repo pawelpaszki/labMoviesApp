@@ -56,17 +56,14 @@ const RegistrationForm = () => {
 
   const setEmail = (e) => {
     email = e;
-    console.log(email);
   }
 
   const setPassword = (p) => {
     password = p;
-    console.log(password);
   }
 
   const setPasswordConfirm = (pc) => {
     passwordConfirm = pc;
-    console.log(passwordConfirm);
   }
 
   return (
