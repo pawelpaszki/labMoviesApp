@@ -15,7 +15,7 @@ export const constructQuery = (
     query = query + `&vote_average.lte=${maxRating}`;
   }
   if (useReleaseDateRange) {
-    if (discoverCategory === "tv") {
+    if (discoverCategory === "tv series") {
       query = query + `&air_date.gte=${releaseStartDate}&air_date.lte=${releaseEndDate}`;
     } else if (discoverCategory === "movie") {
       query = query + `&primary_release_date.gte=${releaseStartDate}&primary_release_date.lte=${releaseEndDate}`;

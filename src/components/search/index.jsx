@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -17,6 +17,7 @@ import { getGenres, getSearchResults } from "../../api/tmdb-api";
 import { useQuery } from "react-query";
 import Spinner from '../spinner'
 import { constructQuery } from "../../api/searchQuery";
+import PageTemplate from "../templateMovieListPage";
 
 const Search = () => {
   const { data, error, isLoading, isError } = useQuery("genres", getGenres);
@@ -29,6 +30,9 @@ const Search = () => {
   const [genre, setGenre] = React.useState('');
   const [minRating, setMinRating] = React.useState(-1);
   const [maxRating, setMaxRating] = React.useState(-1);
+  const [movies, setMovies] = React.useState([]);
+
+  const [searchResultLoaded, setSearchResultLoaded] = React.useState(false);
 
   if (isLoading) {
     return <Spinner />;
@@ -87,104 +91,120 @@ const Search = () => {
       keywords
     );
     console.log(query);
-    getSearchResults(discoverCategory, query).then(movies =>{
-      console.log(movies);
+    let resource = discoverCategory === "movie" ? "movie" : "tv";
+    console.log(`resource : ${resource}`);
+
+    getSearchResults(resource, query).then(result => {
+      console.log(result.results);
+      setMovies(result.results);
+      console.log(movies.length);
+      setSearchResultLoaded(true);
     })
   };
 
   return (
     <>
-      <h4>Provide search criteria. None of them are mandatory (apart from the "Category"). Skipping criteria will exclude it from the search</h4>
-      <FormControl style={{ display: "inline" }}>
-        <FormLabel id="category">Category*</FormLabel>
-        <RadioGroup
-          row
-          aria-labelledby="category"
-          name="category"
-          value={discoverCategory}
-          onChange={handleCategoryChange}
-        >
-          <FormControlLabel value="movie" control={<Radio />} label="movie" />
-          <FormControlLabel value="tv" control={<Radio />} label="tv series" />
-        </RadioGroup>
-      </FormControl>
-
-      <FormControl style={{ display: "inline" }}>
-        <FormLabel id="rating" style={{ display: "block" }}>Choose Rating</FormLabel>
-        <TextField style={{ marginTop: "10px", width: "12ch" }}
-          onChange={handleMinRating}
-          id="outlined-number"
-          label="Minimum"
-          type="number"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          InputProps={{
-            inputProps: {
-              max: 10, min: 1
-            }
-          }}
+      {searchResultLoaded ?
+        <PageTemplate
+          title="Search results"
+          movies={movies}
+          action={(movie) => null}
         />
-        <TextField style={{ marginTop: "10px", marginLeft: "10px", width: "12ch" }}
-          onChange={handleMaxRating}
-          id="outlined-number"
-          label="Maximum"
-          type="number"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          InputProps={{
-            inputProps: {
-              max: 10, min: 1
-            }
-          }}
-        />
-      </FormControl>
+        :
+        <>
+          <h4>Provide search criteria. None of them are mandatory (apart from the "Category"). Skipping criteria will exclude it from the search</h4>
+          <FormControl style={{ display: "inline" }}>
+            <FormLabel id="category">Category*</FormLabel>
+            <RadioGroup
+              row
+              aria-labelledby="category"
+              name="category"
+              value={discoverCategory}
+              onChange={handleCategoryChange}
+            >
+              <FormControlLabel value="movie" control={<Radio />} label="movie" />
+              <FormControlLabel value="tv series" control={<Radio />} label="tv series" />
+            </RadioGroup>
+          </FormControl>
 
-      <FormControl style={{ display: "block" }}>
-        <FormControlLabel
-          value="start"
-          control={
-            <Checkbox
-              checked={useDateRangeChecked}
-              onChange={handleUseReleaseDateChange}
-              inputProps={{ 'aria-label': 'controlled' }}
+          <FormControl style={{ display: "inline" }}>
+            <FormLabel id="rating" style={{ display: "block" }}>Choose Rating</FormLabel>
+            <TextField style={{ marginTop: "10px", width: "12ch" }}
+              onChange={handleMinRating}
+              id="outlined-number"
+              label="Minimum"
+              type="number"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              InputProps={{
+                inputProps: {
+                  max: 10, min: 1
+                }
+              }}
             />
-          }
-          label="Use release dates range"
-          labelPlacement="end"
-        />
-        <FormLabel id="release" style={{ display: "block", marginTop: "10px", marginBottom: "10px" }}>Select release date range</FormLabel>
-        <DatePicker disabled={!useDateRangeChecked} selected={releaseStartDate} onChange={(date) => setReleaseStartDate(date)} />
+            <TextField style={{ marginTop: "10px", marginLeft: "10px", width: "12ch" }}
+              onChange={handleMaxRating}
+              id="outlined-number"
+              label="Maximum"
+              type="number"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              InputProps={{
+                inputProps: {
+                  max: 10, min: 1
+                }
+              }}
+            />
+          </FormControl>
 
-        <DatePicker disabled={!useDateRangeChecked} selected={releaseEndDate} onChange={(date) => setReleaseEndDate(date)} />
-      </FormControl>
+          <FormControl style={{ display: "block" }}>
+            <FormControlLabel
+              value="start"
+              control={
+                <Checkbox
+                  checked={useDateRangeChecked}
+                  onChange={handleUseReleaseDateChange}
+                  inputProps={{ 'aria-label': 'controlled' }}
+                />
+              }
+              label="Use release dates range"
+              labelPlacement="end"
+            />
+            <FormLabel id="release" style={{ display: "block", marginTop: "10px", marginBottom: "10px" }}>Select release date range</FormLabel>
+            <DatePicker disabled={!useDateRangeChecked} selected={releaseStartDate} onChange={(date) => setReleaseStartDate(date)} />
 
-      <FormLabel id="keywords" style={{ display: "block", marginTop: "10px", marginBottom: "10px" }}>Define keywords</FormLabel>
-      <TextField
-        id="outlined-helperText"
-        label="Keywords"
-        helperText="Use comma separated string values or leave empty."
-        onChange={handleUseKeywords}
-      />
+            <DatePicker disabled={!useDateRangeChecked} selected={releaseEndDate} onChange={(date) => setReleaseEndDate(date)} />
+          </FormControl>
 
-      <FormLabel component="legend">Select genre
-      </FormLabel>
-      <Select
-        labelId="genre-label"
-        id="genre-select"
-        value={genre}
-        onChange={handleGenreChange}
-      >
-        {genres.map((genre) => {
-          return (
-            <MenuItem key={genre.id} value={genre}>
-              {genre.name}
-            </MenuItem>
-          );
-        })}
-      </Select>
-      <Button onClick={sendSearchQUery} style={{ display: "block", marginTop: "10px", marginBottom: "10px" }} variant="contained">Search</Button>
+          <FormLabel id="keywords" style={{ display: "block", marginTop: "10px", marginBottom: "10px" }}>Define keywords</FormLabel>
+          <TextField
+            id="outlined-helperText"
+            label="Keywords"
+            helperText="Use comma separated string values or leave empty."
+            onChange={handleUseKeywords}
+          />
+
+          <FormLabel component="legend">Select genre
+          </FormLabel>
+          <Select
+            labelId="genre-label"
+            id="genre-select"
+            value={genre}
+            onChange={handleGenreChange}
+          >
+            {genres.map((genre) => {
+              return (
+                <MenuItem key={genre.id} value={genre}>
+                  {genre.name}
+                </MenuItem>
+              );
+            })}
+          </Select>
+          <Button onClick={() => sendSearchQUery()} style={{ display: "block", marginTop: "10px", marginBottom: "10px" }} variant="contained">Search</Button>
+        </>
+      }
     </>
   )
 };
