@@ -13,18 +13,22 @@ import Button from '@mui/material/Button';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-import { getGenres } from "../../api/tmdb-api";
+import { getGenres, getSearchResults } from "../../api/tmdb-api";
 import { useQuery } from "react-query";
 import Spinner from '../spinner'
+import { constructQuery } from "../../api/searchQuery";
 
 const Search = () => {
   const { data, error, isLoading, isError } = useQuery("genres", getGenres);
   const [discoverCategory, setDiscoverCategory] = React.useState("movie");
-  const [useDateRangeChecked, setUseRating] = React.useState(false);
+  const [keywords, setKeywords] = React.useState("");
+  const [useDateRangeChecked, setUseDateRangeChecked] = React.useState(false);
   const [releaseStartDate, setReleaseStartDate] = useState(new Date());
 
   const [releaseEndDate, setReleaseEndDate] = useState(new Date());
   const [genre, setGenre] = React.useState('');
+  const [minRating, setMinRating] = React.useState(-1);
+  const [maxRating, setMaxRating] = React.useState(-1);
 
   if (isLoading) {
     return <Spinner />;
@@ -40,41 +44,52 @@ const Search = () => {
     console.log(genre);
   };
 
-  let keywords = "";
-  let useReleaseDateRange = false;
-  let minRating = -1;
-  let maxRating = -1;
-
   const handleCategoryChange = (event) => {
     setDiscoverCategory(event.target.value);
   };
 
   const handleMinRating = (event) => {
-    minRating = event.target.value;
+    setMinRating(event.target.value);
   };
 
   const handleMaxRating = (event) => {
-    maxRating = event.target.value;
+    setMaxRating(event.target.value);
   };
 
   const handleUseKeywords = (event) => {
-    keywords = event.target.value;
+    setKeywords(event.target.value);
   }
 
   const handleUseReleaseDateChange = (event) => {
-    setUseRating(event.target.checked);
-    useReleaseDateRange = event.target.checked;
+    setUseDateRangeChecked(event.target.checked);
   };
 
+  let query = "";
+
   const sendSearchQUery = () => {
-    console.log(`discoverCategory: ${discoverCategory}`);
-    console.log(`useReleaseDateRange: ${useReleaseDateRange}`);
-    console.log(`minRating: ${minRating}`);
-    console.log(`maxRating: ${maxRating}`);
-    console.log(`releaseStartDate: ${releaseStartDate}`);
-    console.log(`releaseEndDate: ${releaseEndDate}`);
-    console.log(`genre: ${genre}`);
-    console.log(`keywords: ${keywords}`);
+    query = "";
+    // console.log(`discoverCategory: ${discoverCategory}`);
+    // console.log(`useDateRangeChecked: ${useDateRangeChecked}`);
+    // console.log(`minRating: ${minRating}`);
+    // console.log(`maxRating: ${maxRating}`);
+    // console.log(`releaseStartDate: ${releaseStartDate}`);
+    // console.log(`releaseEndDate: ${releaseEndDate}`);
+    // console.log(`genre: ${genre}`);
+    // console.log(`keywords: ${keywords}`);
+    query = constructQuery(
+      discoverCategory,
+      useDateRangeChecked,
+      minRating,
+      maxRating,
+      releaseStartDate,
+      releaseEndDate,
+      genre.id,
+      keywords
+    );
+    console.log(query);
+    getSearchResults(discoverCategory, query).then(movies =>{
+      console.log(movies);
+    })
   };
 
   return (
