@@ -17,6 +17,7 @@ import RegisterPage from "./pages/registerPage";
 import LoginPage from "./pages/loginPage";
 import SearchPage from "./pages/searchPage";
 import TvSeriesPage from "./pages/tvSeriesPage";
+import TvSeriesDetailsPage from "./pages/tvSeriesDetailsPage";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -47,6 +48,7 @@ const App = () => {
               <Route path="/" element={<HomePage />} />
               <Route path="/register" element={<RegisterPage />} />
               <Route path="/tv" element={<TvSeriesPage />} /> // TODO - move to protected
+              <Route path="/tv/:id" element={< TvSeriesDetailsPage />} />
               <Route path="/search" element={<SearchPage />} /> // TODO - move to protected
               <Route path="/login" element={<LoginPage />} />
               <Route path="*" element={<HomePage />} />

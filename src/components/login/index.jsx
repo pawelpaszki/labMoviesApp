@@ -39,12 +39,10 @@ const LoginForm = () => {
 
   const setEmail = (e) => {
     email = e;
-    console.log(email);
   }
 
   const setPassword = (p) => {
     password = p;
-    console.log(password);
   }
   return (
     <>

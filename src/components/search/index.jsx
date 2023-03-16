@@ -45,7 +45,6 @@ const Search = () => {
 
   const handleGenreChange = (e) => {
     setGenre(e.target.value);
-    console.log(genre);
   };
 
   const handleCategoryChange = (event) => {
@@ -90,14 +89,11 @@ const Search = () => {
       genre.id,
       keywords
     );
-    console.log(query);
     let resource = discoverCategory === "movie" ? "movie" : "tv";
-    console.log(`resource : ${resource}`);
 
     getSearchResults(resource, query).then(result => {
       console.log(result.results);
       setMovies(result.results);
-      console.log(movies.length);
       setSearchResultLoaded(true);
     })
   };
