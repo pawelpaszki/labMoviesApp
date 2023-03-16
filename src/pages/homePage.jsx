@@ -4,7 +4,7 @@ import { useQuery } from "react-query";
 import Spinner from "../components/spinner";
 import { getMovies } from "../api/tmdb-api";
 import useFiltering from "../hooks/useFiltering";
-import AddToFavouritesIcon from '../components/cardIcons/addToFavourites';
+import AddToFavouriteMoviesIcon from '../components/cardIcons/addToFavouriteMovies';
 import MovieFilterUI, {
   titleFilter,
   genreFilter,
@@ -54,7 +54,7 @@ const HomePage = (props) => {
         title="Discover Movies"
         movies={displayedMovies}
         action={(movie) => {
-          return <AddToFavouritesIcon movie={movie} />
+          return <AddToFavouriteMoviesIcon movie={movie} />
         }}
       />
       <MovieFilterUI
