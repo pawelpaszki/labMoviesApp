@@ -16,6 +16,7 @@ import AuthRoute from "./components/authRoute";
 import RegisterPage from "./pages/registerPage";
 import LoginPage from "./pages/loginPage";
 import SearchPage from "./pages/searchPage";
+import TvSeriesPage from "./pages/tvSeriesPage";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -41,12 +42,12 @@ const App = () => {
                 <Route path="/reviews/:id" element={<MovieReviewPage />} />
                 <Route path="/reviews/form" element={<AddMovieReviewPage />} />
                 <Route path="/upcoming" element={<UpcomingMoviesPage />} />
-                
                 <Route path="*" element={<Navigate to="/" />} />
               </Route>
               <Route path="/" element={<HomePage />} />
               <Route path="/register" element={<RegisterPage />} />
-              <Route path="/search" element={<SearchPage />} />
+              <Route path="/tv" element={<TvSeriesPage />} /> // TODO - move to protected
+              <Route path="/search" element={<SearchPage />} /> // TODO - move to protected
               <Route path="/login" element={<LoginPage />} />
               <Route path="*" element={<HomePage />} />
             </Routes>
