@@ -9,11 +9,12 @@ import CardHeader from "@mui/material/CardHeader";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import CalendarIcon from "@mui/icons-material/CalendarTodayTwoTone";
-import StarRateIcon from "@mui/icons-material/StarRate";
+import FemaleIcon from '@mui/icons-material/Female';
+import MaleIcon from '@mui/icons-material/Male';
+import StarsIcon from '@mui/icons-material/Stars';
 import Grid from "@mui/material/Grid";
-import img from '../../images/film-poster-placeholder.png'
-// import { MoviesContext } from "../../contexts/asContext";
+import img from '../../images/profile-placeholder.png'
+import { MoviesContext } from "../../contexts/moviesContext";
 
 const styles = {
   card: { maxWidth: 345 },
@@ -25,9 +26,9 @@ const styles = {
 
 export default function ActorCard({ actor, action }) {
 
-  const { favouriteMovies, addToFavouriteMovies } = useContext(MoviesContext);
+  const { favouriteActors, addToFavouriteActors } = useContext(MoviesContext);
 
-  if (favouriteMovies.find((id) => id === actor.id)) {
+  if (favouriteActors.find((id) => id === actor.id)) {
     actor.favourite = true;
   } else {
     actor.favourite = false
@@ -46,15 +47,15 @@ export default function ActorCard({ actor, action }) {
         }
         title={
           <Typography variant="h5" component="p">
-            {actor.title}{" "}
+            {actor.name}{" "}
           </Typography>
         }
       />
       <CardMedia
         sx={styles.media}
         image={
-          actor.poster_path
-            ? `https://image.tmdb.org/t/p/w500/${actor.poster_path}`
+          actor.profile_path
+            ? `https://image.tmdb.org/t/p/w500/${actor.profile_path}`
             : img
         }
       />
@@ -62,14 +63,13 @@ export default function ActorCard({ actor, action }) {
         <Grid container>
           <Grid item xs={6}>
             <Typography variant="h6" component="p">
-              <CalendarIcon fontSize="small" />
-              {actor.release_date}
+            {actor.gender === 1 ? (<FemaleIcon fontSize="large" /> ) : (<MaleIcon fontSize="large" /> ) }
             </Typography>
           </Grid>
           <Grid item xs={6}>
             <Typography variant="h6" component="p">
-              <StarRateIcon fontSize="small" />
-              {"  "} {actor.vote_average}{" "}
+              <StarsIcon fontSize="small" />
+              {"  "} {actor.popularity}{" "}
             </Typography>
           </Grid>
         </Grid>

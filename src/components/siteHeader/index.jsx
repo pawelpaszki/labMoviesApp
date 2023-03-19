@@ -38,6 +38,7 @@ const SiteHeader = () => {
     { label: "Upcoming movies", path: "/upcoming" },
     { label: "Tv series", path: "/tv" },
     { label: "Advanced search", path: "/search" },
+    { label: "Popular actors", path: "/actors" },
     { label: "Logout", path: "logout" },
   ];
 

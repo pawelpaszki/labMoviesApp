@@ -2,8 +2,8 @@ import React from "react";
 import ActorsListPage from "../components/actorsListPage";
 import { useQuery } from "react-query";
 import Spinner from "../components/spinner";
-import { getSeries } from "../api/tmdb-api";
-import AddToFavouriteTvSeriesIcon from "../components/cardIcons/addToFavouriteTvSeries";
+import { getPopularActors } from "../api/tmdb-api";
+import AddToFavouriteActorsIcon from "../components/cardIcons/addToFavouriteActors";
 import Button from '@mui/material/Button';
 import Chip from '@mui/material/Chip';
 import "./footerStyle/styles.css";
@@ -17,8 +17,8 @@ const PopularActorsPage = (props) => {
     isFetching,
     isPreviousData,
   } = useQuery({
-    queryKey: ['discoverTv', page],
-    queryFn: () => getSeries(page),
+    queryKey: ['popularActors', page],
+    queryFn: () => getPopularActors(page),
     keepPreviousData: true
   });
 
@@ -30,7 +30,9 @@ const PopularActorsPage = (props) => {
     return <h1>{error.message}</h1>;
   }
 
-  const tvSeries = data ? data.results : [];
+  const actors = data ? data.results : [];
+  console.log('actors');
+  console.log(actors);
 
   return (
     <>
@@ -38,7 +40,7 @@ const PopularActorsPage = (props) => {
         title="Popular actors"
         actors={actors}
         action={(actor) => {
-          return <AddToFavouriteTvSeriesIcon actor={actor} />
+          return <AddToFavouriteActorsIcon actor={actor} />
         }}
       />
       <div className="footerFill">

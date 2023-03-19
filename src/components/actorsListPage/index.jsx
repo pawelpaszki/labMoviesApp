@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "../headerMovieList";
 import Grid from "@mui/material/Grid";
-import ActorsList from "../actorslist";
+import ActorsList from "../actorsList";
 
 const styles = {
   root: {
