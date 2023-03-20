@@ -6,6 +6,7 @@ import UpcomingMoviesPage from "./pages//upcomingMoviesPage"
 import MoviePage from "./pages/movieDetailsPage";
 import FavouriteMoviesPage from "./pages/favouriteMoviesPage";
 import FavouriteTvSeriesPage from "./pages/favouriteTvSeriesPage";
+import FavouriteActorsPage from "./pages/favouriteActorsPage";
 import MovieReviewPage from "./pages/movieReviewPage";
 import SiteHeader from './components/siteHeader'
 import { QueryClientProvider, QueryClient } from "react-query";
@@ -55,6 +56,7 @@ const App = () => {
               <Route path="/tv/:id" element={< TvSeriesDetailsPage />} />
               <Route path="/search" element={<SearchPage />} /> // TODO - move to protected
               <Route path="/actors" element={<PopularActorsPage />} /> // TODO - move to protected
+              <Route path="/actors/favourites" element={<FavouriteActorsPage />} /> // TODO - move to protected
               <Route path="/actors/:id" element={< ActorDetailsPage />} /> // TODO - move to protected
               <Route path="/login" element={<LoginPage />} />
               <Route path="*" element={<HomePage />} />

@@ -40,6 +40,7 @@ const SiteHeader = () => {
     { label: "Favorite tv series", path: "/tv/favourites" },
     { label: "Advanced search", path: "/search" },
     { label: "Popular actors", path: "/actors" },
+    { label: "Favorite actors", path: "/actors/favourites" },
     { label: "Logout", path: "logout" },
   ];
 
