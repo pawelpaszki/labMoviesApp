@@ -13,7 +13,7 @@ const FavouriteTvSeriesPage = () => {
   const favouriteTvSeriesQueries = useQueries(
     movieIds.map((movieId) => {
       return {
-        queryKey: ["movie", { id: movieId }],
+        queryKey: ["tvSeriesById", { id: movieId }],
         queryFn: getTvSeriesById,
       };
     })

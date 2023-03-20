@@ -10,7 +10,7 @@ const TvSeriesDetailsPage = () => {
   const { id } = useParams();
 
   const { data: movie, error, isLoading, isError } = useQuery(
-    ["tvSeries", { id: id }],
+    ["tvSeriesById", { id: id }],
     getTvSeriesById
   );
 
