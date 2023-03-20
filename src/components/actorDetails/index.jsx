@@ -12,9 +12,6 @@ import CalendarIcon from "@mui/icons-material/CalendarTodayTwoTone";
 const ActorDetails = ({ actor }) => {
   const [drawerOpen, setDrawerOpen] = useState(false); // New
 
-  console.log('actor');
-  console.log(actor);
-
   return (
     <>
 
