@@ -45,9 +45,12 @@ const MoviesContextProvider = (props) => {
     setMustWatch(updatedMustWatch);
   };
 
-  // We will use this function in a later section
-  const removeFromFavourites = (movie) => {
+  const removeFromFavouriteMovies = (movie) => {
     setFavouriteMovies(favouriteMovies.filter((mId) => mId !== movie.id));
+  };
+
+  const removeFromFavouriteTvSeries = (movie) => {
+    setFavouriteTvSeries(favouriteTvSeries.filter((mId) => mId !== movie.id));
   };
 
   return (
@@ -61,7 +64,8 @@ const MoviesContextProvider = (props) => {
         addToFavouriteTvSeries,
         addToMustWatch,
         addToFavouriteActors,
-        removeFromFavourites,
+        removeFromFavouriteMovies,
+        removeFromFavouriteTvSeries,
         addReview,
       }}
     >

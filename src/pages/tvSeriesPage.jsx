@@ -41,11 +41,6 @@ const TvSeriesPage = (props) => {
           return <AddToFavouriteTvSeriesIcon movie={movie} />
         }}
       />
-      {/* <MovieFilterUI
-        onFilterValuesChange={changeFilterValues}
-        titleFilter={filterValues[0].value}
-        genreFilter={filterValues[1].value}
-      /> */}
       <div className="footerFill">
       </div>
       <div className="footer">

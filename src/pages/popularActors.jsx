@@ -31,8 +31,6 @@ const PopularActorsPage = (props) => {
   }
 
   const actors = data ? data.results : [];
-  console.log('actors');
-  console.log(actors);
 
   return (
     <>
