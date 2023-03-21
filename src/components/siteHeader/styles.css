@@ -8,9 +8,8 @@
   background-color: #1976d2;
   border-radius: 2px;
   box-sizing: border-box;
-  font: "Roboto","Helvetica","Arial",sans-serif;
   font-size: 0.01rem;
-  transform: scale(.0.05, 1);
+  width: 20px !important;
   color: #1976d2;
   cursor: default;
   outline: none;
