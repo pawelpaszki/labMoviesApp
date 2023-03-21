@@ -23,3 +23,6 @@ This application can be easily deployed using [Vercel](https://vercel.com/). To 
 * `VITE_TMDB_KEY`
 * `VITE_REACT_APP_SUPABASE_URL`
 * `VITE_REACT_APP_SUPABASE_ANON_KEY`
+
+## Navigation
+In wide screen resolution [react-dropdown](https://www.npmjs.com/package/react-dropdown) is used (with some customizations)

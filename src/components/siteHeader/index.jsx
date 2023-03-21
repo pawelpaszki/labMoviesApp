@@ -12,15 +12,13 @@ import { useNavigate } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useAuth } from "../../contexts/AuthProvider";
+import Dropdown from 'react-dropdown';
+import './styles.css';
 
 const styles = {
   title: {
     flexGrow: 1,
   },
-  appbar: {
-    // background: 'none',
-  },
-  // offset: theme.mixins.toolbar,
 };
 
 const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
@@ -68,9 +66,49 @@ const SiteHeader = () => {
     setAnchorEl(event.currentTarget);
   };
 
+  // due to not being unable to send exactly what I want from the dropdown
+  // the navigate option needed to be hacked away like so
+  const _onSelect = (option) => {
+    wideMenuDropdownOptions.forEach(element => {
+      element.items.forEach(e => {
+        if (e.label === option.label) {
+          navigate(e.path);
+          return;
+        }
+      });
+    });
+  }
+
+  const wideMenuDropdownOptions = [
+    {
+      id: 1, label: "Movies", items: [
+        { label: "Discover movies", path: "/" },
+        { label: "Favorite movies", path: "/movies/favourites" },
+        { label: "Upcoming movies", path: "/upcoming" },
+      ]
+    },
+    {
+      id: 2, label: "Tv series", items: [
+        { label: "Discover tv series", path: "/tv" },
+        { label: "Favorite tv series", path: "/tv/favourites" },
+      ]
+    },
+    {
+      id: 3, label: "Actors", items: [
+        { label: "Popular actors", path: "/actors" },
+        { label: "Favorite actors", path: "/actors/favourites" },
+      ]
+    },
+  ];
+
+  const wideMenuOptions = [
+    { label: "Advanced search", path: "/search" },
+    { label: "Logout", path: "logout" },
+  ]
+
   return (
     <>
-      <AppBar sx={styles.appbar} position="fixed" elevation={0} color="primary">
+      <AppBar position="fixed" elevation={0} color="primary">
         <Toolbar>
           <Typography variant="h4" sx={styles.title}>
             TMDB Client
@@ -117,7 +155,13 @@ const SiteHeader = () => {
             </>
           ) : (
             <>
-              {menuOptions.map((opt) => (
+              {wideMenuDropdownOptions.map((opt, index) => (
+                <>
+                  <Button key={index} color="inherit">{opt.label}</Button>
+                  <Dropdown key={opt.id} options={opt.items} onChange={_onSelect} value={wideMenuDropdownOptions[index].label} placeholder={wideMenuDropdownOptions[index].label} />
+                </>
+              ))}
+              {wideMenuOptions.map((opt) => (
                 <Button
                   key={opt.label}
                   color="inherit"
@@ -131,8 +175,6 @@ const SiteHeader = () => {
         </Toolbar>
       </AppBar>
       <Offset />
-
-      {/* <div className={classes.offset} /> */}
     </>
   );
 };
