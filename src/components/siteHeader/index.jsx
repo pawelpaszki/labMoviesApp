@@ -39,6 +39,7 @@ const SiteHeader = () => {
     { label: "Advanced search", path: "/search" },
     { label: "Popular actors", path: "/actors" },
     { label: "Favorite actors", path: "/actors/favourites" },
+    { label: "Search actors", path: "/actors/search" },
     { label: "Logout", path: "logout" },
   ];
 
@@ -97,6 +98,7 @@ const SiteHeader = () => {
       id: 3, label: "Actors", items: [
         { label: "Popular actors", path: "/actors" },
         { label: "Favorite actors", path: "/actors/favourites" },
+        { label: "Search actors", path: "/actors/search" },
       ]
     },
   ];
