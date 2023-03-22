@@ -14,6 +14,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { useAuth } from "../../contexts/AuthProvider";
 import Dropdown from 'react-dropdown';
 import './styles.css';
+import { supabase } from "../../supabase/client";
 
 const styles = {
   title: {
@@ -24,11 +25,16 @@ const styles = {
 const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
 
 const SiteHeader = () => {
+  const [loggedIn, setLoggedIn] = React.useState(false)
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("lg"));
+
+  supabase.auth.onAuthStateChange((event, session) => {
+    setLoggedIn(session !== null);
+  })
 
   const menuOptions = [
     { label: "Home", path: "/" },
@@ -47,6 +53,7 @@ const SiteHeader = () => {
     if (pageURL === "logout") {
       handleLogout();
     } else {
+      setAnchorEl(null);
       navigate(pageURL);
     }
   };
@@ -118,60 +125,72 @@ const SiteHeader = () => {
           <Typography variant="h6" sx={styles.title}>
             All you ever wanted to know about Movies!
           </Typography>
-          {isMobile ? (
-            <>
-              <IconButton
-                aria-label="menu"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleMenu}
-                color="inherit"
-                size="large"
-              >
-                <MenuIcon />
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={open}
-                onClose={() => setAnchorEl(null)}
-              >
-                {menuOptions.map((opt) => (
-                  <MenuItem
+          {loggedIn ? (
+            isMobile ? (
+              <>
+                <IconButton
+                  aria-label="menu"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  onClick={handleMenu}
+                  color="inherit"
+                  size="large"
+                >
+                  <MenuIcon />
+                </IconButton>
+                <Menu
+                  id="menu-appbar"
+                  anchorEl={anchorEl}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  open={open}
+                  onClose={() => setAnchorEl(null)}
+                >
+                  {menuOptions.map((opt) => (
+                    <MenuItem
+                      key={opt.label}
+                      onClick={() => handleMenuSelect(opt.path)}
+                    >
+                      {opt.label}
+                    </MenuItem>
+                  ))}
+                </Menu>
+              </>
+            ) : (
+              <>
+                {wideMenuDropdownOptions.map((opt, index) => (
+                  <>
+                    <Button key={index} color="inherit">{opt.label}</Button>
+                    <Dropdown key={opt.id} options={opt.items} onChange={_onSelect} value={wideMenuDropdownOptions[index].label} placeholder={wideMenuDropdownOptions[index].label} />
+                  </>
+                ))}
+                {wideMenuOptions.map((opt) => (
+                  <Button
                     key={opt.label}
+                    color="inherit"
                     onClick={() => handleMenuSelect(opt.path)}
                   >
                     {opt.label}
-                  </MenuItem>
+                  </Button>
                 ))}
-              </Menu>
-            </>
+              </>
+            )
           ) : (
             <>
-              {wideMenuDropdownOptions.map((opt, index) => (
-                <>
-                  <Button key={index} color="inherit">{opt.label}</Button>
-                  <Dropdown key={opt.id} options={opt.items} onChange={_onSelect} value={wideMenuDropdownOptions[index].label} placeholder={wideMenuDropdownOptions[index].label} />
-                </>
-              ))}
-              {wideMenuOptions.map((opt) => (
-                <Button
-                  key={opt.label}
-                  color="inherit"
-                  onClick={() => handleMenuSelect(opt.path)}
-                >
-                  {opt.label}
-                </Button>
-              ))}
+              <Button
+                key="login"
+                color="inherit"
+                onClick={() => handleMenuSelect("/login")}
+              >
+                Sign in
+              </Button>
             </>
           )}
         </Toolbar>

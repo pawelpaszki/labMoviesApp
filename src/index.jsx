@@ -51,19 +51,19 @@ const App = () => {
                 <Route path="/reviews/:id" element={<MovieReviewPage />} />
                 <Route path="/reviews/form" element={<AddMovieReviewPage />} />
                 <Route path="/upcoming" element={<UpcomingMoviesPage />} />
+                <Route path="/tv" element={<TvSeriesPage />} />
+                <Route path="/tv/favourites" element={<FavouriteTvSeriesPage />} />
+                <Route path="/tv/:id" element={< TvSeriesDetailsPage />} />
+                <Route path="/tv/:id/similar" element={<SimilarTvSeriesPage />} />
+                <Route path="/search" element={<SearchPage />} />
+                <Route path="/actors" element={<PopularActorsPage />} />
+                <Route path="/actors/search" element={<ActorsSearchPage />} />
+                <Route path="/actors/favourites" element={<FavouriteActorsPage />} />
+                <Route path="/actors/:id" element={< ActorDetailsPage />} />
                 <Route path="*" element={<Navigate to="/" />} />
               </Route>
               <Route path="/" element={<HomePage />} />
               <Route path="/register" element={<RegisterPage />} />
-              <Route path="/tv" element={<TvSeriesPage />} /> // TODO - move to protected
-              <Route path="/tv/favourites" element={<FavouriteTvSeriesPage />} /> // TODO - move to protected
-              <Route path="/tv/:id" element={< TvSeriesDetailsPage />} />
-              <Route path="/tv/:id/similar" element={<SimilarTvSeriesPage />} />
-              <Route path="/search" element={<SearchPage />} /> // TODO - move to protected
-              <Route path="/actors" element={<PopularActorsPage />} /> // TODO - move to protected
-              <Route path="/actors/search" element={<ActorsSearchPage />} /> // TODO - move to protected
-              <Route path="/actors/favourites" element={<FavouriteActorsPage />} /> // TODO - move to protected
-              <Route path="/actors/:id" element={< ActorDetailsPage />} /> // TODO - move to protected
               <Route path="/login" element={<LoginPage />} />
               <Route path="*" element={<HomePage />} />
             </Routes>
