@@ -40,12 +40,14 @@ const SiteHeader = () => {
     { label: "Home", path: "/" },
     { label: "Favorite movies", path: "/movies/favourites" },
     { label: "Upcoming movies", path: "/upcoming" },
+    { label: "Create fantasy movie", path: "/fantasy/create" },
+    { label: "List fantasy movies", path: "/fantasy" },
     { label: "Tv series", path: "/tv" },
     { label: "Favorite tv series", path: "/tv/favourites" },
-    { label: "Advanced search", path: "/search" },
     { label: "Popular actors", path: "/actors" },
     { label: "Favorite actors", path: "/actors/favourites" },
     { label: "Search actors", path: "/actors/search" },
+    { label: "Advanced search", path: "/search" },
     { label: "Logout", path: "logout" },
   ];
 
@@ -96,13 +98,19 @@ const SiteHeader = () => {
       ]
     },
     {
-      id: 2, label: "Tv series", items: [
+      id: 2, label: "Fantasy movies", items: [
+        { label: "Create fantasy movie", path: "/fantasy/create" },
+        { label: "List fantasy movies", path: "/fantasy" },
+      ]
+    },
+    {
+      id: 3, label: "Tv series", items: [
         { label: "Discover tv series", path: "/tv" },
         { label: "Favorite tv series", path: "/tv/favourites" },
       ]
     },
     {
-      id: 3, label: "Actors", items: [
+      id: 4, label: "Actors", items: [
         { label: "Popular actors", path: "/actors" },
         { label: "Favorite actors", path: "/actors/favourites" },
         { label: "Search actors", path: "/actors/search" },
