@@ -3,14 +3,15 @@ import React, { useState } from "react";
 export const MoviesContext = React.createContext(null);
 
 const MoviesContextProvider = (props) => {
-  const [myReviews, setMyReviews] = useState( {} )
+  const [myReviews, setMyReviews] = useState({})
   const [favouriteMovies, setFavouriteMovies] = useState([]);
   const [favouriteTvSeries, setFavouriteTvSeries] = useState([]);
   const [favouriteActors, setFavouriteActors] = useState([]);
+  const [fantasyMovies, setFantasyMovies] = useState([]);
   const [mustWatch, setMustWatch] = useState([]);
 
   const addReview = (movie, review) => {   // NEW
-    setMyReviews( {...myReviews, [movie.id]: review } )
+    setMyReviews({ ...myReviews, [movie.id]: review })
   };
 
   const addToFavouriteMovies = (movie) => {
@@ -28,6 +29,17 @@ const MoviesContextProvider = (props) => {
     }
     setFavouriteTvSeries(updatedFavouriteTvSeries);
   };
+
+  const addToFantasyMovies = (movie) => {
+    let updatedFantasyMovies = [...fantasyMovies];
+    updatedFantasyMovies.push(movie);
+    setFantasyMovies(updatedFantasyMovies);
+    console.log(updatedFantasyMovies);
+  }
+
+  const removeFromFantasyMovies = (movie) => {
+    setFantasyMovies(favouriteMovies.filter((mId) => mId !== movie.id));
+  }
 
   const addToFavouriteActors = (actor) => {
     let updatedActors = [...favouriteActors];
@@ -71,6 +83,8 @@ const MoviesContextProvider = (props) => {
         removeFromFavouriteMovies,
         removeFromFavouriteTvSeries,
         removeFromFavouriteActors,
+        addToFantasyMovies,
+        removeFromFantasyMovies,
         addReview,
       }}
     >

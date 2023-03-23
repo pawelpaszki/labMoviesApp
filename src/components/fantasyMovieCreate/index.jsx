@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
@@ -16,8 +16,11 @@ import { useQuery } from "react-query";
 import Spinner from '../spinner';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
+import { MoviesContext } from "../../contexts/moviesContext";
+import { v4 as uuidv4 } from 'uuid';
 
 const CreateFantasyMovie = () => {
+  const context = useContext(MoviesContext);
   const { data, error, isLoading, isError } = useQuery("genres", getGenres);
   const [releaseDate, setReleaseDate] = useState(new Date());
   const [selectedGenres, setSelectedGenres] = useState([]);
@@ -38,13 +41,24 @@ const CreateFantasyMovie = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(`title: ${title}`);
-    console.log(`overview: ${overview}`);
-    console.log(`runtime: ${runtime}`);
-    console.log(`moviePoster: ${moviePoster}`);
-    console.log(`productionCompanies: ${productionCompanies}`);
-    console.log(`selectedGenres: ${selectedGenres}`);
-    console.log(`releaseDate: ${releaseDate}`);
+    // console.log(`title: ${title}`);
+    // console.log(`overview: ${overview}`);
+    // console.log(`runtime: ${runtime}`);
+    // console.log(`moviePoster: ${moviePoster}`);
+    // console.log(`productionCompanies: ${productionCompanies}`);
+    // console.log(`selectedGenres: ${selectedGenres}`);
+    // console.log(`releaseDate: ${releaseDate}`);
+    let movie = {
+      "id": uuidv4(),
+      "title": title,
+      "overview": overview,
+      "runtime": runtime,
+      "moviePoster": moviePoster,
+      "productionCompanies": productionCompanies.split(',').map(item => item.trim()),
+      "selectedGenres": selectedGenres,
+      "releaseDate": releaseDate,
+    }
+    context.addToFantasyMovies(movie);
   };
 
   const updateSelectedGenres = (genre) => {
@@ -156,7 +170,7 @@ const CreateFantasyMovie = () => {
                 required
                 fullWidth
                 name="companies"
-                label="Production company(ies)"
+                label="Production company(ies) separated by commas"
                 id="companies"
                 autoComplete="none"
                 onChange={handleSetProductionCompanies}
