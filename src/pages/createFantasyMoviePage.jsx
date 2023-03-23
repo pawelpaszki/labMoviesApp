@@ -1,11 +1,10 @@
-import React from "react";
+import * as React from 'react';
+import CreateFantasyMovie from '../components/fantasyMovieCreate';
 
 const CreateFantasyMoviePage = () => {
 
   return (
-    <>
-      <p>create fantasy movie</p>
-    </>
+    <CreateFantasyMovie/>
   );
 };
 

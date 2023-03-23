@@ -1,0 +1,8 @@
+.react-datepicker__input-container > input {
+  padding: 5px !important;
+  font-size: 1em;
+}
+
+.react-datepicker-popper {
+  z-index: 1000;
+}
