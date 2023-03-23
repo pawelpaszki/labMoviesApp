@@ -18,8 +18,10 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import { MoviesContext } from "../../contexts/moviesContext";
 import { v4 as uuidv4 } from 'uuid';
+import { useAuth } from "../../contexts/AuthProvider";
 
 const CreateFantasyMovie = () => {
+  const { user } = useAuth();
   const context = useContext(MoviesContext);
   const { data, error, isLoading, isError } = useQuery("genres", getGenres);
   const [releaseDate, setReleaseDate] = useState(new Date());
@@ -50,6 +52,7 @@ const CreateFantasyMovie = () => {
     // console.log(`releaseDate: ${releaseDate}`);
     let movie = {
       "id": uuidv4(),
+      "user_id": user?.id,
       "title": title,
       "overview": overview,
       "runtime": runtime,
@@ -57,6 +60,7 @@ const CreateFantasyMovie = () => {
       "productionCompanies": productionCompanies.split(',').map(item => item.trim()),
       "selectedGenres": selectedGenres,
       "releaseDate": releaseDate,
+      "cast": []
     }
     context.addToFantasyMovies(movie);
   };

@@ -35,6 +35,7 @@ const MoviesContextProvider = (props) => {
     updatedFantasyMovies.push(movie);
     setFantasyMovies(updatedFantasyMovies);
     console.log(updatedFantasyMovies);
+    console.log(fantasyMovies);
   }
 
   const removeFromFantasyMovies = (movie) => {
@@ -75,6 +76,7 @@ const MoviesContextProvider = (props) => {
         favouriteMovies,
         favouriteTvSeries,
         favouriteActors,
+        fantasyMovies,
         mustWatch,
         addToFavouriteMovies,
         addToFavouriteTvSeries,
