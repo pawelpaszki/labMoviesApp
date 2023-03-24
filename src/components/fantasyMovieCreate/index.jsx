@@ -59,7 +59,7 @@ const CreateFantasyMovie = () => {
       "runtime": runtime,
       "poster_path": moviePoster,
       "production_companies": productionCompanies.split(',').map(item => item.trim()),
-      "selected_genres": selectedGenres,
+      "genres": selectedGenres,
       "release_date": releaseDate,
       "cast": []
     }

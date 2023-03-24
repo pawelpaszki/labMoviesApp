@@ -34,8 +34,6 @@ const MoviesContextProvider = (props) => {
     let updatedFantasyMovies = [...fantasyMovies];
     updatedFantasyMovies.push(movie);
     setFantasyMovies(updatedFantasyMovies);
-    console.log(updatedFantasyMovies);
-    console.log(fantasyMovies);
   }
 
   const removeFromFantasyMovies = (movie) => {

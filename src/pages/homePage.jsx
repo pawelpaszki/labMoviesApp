@@ -74,7 +74,7 @@ const HomePage = (props) => {
         titleFilter={filterValues[0].value}
         genreFilter={filterValues[1].value}
       />
-      <Pagination data={data} page={page} setPage={setPage}/>
+      <Pagination data={data} page={page} setPage={setPage} />
     </>
   );
 };

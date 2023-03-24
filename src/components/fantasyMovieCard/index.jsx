@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import React, { useContext } from "react";
-import Avatar from "@mui/material/Avatar";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -8,9 +7,7 @@ import CardMedia from "@mui/material/CardMedia";
 import CardHeader from "@mui/material/CardHeader";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import CalendarIcon from "@mui/icons-material/CalendarTodayTwoTone";
-import StarRateIcon from "@mui/icons-material/StarRate";
 import Grid from "@mui/material/Grid";
 import img from '../../images/film-poster-placeholder.png'
 import { MoviesContext } from "../../contexts/moviesContext";
@@ -60,21 +57,33 @@ export default function FantasyMovieCard({ movie }) {
               &nbsp; {outputDate}
             </Typography>
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={6}>
             <Typography variant="h6" component="p">
               <AvTimerIcon fontSize="small" />
               {movie.runtime} &nbsp; minutes
             </Typography>
           </Grid>
-          <Grid item xs={2}>
-            <IconButton
-              aria-label="remove from fantasy movies"
-              onClick={remove}
-            >
-              <DeleteIcon color="primary" fontSize="large" />
-            </IconButton>
-          </Grid>
         </Grid>
+        {/* <CardActions> */}
+          <Grid container>
+            <Grid item xs={9}>
+              <Link to={`/fantasy/${movie.id}`}>
+                <Button style={{marginTop: "6px"}} variant="outlined" size="large" color="primary">
+                  More Info
+                </Button>
+              </Link>
+            </Grid>
+
+            <Grid item xs={3}>
+              <IconButton
+                aria-label="remove from fantasy movies"
+                onClick={remove}
+              >
+                <DeleteIcon color="primary" fontSize="large" />
+              </IconButton>
+            </Grid>
+          </Grid>
+        {/* </CardActions> */}
       </CardContent>
     </Card>
   );
