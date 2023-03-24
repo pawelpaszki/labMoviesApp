@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react";
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
@@ -19,8 +18,10 @@ import MenuItem from '@mui/material/MenuItem';
 import { MoviesContext } from "../../contexts/moviesContext";
 import { v4 as uuidv4 } from 'uuid';
 import { useAuth } from "../../contexts/AuthProvider";
+import { useNavigate } from "react-router-dom";
 
 const CreateFantasyMovie = () => {
+  const navigate = useNavigate();
   const { user } = useAuth();
   const context = useContext(MoviesContext);
   const { data, error, isLoading, isError } = useQuery("genres", getGenres);
@@ -56,13 +57,14 @@ const CreateFantasyMovie = () => {
       "title": title,
       "overview": overview,
       "runtime": runtime,
-      "moviePoster": moviePoster,
-      "productionCompanies": productionCompanies.split(',').map(item => item.trim()),
-      "selectedGenres": selectedGenres,
-      "releaseDate": releaseDate,
+      "poster_path": moviePoster,
+      "production_companies": productionCompanies.split(',').map(item => item.trim()),
+      "selected_genres": selectedGenres,
+      "release_date": releaseDate,
       "cast": []
     }
     context.addToFantasyMovies(movie);
+    navigate("/fantasy");
   };
 
   const updateSelectedGenres = (genre) => {
