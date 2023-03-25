@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import Checkbox from '@mui/material/Checkbox';
 import TextField from '@mui/material/TextField';
@@ -19,6 +18,9 @@ import Spinner from '../spinner'
 import { constructQuery } from "../../api/searchQuery";
 import PageTemplate from "../templateMovieListPage";
 import Fab from "@mui/material/Fab";
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
 const styles = {
   fab: {
     position: "fixed",
@@ -126,97 +128,112 @@ const Search = () => {
         </>
         :
         <>
-          <h4>Provide search criteria. None of them are mandatory (apart from the "Category"). Skipping criteria will exclude it from the search</h4>
-          <FormControl style={{ display: "inline" }}>
-            <FormLabel id="category">Category*</FormLabel>
-            <RadioGroup
-              row
-              aria-labelledby="category"
-              name="category"
-              value={discoverCategory}
-              onChange={handleCategoryChange}
-            >
-              <FormControlLabel value="movie" control={<Radio />} label="movie" />
-              <FormControlLabel value="tv series" control={<Radio />} label="tv series" />
-            </RadioGroup>
-          </FormControl>
+          <Container component="main" maxWidth="xs">
+            <h4>Provide search criteria. None of them are mandatory (apart from the "Category"). Skipping criteria will exclude it from the search</h4>
+            <Box component="form"
+              sx={{
+                marginTop: 2,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+              }}>
+              <Grid container spacing={2}>
+                <Grid item md={6} xs={12}>
+                    <FormLabel id="category">Category*</FormLabel>
+                    <RadioGroup
+                      row
+                      aria-labelledby="category"
+                      name="category"
+                      value={discoverCategory}
+                      onChange={handleCategoryChange}
+                    >
+                      <FormControlLabel value="movie" control={<Radio />} label="movie" />
+                      <FormControlLabel value="tv series" control={<Radio />} label="tv series" />
+                    </RadioGroup>
+                </Grid>
+                <Grid item md={6} xs={12}>
+                  <FormLabel id="rating" style={{ display: "block" }}>Choose Rating</FormLabel>
+                  <TextField style={{ marginTop: "10px", width: "10ch", padding: "4px" }}
+                    onChange={handleMinRating}
+                    id="outlined-number"
+                    label="Minimum"
+                    type="number"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    InputProps={{
+                      inputProps: {
+                        max: 10, min: 1
+                      }
+                    }}
+                  />
+                  <TextField style={{ marginTop: "10px", width: "10ch", padding: "4px" }}
+                    onChange={handleMaxRating}
+                    id="outlined-number"
+                    label="Maximum"
+                    type="number"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    InputProps={{
+                      inputProps: {
+                        max: 10, min: 1
+                      }
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <FormControlLabel
+                    value="start"
+                    control={
+                      <Checkbox
+                        checked={useDateRangeChecked}
+                        onChange={handleUseReleaseDateChange}
+                        inputProps={{ 'aria-label': 'controlled' }}
+                      />
+                    }
+                    label="Use release dates range"
+                    labelPlacement="end"
+                  />
+                  <FormLabel id="release" style={{ display: "block", marginTop: "10px", marginBottom: "10px" }}>Select release date range</FormLabel>
+                  <DatePicker disabled={!useDateRangeChecked} selected={releaseStartDate} onChange={(date) => setReleaseStartDate(date)} />
 
-          <FormControl style={{ display: "inline" }}>
-            <FormLabel id="rating" style={{ display: "block" }}>Choose Rating</FormLabel>
-            <TextField style={{ marginTop: "10px", width: "12ch" }}
-              onChange={handleMinRating}
-              id="outlined-number"
-              label="Minimum"
-              type="number"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              InputProps={{
-                inputProps: {
-                  max: 10, min: 1
-                }
-              }}
-            />
-            <TextField style={{ marginTop: "10px", marginLeft: "10px", width: "12ch" }}
-              onChange={handleMaxRating}
-              id="outlined-number"
-              label="Maximum"
-              type="number"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              InputProps={{
-                inputProps: {
-                  max: 10, min: 1
-                }
-              }}
-            />
-          </FormControl>
-
-          <FormControl style={{ display: "block" }}>
-            <FormControlLabel
-              value="start"
-              control={
-                <Checkbox
-                  checked={useDateRangeChecked}
-                  onChange={handleUseReleaseDateChange}
-                  inputProps={{ 'aria-label': 'controlled' }}
+                  <DatePicker disabled={!useDateRangeChecked} selected={releaseEndDate} onChange={(date) => setReleaseEndDate(date)} />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <FormLabel component="legend">Select genre
+                  </FormLabel>
+                  <Select
+                    labelId="genre-label"
+                    id="genre-select"
+                    value={genre}
+                    onChange={handleGenreChange}
+                  >
+                    {genres.map((genre) => {
+                      return (
+                        <MenuItem key={genre.id} value={genre}>
+                          {genre.name}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </Grid>
+              </Grid>
+              <Grid item xs={12} md={12}>
+                <FormLabel id="keywords" style={{ display: "block", marginTop: "10px", marginBottom: "10px" }}>Define keywords</FormLabel>
+                <TextField
+                  style={{ width: "auto" }}
+                  id="outlined-helperText"
+                  label="Keywords"
+                  helperText="Use comma separated string values or leave empty."
+                  onChange={handleUseKeywords}
                 />
-              }
-              label="Use release dates range"
-              labelPlacement="end"
-            />
-            <FormLabel id="release" style={{ display: "block", marginTop: "10px", marginBottom: "10px" }}>Select release date range</FormLabel>
-            <DatePicker disabled={!useDateRangeChecked} selected={releaseStartDate} onChange={(date) => setReleaseStartDate(date)} />
-
-            <DatePicker disabled={!useDateRangeChecked} selected={releaseEndDate} onChange={(date) => setReleaseEndDate(date)} />
-          </FormControl>
-
-          <FormLabel id="keywords" style={{ display: "block", marginTop: "10px", marginBottom: "10px" }}>Define keywords</FormLabel>
-          <TextField
-            id="outlined-helperText"
-            label="Keywords"
-            helperText="Use comma separated string values or leave empty."
-            onChange={handleUseKeywords}
-          />
-
-          <FormLabel component="legend">Select genre
-          </FormLabel>
-          <Select
-            labelId="genre-label"
-            id="genre-select"
-            value={genre}
-            onChange={handleGenreChange}
-          >
-            {genres.map((genre) => {
-              return (
-                <MenuItem key={genre.id} value={genre}>
-                  {genre.name}
-                </MenuItem>
-              );
-            })}
-          </Select>
-          <Button onClick={() => sendSearchQUery()} style={{ display: "block", marginTop: "10px", marginBottom: "10px" }} variant="contained">Search</Button>
+              </Grid>
+              <Grid>
+              <Button onClick={() => sendSearchQUery()} style={{ display: "block", marginTop: "10px", marginBottom: "10px" }} variant="contained">Search</Button>
+              </Grid>
+            </Box>
+          </Container>
         </>
       }
     </>
