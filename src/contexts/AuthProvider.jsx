@@ -11,27 +11,44 @@ const login = (email, password) =>
 const signOut = () => supabase.auth.signOut();
 
 const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [auth, setAuth] = useState(false);
+  const [session, setSession] = useState()
+  const [user, setUser] = useState(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const { data } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === "SIGNED_IN") {
-        setUser(session.user);
-        setAuth(true);
-      } else if (event === "SIGNED_OUT") {
-        setUser(null);
-        setAuth(false);
+    let gotSession = localStorage.getItem("session")
+    if (gotSession) {
+      console.log("Retrieved: ", gotSession)
+      setSession(JSON.parse(gotSession))
+      setUser(JSON.parse(gotSession))
+    }
+    async function getSession() {
+      setLoading(false)
+      const { subscription } = supabase.auth.onAuthStateChange(
+        async (event, session) => {
+          if (session) {
+            console.log("New session: ", session)
+            setUser(session.user)
+            localStorage.setItem("session", JSON.stringify(session))
+            setSession(session)
+          } else {
+            localStorage.removeItem("session")
+            setSession(null)
+            setUser(null)
+          }
+          setLoading(false)
+        }
+      )
+      return () => {
+        subscription?.unsubscribe()
       }
-    });
-    return () => {
-      data.subscription.unsubscribe();
-    };
-  }, []);
+    }
+    getSession()
+  }, [])
 
   return (
     <AuthContext.Provider value={{ user, login, signOut }}>
-      {children}
+      {!loading && children}
     </AuthContext.Provider>
   );
 };

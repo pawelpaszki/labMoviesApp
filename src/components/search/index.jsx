@@ -18,6 +18,14 @@ import { useQuery } from "react-query";
 import Spinner from '../spinner'
 import { constructQuery } from "../../api/searchQuery";
 import PageTemplate from "../templateMovieListPage";
+import Fab from "@mui/material/Fab";
+const styles = {
+  fab: {
+    position: "fixed",
+    top: 80,
+    right: 2,
+  },
+}
 
 const Search = () => {
   const { data, error, isLoading, isError } = useQuery("genres", getGenres);
@@ -101,11 +109,21 @@ const Search = () => {
   return (
     <>
       {searchResultLoaded ?
-        <PageTemplate
-          title="Search results"
-          movies={movies}
-          action={(movie) => null}
-        />
+        <>
+          <PageTemplate
+            title="Search results"
+            movies={movies}
+            action={(movie) => null}
+          />
+          <Fab
+            color="secondary"
+            variant="extended"
+            onClick={() => setSearchResultLoaded(false)}
+            sx={styles.fab}
+          >
+            Search again
+          </Fab>
+        </>
         :
         <>
           <h4>Provide search criteria. None of them are mandatory (apart from the "Category"). Skipping criteria will exclude it from the search</h4>

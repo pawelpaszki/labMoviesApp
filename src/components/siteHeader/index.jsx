@@ -25,34 +25,31 @@ const styles = {
 const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
 
 const SiteHeader = () => {
+  const { user, loading } = useAuth();
   const [loggedIn, setLoggedIn] = React.useState(false)
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("lg"));
-  const [session, setSession] = React.useState(
-    sessionStorage.getItem("session")
-  );
 
   React.useEffect(() => {
-    sessionStorage.setItem("session", JSON.stringify(session));
-    console.log(session);
-    setLoggedIn(session !== null);
-  }, [session]);
+    if (!loading) {
+      setLoggedIn(user !== null);
+    }
+  });
 
   React.useEffect(() => {
     const { data: authListener } = supabase.auth.onAuthStateChange(
       (event, _session) => {
         console.log(`Supabase auth event: ${event}`);
-        setSession(_session);
-        setLoggedIn(session !== null);
+        setLoggedIn(_session !== null);
       }
     );
     return () => {
       authListener.subscription.unsubscribe();
     };
-  }, [session]);
+  });
 
   const menuOptions = [
     { label: "Home", path: "/" },
@@ -81,8 +78,9 @@ const SiteHeader = () => {
   // auth
   const { auth, signOut } = useAuth();
 
-  const handleLogout = async () => {
+  const handleLogout = async (e) => {
     try {
+      setAnchorEl(null);
       await signOut();
     } catch (error) {
       console.log(error);

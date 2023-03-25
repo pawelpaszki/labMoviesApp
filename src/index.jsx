@@ -49,10 +49,11 @@ const App = () => {
             <Routes>
               <Route element={<AuthRoute />}>
                 <Route path="/movies/favourites" element={<FavouriteMoviesPage />} />
-                {/* <Route path="/movies/:id" element={<MoviePage />} /> */}
+                <Route path="/movies/:id" element={<MoviePage />} />
                 <Route path="/movies/:id/similar" element={<SimilarMoviesPage />} />
-                {/* <Route path="/fantasy/create" element={<CreateFantasyMoviePage />} /> */}
-                {/* <Route path="/fantasy" element={<ListFantasyMoviesPage />} /> */}
+                <Route path="/fantasy/create" element={<CreateFantasyMoviePage />} />
+                <Route path="/fantasy" element={<ListFantasyMoviesPage />} />
+                <Route path="/fantasy/:id" element={<FantasyMovieDetailsPage />} />
                 <Route path="/reviews/:id" element={<MovieReviewPage />} />
                 <Route path="/reviews/form" element={<AddMovieReviewPage />} />
                 <Route path="/upcoming" element={<UpcomingMoviesPage />} />
@@ -67,10 +68,6 @@ const App = () => {
                 <Route path="/actors/:id" element={< ActorDetailsPage />} />
                 <Route path="*" element={<Navigate to="/" />} />
               </Route>
-              <Route path="/fantasy/create" element={<CreateFantasyMoviePage />} />
-              <Route path="/fantasy" element={<ListFantasyMoviesPage />} />
-              <Route path="/fantasy/:id" element={<FantasyMovieDetailsPage />} />
-              <Route path="/movies/:id" element={<MoviePage />} />
               <Route path="/" element={<HomePage />} />
               <Route path="/register" element={<RegisterPage />} />
               <Route path="/login" element={<LoginPage />} />
