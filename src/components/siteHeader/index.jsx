@@ -191,7 +191,9 @@ const SiteHeader = () => {
               <>
                 {wideMenuDropdownOptions.map((opt, index) => (
                   <>
-                    <Button key={index} color="inherit">{opt.label}</Button>
+                    <div style={{ pointerEvents: "none" }}>
+                      <Button key={index} color="inherit">{opt.label}</Button>
+                    </div>
                     <Dropdown key={opt.id} options={opt.items} onChange={_onSelect} value={wideMenuDropdownOptions[index].label} placeholder={wideMenuDropdownOptions[index].label} />
                   </>
                 ))}
