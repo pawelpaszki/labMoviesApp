@@ -31,10 +31,28 @@ const SiteHeader = () => {
   const open = Boolean(anchorEl);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("lg"));
+  const [session, setSession] = React.useState(
+    sessionStorage.getItem("session")
+  );
 
-  supabase.auth.onAuthStateChange((event, session) => {
+  React.useEffect(() => {
+    sessionStorage.setItem("session", JSON.stringify(session));
+    console.log(session);
     setLoggedIn(session !== null);
-  })
+  }, [session]);
+
+  React.useEffect(() => {
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      (event, _session) => {
+        console.log(`Supabase auth event: ${event}`);
+        setSession(_session);
+        setLoggedIn(session !== null);
+      }
+    );
+    return () => {
+      authListener.subscription.unsubscribe();
+    };
+  }, [session]);
 
   const menuOptions = [
     { label: "Home", path: "/" },
