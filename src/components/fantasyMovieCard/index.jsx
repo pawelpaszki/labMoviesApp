@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import React, { useContext } from "react";
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import CardHeader from "@mui/material/CardHeader";
@@ -64,7 +63,6 @@ export default function FantasyMovieCard({ movie }) {
             </Typography>
           </Grid>
         </Grid>
-        {/* <CardActions> */}
           <Grid container>
             <Grid item xs={9}>
               <Link to={`/fantasy/${movie.id}`}>
@@ -83,7 +81,6 @@ export default function FantasyMovieCard({ movie }) {
               </IconButton>
             </Grid>
           </Grid>
-        {/* </CardActions> */}
       </CardContent>
     </Card>
   );

@@ -21,6 +21,7 @@ import Fab from "@mui/material/Fab";
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
+
 const styles = {
   fab: {
     position: "fixed",
@@ -139,17 +140,17 @@ const Search = () => {
               }}>
               <Grid container spacing={2}>
                 <Grid item md={6} xs={12}>
-                    <FormLabel id="category">Category*</FormLabel>
-                    <RadioGroup
-                      row
-                      aria-labelledby="category"
-                      name="category"
-                      value={discoverCategory}
-                      onChange={handleCategoryChange}
-                    >
-                      <FormControlLabel value="movie" control={<Radio />} label="movie" />
-                      <FormControlLabel value="tv series" control={<Radio />} label="tv series" />
-                    </RadioGroup>
+                  <FormLabel id="category">Category*</FormLabel>
+                  <RadioGroup
+                    row
+                    aria-labelledby="category"
+                    name="category"
+                    value={discoverCategory}
+                    onChange={handleCategoryChange}
+                  >
+                    <FormControlLabel value="movie" control={<Radio />} label="movie" />
+                    <FormControlLabel value="tv series" control={<Radio />} label="tv series" />
+                  </RadioGroup>
                 </Grid>
                 <Grid item md={6} xs={12}>
                   <FormLabel id="rating" style={{ display: "block" }}>Choose Rating</FormLabel>
@@ -230,7 +231,7 @@ const Search = () => {
                 />
               </Grid>
               <Grid>
-              <Button onClick={() => sendSearchQUery()} style={{ display: "block", marginTop: "10px", marginBottom: "10px" }} variant="contained">Search</Button>
+                <Button onClick={() => sendSearchQUery()} style={{ display: "block", marginTop: "10px", marginBottom: "10px" }} variant="contained">Search</Button>
               </Grid>
             </Box>
           </Container>

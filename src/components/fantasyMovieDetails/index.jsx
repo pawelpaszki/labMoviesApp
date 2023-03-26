@@ -5,9 +5,12 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import CalendarIcon from "@mui/icons-material/CalendarTodayTwoTone";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
-import ImageList from "@mui/material/ImageList";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
 import ImageListItem from "@mui/material/ImageListItem";
 import AddCastMember from "../addCastMember";
+import { v4 as uuidv4 } from 'uuid';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 const styles = {
   gridListRoot: {
@@ -21,7 +24,6 @@ const styles = {
   },
   avatar: {
     height: 80,
-    // height: '100vw',
   },
   chipSet: {
     display: "flex",
@@ -45,6 +47,7 @@ const FantasyMovieDetails = ({ movie }) => {
   const [description, setDescription] = React.useState("");
   const [displayedMovie, setDisplayedMovie] = React.useState(undefined);
   const [cast, setCast] = React.useState(undefined);
+  const [addCastEnabled, setAddCastEnabled] = React.useState(false);
 
   const handleNameChange = (event) => {
     setName(event.target.value);
@@ -64,11 +67,8 @@ const FantasyMovieDetails = ({ movie }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(`name: ${name}`);
-    console.log(`roleName: ${roleName}`);
-    console.log(`avatar: ${avatar}`);
-    console.log(`description: ${description}`);
     let castMember = {
+      "id": uuidv4(),
       "name": name,
       "roleName": roleName,
       "avatar_url": avatar,
@@ -80,11 +80,16 @@ const FantasyMovieDetails = ({ movie }) => {
     updatedMovie.cast = updatedCast;
     setDisplayedMovie(updatedMovie);
     setCast(updatedCast);
-    console.log('updatedMovie');
-    console.log(updatedMovie);
-    console.log('cast');
-    console.log(updatedCast);
+    setAddCastEnabled(false);
   };
+
+  const removeCastMember = (id) => {
+    let updatedCast = [...displayedMovie.cast.filter((item) => item.id !== id)]
+    let updatedMovie = displayedMovie;
+    updatedMovie.cast = updatedCast;
+    setDisplayedMovie(updatedMovie);
+    setCast(updatedCast);
+  }
 
   if (displayedMovie === undefined && movie !== undefined) {
     setDisplayedMovie(movie);
@@ -92,6 +97,12 @@ const FantasyMovieDetails = ({ movie }) => {
     setOutputDate(`${date.getFullYear()} / ${date.getMonth() + 1} / ${date.getDate()}`);
     setCast(movie.cast);
   }
+
+  const enableCastAddition = (event) => {
+    event.preventDefault();
+    setAddCastEnabled(true);
+  }
+
   return (
     <>
       {displayedMovie === undefined ? (
@@ -105,8 +116,6 @@ const FantasyMovieDetails = ({ movie }) => {
               </Typography>
             </Grid>
             <Grid item xs={3}>
-              {/* <div sx={styles.gridListRoot}> */}
-              {/* <ImageList cols={1}> */}
               <ImageListItem
                 key={displayedMovie.file_path}
                 sx={styles.gridListTile}
@@ -117,8 +126,6 @@ const FantasyMovieDetails = ({ movie }) => {
                   alt={displayedMovie.poster_path}
                 />
               </ImageListItem>
-              {/* </ImageList> */}
-              {/* </div> */}
             </Grid>
             <Grid item xs={9} style={{ paddingBottom: "0px", marginTop: "0px", marginBottom: "0px" }}>
               <Typography variant="h5" component="h3">
@@ -128,6 +135,17 @@ const FantasyMovieDetails = ({ movie }) => {
               <Typography variant="h6" component="p">
                 {displayedMovie.overview}
               </Typography>
+
+              <Paper component="ul" sx={styles.chipSet}>
+                <li>
+                  <Chip label="Production companies" sx={styles.chipLabel} color="primary" />
+                </li>
+                {displayedMovie.production_companies.map((p) => (
+                  <li key={p}>
+                    <Chip label={p} />
+                  </li>
+                ))}
+              </Paper>
 
               <Paper component="ul" sx={styles.chipSet}>
                 <li>
@@ -150,6 +168,14 @@ const FantasyMovieDetails = ({ movie }) => {
             <Grid item xs={3} style={{ paddingBottom: "0px", marginTop: "0px" }}> {/* empty placeholder */}
 
             </Grid>
+            <Grid item xs={9} sx={styles.chipSet}>
+              <h2 style={{ fontWeight: 600, marginTop: "-1em" }}>
+                Cast
+              </h2>
+            </Grid>
+            <Grid item xs={3} style={{ paddingBottom: "0px", marginTop: "0px" }}> {/* empty placeholder */}
+
+            </Grid>
             <Grid item xs={9} style={{ paddingTop: "0px", marginTop: "0px" }}>
               {cast.map((c) => (
                 <Grid container>
@@ -166,13 +192,26 @@ const FantasyMovieDetails = ({ movie }) => {
                     </ImageListItem>
                   </Grid>
                   <Grid item xs={9}>
-                    <Grid item xs={12}>
-                      <h2>
-                        {c.name} as &nbsp; {c.roleName}
-                      </h2>
+                    <Grid container style={{ paddingTop: "1em" }}>
+                      <Grid item xs={10}>
+                        <Paper component="ul" sx={styles.chipSet}>
+                          <Chip label={c.name} sx={styles.chipLabel} color="primary" />
+                          &nbsp; playing &nbsp;
+                          <Chip label={c.roleName} />
+                        </Paper>
+                      </Grid>
+                      <Grid item xs={2}>
+                        <IconButton
+                          id={c.id}
+                          aria-label="remove from cast"
+                          onClick={() => removeCastMember(c.id)}
+                        >
+                          <DeleteIcon color="primary" fontSize="large" />
+                        </IconButton>
+                      </Grid>
                     </Grid>
                     <Grid item xs={12}></Grid>
-                    <h3>
+                    <h3 style={{ fontWeight: 300 }}>
                       {c.description}
                     </h3>
                   </Grid>
@@ -182,15 +221,26 @@ const FantasyMovieDetails = ({ movie }) => {
             <Grid item xs={3}> {/* empty placeholder */}
 
             </Grid>
-            <Grid item xs={9}>
-              <AddCastMember
-                handleNameChange={handleNameChange}
-                handleRoleNameChange={handleRoleNameChange}
-                handleAvatarChange={handleAvatarChange}
-                handleDescriptionChange={handleDescriptionChange}
-                handleSubmit={handleSubmit}
-              />
-            </Grid>
+            {addCastEnabled ? (
+              <Grid item xs={9}>
+                <AddCastMember
+                  handleNameChange={handleNameChange}
+                  handleRoleNameChange={handleRoleNameChange}
+                  handleAvatarChange={handleAvatarChange}
+                  handleDescriptionChange={handleDescriptionChange}
+                  handleSubmit={handleSubmit}
+                />
+              </Grid>
+            ) : (
+              <Grid item xs={9} sx={styles.chipSet}>
+                <IconButton
+                  aria-label="enable add cast"
+                  onClick={enableCastAddition}
+                >
+                  <AddCircleIcon color="primary" fontSize="large" />
+                </IconButton>
+              </Grid>
+            )}
           </Grid>
         </>
       )};
