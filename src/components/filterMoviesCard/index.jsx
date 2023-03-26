@@ -93,14 +93,6 @@ export default function FilterMoviesCard(props) {
           </FormControl>
         </CardContent>
       </Card>
-      <Card sx={styles.root} variant="outlined">
-        <CardContent>
-          <Typography variant="h5" component="h1">
-            <SortIcon fontSize="large" />
-            Sort the movies.
-          </Typography>
-        </CardContent>
-      </Card>
     </>
   );
 }

@@ -4,7 +4,7 @@ import SampleMovie from "./sampleData";
 import { MemoryRouter } from "react-router";
 import MoviesContextProvider from "../contexts/moviesContext";
 import { action } from "@storybook/addon-actions";
-import AddToFavouriteMoviesIcon from "../components/cardIcons/addToFavourites";
+import AddToFavouriteMoviesIcon from "../components/cardIcons/addToFavouriteMovies";
 
 export default {
   title: "Home Page/MovieCard",
