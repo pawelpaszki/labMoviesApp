@@ -8,6 +8,7 @@ import useFiltering from "../hooks/useFiltering";
 import MovieFilterUI, { titleFilter } from "../components/movieFilterUI";
 import RemoveFromFavourites from "../components/cardIcons/removeFromFavourites";
 import WriteReview from "../components/cardIcons/writeReview";
+import { sortCollection, movieSortKeys } from "../util";
 
 const titleFiltering = {
   name: "title",
@@ -27,7 +28,9 @@ export const genreFiltering = {
 };
 
 const FavouriteMoviesPage = () => {
+  const [displayedMovies, setDisplayedMovies] = React.useState([]);
   const { favouriteMovies: movieIds } = useContext(MoviesContext);
+  const [loadingFinished, setLoadingFinished] = React.useState(false);
   const { filterValues, setFilterValues, filterFunction } = useFiltering(
     [],
     [titleFiltering, genreFiltering]
@@ -53,6 +56,11 @@ const FavouriteMoviesPage = () => {
   const displayMovies = allFavourites
     ? filterFunction(allFavourites)
     : [];
+  
+  if (!loadingFinished && displayMovies.length > 0) {
+    setDisplayedMovies(filterFunction(displayMovies));
+    setLoadingFinished(true);
+  }
 
   const changeFilterValues = (type, value) => {
     const changedFilter = { name: type, value: value };
@@ -62,12 +70,19 @@ const FavouriteMoviesPage = () => {
         : [filterValues[0], changedFilter];
     setFilterValues(updatedFilterSet);
   };
+  const titleKey = "title";
+
+  const onSortChange = (key, ascending, numeric) => {
+    let unsortedMovies = [...displayedMovies];
+    let sortedMovies = unsortedMovies.sort(sortCollection(key, ascending, numeric));
+    setDisplayedMovies(sortedMovies);
+  }
 
   return (
     <>
       <PageTemplate
         title="Favourite Movies"
-        movies={displayMovies}
+        movies={displayedMovies}
         action={(movie) => {
           return (
             <>
@@ -81,6 +96,9 @@ const FavouriteMoviesPage = () => {
         onFilterValuesChange={changeFilterValues}
         titleFilter={filterValues[0].value}
         genreFilter={filterValues[1].value}
+        onSortChange={onSortChange}
+        sortKeys={movieSortKeys}
+        titleKey={titleKey}
       />
     </>
   );
