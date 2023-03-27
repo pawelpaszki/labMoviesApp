@@ -10,6 +10,7 @@ import MovieFilterUI, {
   genreFilter,
 } from "../components/movieFilterUI";
 import Pagination from "../components/pagination";
+import { sortCollection, movieSortKeys } from "../util";
 
 const titleFiltering = {
   name: "title",
@@ -23,7 +24,9 @@ const genreFiltering = {
 };
 
 const UpcomingMoviesPage = (props) => {
-  const [page, setPage] = React.useState(1)
+  const [page, setPage] = React.useState(1);
+  const [displayedMovies, setDisplayedMovies] = React.useState([]);
+  const [loadingFinished, setLoadingFinished] = React.useState(false);
   const { isLoading,
     isError,
     error,
@@ -50,6 +53,7 @@ const UpcomingMoviesPage = (props) => {
   }
 
   const changeFilterValues = (type, value) => {
+    setLoadingFinished(false);
     const changedFilter = { name: type, value: value };
     const updatedFilterSet =
       type === "title"
@@ -58,8 +62,27 @@ const UpcomingMoviesPage = (props) => {
     setFilterValues(updatedFilterSet);
   };
 
+  const onSortChange = (key, ascending, numeric) => {
+    let unsortedMovies = [...displayedMovies];
+    let sortedMovies = unsortedMovies.sort(sortCollection(key, ascending, numeric));
+    setDisplayedMovies(sortedMovies);
+  }
+
   const movies = data ? data.results : [];
-  const displayedMovies = filterFunction(movies);
+  if (!loadingFinished && movies.length > 0) {
+    setDisplayedMovies(filterFunction(movies));
+    setLoadingFinished(true);
+  }
+
+  const handleSetPage = async (number) => {
+    setPage(number);
+    let moviesResults = await getMovies(number);
+    if (moviesResults && moviesResults.results.length > 0) {
+      setDisplayedMovies(moviesResults.results);
+    }
+  }
+
+  const titleKey = "title";
 
   return (
     <>
@@ -74,8 +97,11 @@ const UpcomingMoviesPage = (props) => {
         onFilterValuesChange={changeFilterValues}
         titleFilter={filterValues[0].value}
         genreFilter={filterValues[1].value}
+        titleKey={titleKey}
+        onSortChange={onSortChange}
+        sortKeys={movieSortKeys}
       />
-      <Pagination data={data} page={page} setPage={setPage}/>
+      <Pagination data={data} page={page} setPage={handleSetPage} />
     </>
   );
 };
