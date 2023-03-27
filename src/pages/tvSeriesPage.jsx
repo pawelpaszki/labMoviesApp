@@ -70,7 +70,6 @@ const TvSeriesPage = (props) => {
   const titleKey="original_name"
 
   const tvSeries = data ? data.results : [];
-  console.log(tvSeries);
   if (!loadingFinished && tvSeries.length > 0) {
     setDisplayedTvSeries(filterFunction(tvSeries));
     setLoadingFinished(true);
