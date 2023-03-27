@@ -4,6 +4,9 @@ import Button from '@mui/material/Button';
 import Chip from '@mui/material/Chip';
 
 function Pagination({ data, page, setPage }) {
+  const handleSetPage = (number) => {
+    setPage(number);
+  }
   return (
     <>
       <div className="footerFill">
@@ -11,7 +14,7 @@ function Pagination({ data, page, setPage }) {
       <div className="footer">
         <div className="footerCol">
           <Button variant="contained"
-            onClick={() => setPage(old => Math.max(old - 1, 0))}
+            onClick={() => handleSetPage(page - 1)}
             disabled={page === 1}
           >
             Previous Page
@@ -25,7 +28,7 @@ function Pagination({ data, page, setPage }) {
           <Button variant="contained"
             onClick={() => {
               if (!data?.total_pages <= page) {
-                setPage(old => old + 1)
+                handleSetPage(page + 1)
               }
             }}
           >

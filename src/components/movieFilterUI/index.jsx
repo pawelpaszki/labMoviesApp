@@ -24,7 +24,7 @@ const styles = {
   },
 };
 
-const MovieFilterUI = ({ onFilterValuesChange, titleFilter, genreFilter }) => {
+const MovieFilterUI = ({ onFilterValuesChange, titleFilter, genreFilter, sortKeys, onSortChange }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   return (
@@ -46,6 +46,8 @@ const MovieFilterUI = ({ onFilterValuesChange, titleFilter, genreFilter }) => {
           onUserInput={onFilterValuesChange}
           titleFilter={titleFilter}
           genreFilter={genreFilter}
+          sortKeys={sortKeys}
+          onSortChange={onSortChange}
         />
       </Drawer>
     </>

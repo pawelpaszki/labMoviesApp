@@ -13,13 +13,10 @@ const ActorsSearchPage = () => {
 
   const handleTypeQuery = (event) => {
     setSearchQuery(event.target.value);
-    console.log(searchQuery);
   }
 
   const performSearch = () => {
-    console.log(searchQuery);
     searchActors(searchQuery).then(result => {
-      console.log(result);
       setSearchResults(result);
       setSearchResultLoaded(true);
       setSearchQueryHeader(`Top search results for: ${searchQuery}`)

@@ -31,6 +31,7 @@ const styles = {
 
 export default function FilterMoviesCard(props) {
   const { data, error, isLoading, isError } = useQuery("genres", getGenres);
+  const [sortSelected, setSortSelected] = React.useState("")
 
   if (isLoading) {
     return <Spinner />;
@@ -46,7 +47,7 @@ export default function FilterMoviesCard(props) {
 
   const handleUserImput = (e, type, value) => {
     e.preventDefault();
-    props.onUserInput(type, value); // NEW
+    props.onUserInput(type, value);
   };
 
   const handleTextChange = (e, props) => {
@@ -56,6 +57,16 @@ export default function FilterMoviesCard(props) {
   const handleGenreChange = (e) => {
     handleUserImput(e, "genre", e.target.value);
   };
+
+  const handleSortChange = (e) => {
+    e.preventDefault();
+    props.sortKeys.forEach(key => {
+      if (key.key === e.target.value) {
+        props.onSortChange(key.sort_key, key.ascending, key.numeric);
+        setSortSelected(e.target.value);
+      }
+    });
+  }
 
   return (
     <>
@@ -86,6 +97,32 @@ export default function FilterMoviesCard(props) {
                 return (
                   <MenuItem key={genre.id} value={genre.id}>
                     {genre.name}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
+        </CardContent>
+      </Card>
+      <Card sx={styles.root} variant="outlined">
+        <CardContent>
+          <Typography variant="h5" component="h1">
+            <SortIcon fontSize="large" />
+            Sort the movies.
+          </Typography>
+          <FormControl sx={styles.formControl}>
+            <InputLabel id="genre-label">Sort value</InputLabel>
+            <Select
+              labelId="sort-label"
+              id="sort-select"
+              value={sortSelected}
+              defaultValue=""
+              onChange={handleSortChange}
+            >
+              {props.sortKeys.map((key) => {
+                return (
+                  <MenuItem key={key.key} value={key.key}>
+                    {key.key}
                   </MenuItem>
                 );
               })}
