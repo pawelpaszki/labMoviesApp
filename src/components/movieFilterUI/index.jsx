@@ -4,7 +4,11 @@ import Fab from "@mui/material/Fab";
 import Drawer from "@mui/material/Drawer";
 
 export const titleFilter = function (movie, value) {
-  return movie.title.toLowerCase().search(value.toLowerCase()) !== -1;
+  if (movie.title !== undefined) {
+    return movie.title.toLowerCase().search(value.toLowerCase()) !== -1
+  } else {
+    return movie.original_name.toLowerCase().search(value.toLowerCase()) !== -1;
+  }
 };
 
 export const genreFilter = function (movie, value) {
@@ -24,7 +28,7 @@ const styles = {
   },
 };
 
-const MovieFilterUI = ({ onFilterValuesChange, titleFilter, genreFilter, sortKeys, onSortChange }) => {
+const MovieFilterUI = ({ onFilterValuesChange, titleFilter, genreFilter, sortKeys, onSortChange, titleKey }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   return (
@@ -48,6 +52,7 @@ const MovieFilterUI = ({ onFilterValuesChange, titleFilter, genreFilter, sortKey
           genreFilter={genreFilter}
           sortKeys={sortKeys}
           onSortChange={onSortChange}
+          titleKey={titleKey}
         />
       </Drawer>
     </>

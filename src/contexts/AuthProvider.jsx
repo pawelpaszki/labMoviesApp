@@ -18,7 +18,6 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     let gotSession = localStorage.getItem("session")
     if (gotSession) {
-      console.log("Retrieved: ", gotSession)
       setSession(JSON.parse(gotSession))
       setUser(JSON.parse(gotSession))
     }
@@ -27,7 +26,6 @@ const AuthProvider = ({ children }) => {
       const { subscription } = supabase.auth.onAuthStateChange(
         async (event, session) => {
           if (session) {
-            console.log("New session: ", session)
             setUser(session.user)
             localStorage.setItem("session", JSON.stringify(session))
             setSession(session)

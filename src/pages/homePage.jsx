@@ -68,6 +68,7 @@ const HomePage = (props) => {
   }
 
   const movies = data ? data.results : [];
+  const titleKey = "title";
   if (!loadingFinished && movies.length > 0) {
     setDisplayedMovies(filterFunction(movies));
     setLoadingFinished(true);
@@ -96,6 +97,7 @@ const HomePage = (props) => {
         genreFilter={filterValues[1].value}
         onSortChange={onSortChange}
         sortKeys={movieSortKeys}
+        titleKey={titleKey}
       />
       <Pagination data={data} page={page} setPage={handleSetPage} />
     </>
