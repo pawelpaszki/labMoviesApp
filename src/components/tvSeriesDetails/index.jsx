@@ -32,7 +32,7 @@ const styles = {
 };
 
 const TvSeriesDetails = ({ movie }) => {
-  const [drawerOpen, setDrawerOpen] = useState(false); // New
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   return (
     <>
