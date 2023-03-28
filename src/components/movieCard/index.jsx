@@ -12,9 +12,10 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import CalendarIcon from "@mui/icons-material/CalendarTodayTwoTone";
 import StarRateIcon from "@mui/icons-material/StarRate";
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
-import Grid from "@mui/material/Grid";
 import img from '../../images/film-poster-placeholder.png'
 import { MoviesContext } from "../../contexts/moviesContext";
+import Grid from "@mui/material/Grid";
+import RearrangeFooter from '../rearrangeFavourites';
 
 const styles = {
   card: { maxWidth: 345 },
@@ -24,7 +25,7 @@ const styles = {
   },
 };
 
-export default function MovieCard({ movie, action }) {
+export default function MovieCard({ movie, action, rearrangeFavourites, listSize, index }) {
 
   const { favouriteMovies, addToFavouriteMovies } = useContext(MoviesContext);
 
@@ -89,12 +90,17 @@ export default function MovieCard({ movie, action }) {
             More Info
           </Button>
         </Link>
-        <Link to={`/movies/${movie.id}/similar`} style={{paddingLeft: "1em"}}>
+        <Link to={`/movies/${movie.id}/similar`} style={{ paddingLeft: "1em" }}>
           <Button variant="outlined" size="medium" color="primary">
             Similar
           </Button>
         </Link>
       </CardActions>
+      {listSize !== undefined ? (
+        <RearrangeFooter rearrangeFavourites={rearrangeFavourites} index={index} listSize={listSize} />
+      ) : (
+        <></>
+      )}
     </Card>
   );
 }

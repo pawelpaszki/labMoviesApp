@@ -7,12 +7,12 @@ export function excerpt(string) {
   });
 }
 
-export function sortCollection (key, ascending, numeric) {
+export function sortCollection(key, ascending, numeric) {
   return (function sortFunction(a, b) {
     if (ascending) {
       if (numeric) {
         return a[key].toString().localeCompare(b[key].toString(), undefined, { numeric: true })
-      } 
+      }
       return a[key].toString().localeCompare(b[key].toString());
     } else {
       if (numeric) {
@@ -21,6 +21,25 @@ export function sortCollection (key, ascending, numeric) {
       return b[key].toString().localeCompare(a[key].toString());
     }
   });
+}
+
+export function rearrangeList(list, swapAindex, swapBindex) {
+  let rearrangedList = [];
+  for (let index = 0; index < list.length; index++) {
+    if (index < swapAindex || index > swapBindex) {
+      let element = list[index];
+      rearrangedList.push(...[element]);
+    } else {
+      if (index === swapAindex) {
+        let element = list[swapBindex];
+        rearrangedList.push(...[element]);
+      } else {
+        let element = list[swapAindex];
+        rearrangedList.push(...[element]);
+      }
+    }
+  }
+  return rearrangedList
 }
 
 export const movieSortKeys = [
