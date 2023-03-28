@@ -3,6 +3,7 @@ import FilterMoviesCard from "../components/filterMoviesCard";
 import { MemoryRouter } from "react-router";
 import { action } from "@storybook/addon-actions";
 import { QueryClientProvider, QueryClient } from "react-query";
+import { movieSortKeys } from "../util"; 
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -26,6 +27,6 @@ export default {
 };
 
 export const Basic = () => {
-  return <FilterMoviesCard onUserInput={action("filter input")} />;
+  return <FilterMoviesCard onUserInput={action("filter input")} sortKeys={movieSortKeys} />;
 };
 Basic.storyName = "Default";
