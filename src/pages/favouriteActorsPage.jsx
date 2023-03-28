@@ -5,9 +5,12 @@ import { useQueries } from "react-query";
 import { getActorDetails } from "../api/tmdb-api";
 import Spinner from "../components/spinner";
 import RemoveFromFavouriteActors from "../components/cardIcons/removeFromFavouriteActors";
+import { rearrangeList } from "../util";
 
 const FavouriteActorsPage = () => {
+  const [displayedActors, setDisplayedActors] = React.useState([]);
   const { favouriteActors: actorIds } = useContext(MoviesContext);
+  const [loadingFinished, setLoadingFinished] = React.useState(false);
 
   // Create an array of queries and run them in parallel.
   const favouriteActorsQueries = useQueries(
@@ -27,11 +30,21 @@ const FavouriteActorsPage = () => {
 
   const displayActors = favouriteActorsQueries.map((q) => q.data);
 
+  if (!loadingFinished && displayActors.length > 0) {
+    setDisplayedActors(displayActors);
+    setLoadingFinished(true);
+  }
+
+  const rearrangeFavourites = (swapA, swapB) => {
+    const rearranged = [...rearrangeList(displayedActors, swapA, swapB)];
+    setDisplayedActors(rearranged);
+  }
+
   return (
     <>
       <ActorsListPage
         title="Favourite Actors"
-        actors={displayActors}
+        actors={displayedActors}
         action={(actor) => {
           return (
             <>
@@ -39,6 +52,8 @@ const FavouriteActorsPage = () => {
             </>
           );
         }}
+        rearrangeFavourites={rearrangeFavourites}
+        listSize={displayActors.length}
       />
     </>
   );

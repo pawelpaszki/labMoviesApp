@@ -15,6 +15,7 @@ import StarsIcon from '@mui/icons-material/Stars';
 import Grid from "@mui/material/Grid";
 import img from '../../images/profile-placeholder.png'
 import { MoviesContext } from "../../contexts/moviesContext";
+import RearrangeFooter from '../rearrangeFavourites';
 
 const styles = {
   card: { maxWidth: 345 },
@@ -24,7 +25,7 @@ const styles = {
   },
 };
 
-export default function ActorCard({ actor, action }) {
+export default function ActorCard({ actor, action, rearrangeFavourites, listSize, index }) {
 
   const { favouriteActors, addToFavouriteActors } = useContext(MoviesContext);
 
@@ -63,7 +64,7 @@ export default function ActorCard({ actor, action }) {
         <Grid container>
           <Grid item xs={6}>
             <Typography variant="h6" component="p">
-            {actor.gender === 1 ? (<FemaleIcon fontSize="large" /> ) : (<MaleIcon fontSize="large" /> ) }
+              {actor.gender === 1 ? (<FemaleIcon fontSize="large" />) : (<MaleIcon fontSize="large" />)}
             </Typography>
           </Grid>
           <Grid item xs={6}>
@@ -82,6 +83,11 @@ export default function ActorCard({ actor, action }) {
           </Button>
         </Link>
       </CardActions>
+      {listSize !== undefined ? (
+        <RearrangeFooter rearrangeFavourites={rearrangeFavourites} index={index} listSize={listSize} />
+      ) : (
+        <></>
+      )}
     </Card>
   );
 }

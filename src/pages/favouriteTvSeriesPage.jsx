@@ -7,7 +7,6 @@ import Spinner from "../components/spinner";
 import RemoveFromFavourites from "../components/cardIcons/removeFromFavouriteTvSeries";
 import { rearrangeList } from "../util";
 
-
 const FavouriteTvSeriesPage = () => {
   const [displayedTvSeries, setDisplayedTvSeries] = React.useState([]);
   const { favouriteTvSeries: movieIds } = useContext(MoviesContext);
