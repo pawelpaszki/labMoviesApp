@@ -9,14 +9,18 @@ const styles = {
   }
 };
 
-function TvSeriesListPageTemplate({ tvSeries, title, action }) {
+function TvSeriesListPageTemplate({ tvSeries, title, action, rearrangeFavourites, listSize }) {
   return (
     <Grid container sx={styles.root}>
       <Grid item xs={12}>
         <Header title={title} />
       </Grid>
       <Grid item container spacing={5}>
-        <TvSeriesList action={action} tvSeries={tvSeries} />
+        <TvSeriesList
+          action={action}
+          tvSeries={tvSeries}
+          rearrangeFavourites={rearrangeFavourites}
+          listSize={listSize} />
       </Grid>
     </Grid>
   );

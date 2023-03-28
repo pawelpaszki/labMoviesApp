@@ -15,6 +15,7 @@ import Grid from "@mui/material/Grid";
 import img from '../../images/film-poster-placeholder.png'
 import { MoviesContext } from "../../contexts/moviesContext";
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
+import RearrangeFooter from '../rearrangeFavourites';
 
 const styles = {
   card: { maxWidth: 345 },
@@ -24,7 +25,7 @@ const styles = {
   },
 };
 
-export default function TvSeriesCard({ movie, action }) {
+export default function TvSeriesCard({ movie, action, rearrangeFavourites, listSize, index }) {
 
   const { favouriteTvSeries, addToFavouriteTvSeries } = useContext(MoviesContext);
 
@@ -95,6 +96,11 @@ export default function TvSeriesCard({ movie, action }) {
           </Button>
         </Link>
       </CardActions>
+      {listSize !== undefined ? (
+        <RearrangeFooter rearrangeFavourites={rearrangeFavourites} index={index} listSize={listSize} />
+      ) : (
+        <></>
+      )}
     </Card>
   );
 }
