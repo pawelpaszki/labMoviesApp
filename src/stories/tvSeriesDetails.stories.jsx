@@ -1,11 +1,11 @@
 import React from "react";
-import MovieDetails from "../components/movieDetails";
-import SampleMovie from "./sampleMovie";
+import MovieDetails from "../components/tvSeriesDetails";
+import SampleMovie from "./sampleTv";
 import { MemoryRouter } from "react-router";
 import MoviesContextProvider from "../contexts/moviesContext";
 
 export default {
-  title: "Movie Details Page/MovieDetails",
+  title: "Tv series details Page/TvSeriesDetails",
   component: MovieDetails,
   decorators: [
     (Story) => <MemoryRouter initialEntries={["/"]}>{Story()}</MemoryRouter>,

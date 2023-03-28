@@ -1,6 +1,6 @@
 import React from "react";
 import MovieHeader from "../components/headerMovie";
-import SampleMovie from "./sampleData";
+import SampleMovie from "./sampleMovie";
 import { MemoryRouter } from "react-router";
 import { action } from "@storybook/addon-actions";
 
