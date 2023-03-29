@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Chip from "@mui/material/Chip";
 import Paper from "@mui/material/Paper";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
@@ -6,11 +6,11 @@ import CalendarIcon from "@mui/icons-material/CalendarTodayTwoTone";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
-import DeleteIcon from "@mui/icons-material/Delete";
 import ImageListItem from "@mui/material/ImageListItem";
 import AddCastMember from "../addCastMember";
 import { v4 as uuidv4 } from 'uuid';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import CastMemberCard from "../castMemberCard";
 
 const styles = {
   gridListRoot: {
@@ -94,7 +94,13 @@ const FantasyMovieDetails = ({ movie }) => {
   if (displayedMovie === undefined && movie !== undefined) {
     setDisplayedMovie(movie);
     let date = movie.release_date;
-    setOutputDate(`${date.getFullYear()} / ${date.getMonth() + 1} / ${date.getDate()}`);
+    let outputDate = "";
+    try {
+      outputDate = `${date.getFullYear()} / ${date.getMonth() + 1} / ${date.getDate()}`
+    } catch {
+      outputDate = "2000 / 01 / 01";
+    }
+    setOutputDate(outputDate);
     setCast(movie.cast);
   }
 
@@ -178,44 +184,7 @@ const FantasyMovieDetails = ({ movie }) => {
             </Grid>
             <Grid item xs={9} style={{ paddingTop: "0px", marginTop: "0px" }}>
               {cast.map((c) => (
-                <Grid container>
-                  <Grid item xs={3} style={{ padding: "20px" }}>
-                    <ImageListItem
-                      key={displayedMovie.file_path}
-                      sx={styles.avatar}
-                      cols={1}
-                    >
-                      <img
-                        src={`${c.avatar_url}`}
-                        alt={c.avatar_url}
-                      />
-                    </ImageListItem>
-                  </Grid>
-                  <Grid item xs={9}>
-                    <Grid container style={{ paddingTop: "1em" }}>
-                      <Grid item xs={10}>
-                        <Paper component="ul" sx={styles.chipSet}>
-                          <Chip label={c.name} sx={styles.chipLabel} color="primary" />
-                          &nbsp; playing &nbsp;
-                          <Chip label={c.roleName} />
-                        </Paper>
-                      </Grid>
-                      <Grid item xs={2}>
-                        <IconButton
-                          id={c.id}
-                          aria-label="remove from cast"
-                          onClick={() => removeCastMember(c.id)}
-                        >
-                          <DeleteIcon color="primary" fontSize="large" />
-                        </IconButton>
-                      </Grid>
-                    </Grid>
-                    <Grid item xs={12}></Grid>
-                    <h3 style={{ fontWeight: 300 }}>
-                      {c.description}
-                    </h3>
-                  </Grid>
-                </Grid>
+                <CastMemberCard member={c} removeCastMember={removeCastMember}/>
               ))}
             </Grid>
             <Grid item xs={3}> {/* empty placeholder */}

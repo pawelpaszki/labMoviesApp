@@ -1,5 +1,5 @@
 import React from "react";
-import ActorsSearchPage from "../pages/actorsSearchPage";
+import AddCastMember from "../components/addCastMember";
 import { MemoryRouter } from "react-router";
 import { QueryClientProvider, QueryClient } from "react-query";
 
@@ -14,8 +14,8 @@ const queryClient = new QueryClient({
 });
 
 export default {
-  title: "Actors search/ search form",
-  component: ActorsSearchPage,
+  title: "Fantasy Movie Details Page/Add cast form",
+  component: AddCastMember,
   decorators: [
     (Story) => <MemoryRouter initialEntries={["/"]}>{Story()}</MemoryRouter>,
     (Story) => (
@@ -24,4 +24,6 @@ export default {
   ],
 };
 
-export const Basic = () => <ActorsSearchPage />;
+export const Basic = () => <AddCastMember />;
+
+Basic.storyName = "Add cast form";

@@ -1,12 +1,11 @@
 import React from "react";
-import MovieCard from "../components/movieCard";
-import SampleMovie from "./sampleMovie";
+import MovieCard from "../components/fantasyMovieCard";
+import SampleMovie from "./sampleFantasyMovie";
 import { MemoryRouter } from "react-router";
 import MoviesContextProvider from "../contexts/moviesContext";
-import AddToFavouriteMoviesIcon from "../components/cardIcons/addToFavouriteMovies";
 
 export default {
-  title: "Home Page/MovieCard",
+  title: "Fantasy Movies/MovieCard",
   component: MovieCard,
   decorators: [
     (Story) => <MemoryRouter initialEntries={["/"]}>{Story()}</MemoryRouter>,
@@ -18,7 +17,6 @@ export const Basic = () => {
   return (
     <MovieCard
       movie={SampleMovie}
-      action={(movie) => <AddToFavouriteMoviesIcon movie={movie} />}
     />
   );
 };

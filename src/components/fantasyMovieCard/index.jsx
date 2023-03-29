@@ -25,7 +25,12 @@ const styles = {
 export default function FantasyMovieCard({ movie }) {
   const context = useContext(MoviesContext);
   let date = movie.release_date;
-  let outputDate = `${date.getFullYear()} / ${date.getMonth() + 1} / ${date.getDate()}`
+  let outputDate = "";
+  try {
+    outputDate = `${date.getFullYear()} / ${date.getMonth() + 1} / ${date.getDate()}`
+  } catch {
+    outputDate = "2000 / 01 / 01";
+  }
   const remove = (e) => {
     e.preventDefault();
     context.removeFromFantasyMovies(movie);
