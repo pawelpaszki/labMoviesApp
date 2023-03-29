@@ -1,39 +1,41 @@
-import React, { useContext } from "react";
+import React, { useEffect } from "react";
 import PageTemplate from "../components/templateMovieListPage";
-import { MoviesContext } from "../contexts/moviesContext";
-import { useQueries } from "react-query";
-import { getMovie } from "../api/tmdb-api";
+import { getFavouriteMovie } from "../api/tmdb-api";
 import Spinner from "../components/spinner";
 import RemoveFromFavourites from "../components/cardIcons/removeFromFavourites";
 import WriteReview from "../components/cardIcons/writeReview";
 import { rearrangeList } from "../util";
+import { getFavouriteMovies } from "../supabase/client";
+import { useAuth } from "../contexts/AuthProvider";
 
 const FavouriteMoviesPage = () => {
   const [displayedMovies, setDisplayedMovies] = React.useState([]);
-  const { favouriteMovies: movieIds } = useContext(MoviesContext);
-  const [loadingFinished, setLoadingFinished] = React.useState(false);
+  const [fetched, setFetched] = React.useState(false);
+  const { user, loading } = useAuth();
 
-  // Create an array of queries and run them in parallel.
-  const favouriteMovieQueries = useQueries(
-    movieIds.map((movieId) => {
-      return {
-        queryKey: ["movie", { id: movieId }],
-        queryFn: getMovie,
-      };
-    })
-  );
-  // Check if any of the parallel queries is still loading.
-  const isLoading = favouriteMovieQueries.find((m) => m.isLoading === true);
+  useEffect(() => {
+    if (!loading) {
+      if (user !== null) {
+        async function getFavourites(userId) {
+          if (!loading) {
+            const favourites = await getFavouriteMovies(userId);
+            let movies = [];
+            for (const favourite of favourites) {
+              const movie = await getFavouriteMovie(favourite.movie_id);
+              movies = [...[movie]];
+            }
+            setDisplayedMovies(movies);
+            setFetched(true);
+          }
+        }
+        getFavourites(user.user.id);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  if (isLoading) {
+  if (!fetched) {
     return <Spinner />;
-  }
-
-  const allFavourites = favouriteMovieQueries.map((q) => q.data);
-  
-  if (!loadingFinished && allFavourites.length > 0) {
-    setDisplayedMovies(allFavourites);
-    setLoadingFinished(true);
   }
 
   const rearrangeFavourites = (swapA, swapB) => {

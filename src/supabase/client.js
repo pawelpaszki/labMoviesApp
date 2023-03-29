@@ -8,4 +8,9 @@ const viteKey = import.meta.env.VITE_TMDB_KEY
 
 const supabase = createClient(supabaseUrl, supabaseKey)
 
-export { supabase }
+async function getFavouriteMovies(user_id) {
+  const { data } = await supabase.from("favouriteMovies").select().eq('user_id', user_id);
+  return data
+}
+
+export { supabase, getFavouriteMovies }
