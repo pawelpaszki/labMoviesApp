@@ -22,7 +22,7 @@ const FavouriteMoviesPage = () => {
             let movies = [];
             for (const favourite of favourites) {
               const movie = await getFavouriteMovie(favourite.movie_id);
-              movies = [...[movie]];
+              movies.push(movie);
             }
             setDisplayedMovies(movies);
             setFetched(true);
