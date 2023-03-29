@@ -19,7 +19,6 @@ const AddToFavouriteMoviesIcon = ({ movie }) => {
   React.useEffect(() => {
     const { data: authListener } = supabase.auth.onAuthStateChange(
       (event, _session) => {
-        console.log(`Supabase auth event: ${event}`);
         setLoggedIn(_session !== null);
       }
     );
