@@ -21,9 +21,16 @@ async function addToFavouriteMovies(user_id, movie_id) {
     let resp = await supabase
       .from('favouriteMovies')
       .insert({ "id": uuidv4(), "user_id": user_id, "movie_id": movie_id, "order_id": movies.length });
-      console.log(resp);
+    console.log(resp);
   }
-
 }
 
-export { supabase, getFavouriteMovies, addToFavouriteMovies }
+async function removeFavouriteMovie(user_id, movie_id) {
+  await supabase
+    .from('favouriteMovies')
+    .delete()
+    .eq('user_id', user_id)
+    .eq('movie_id', movie_id)
+}
+
+export { supabase, getFavouriteMovies, addToFavouriteMovies, removeFavouriteMovie }
