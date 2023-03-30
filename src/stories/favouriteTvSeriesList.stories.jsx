@@ -27,6 +27,7 @@ export const Basic = () => {
       <MovieList
         tvSeries={movies}
         action={(movie) => null}
+        disableReload={true}
         listSize={5}
         index={3}
       />

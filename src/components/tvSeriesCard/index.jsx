@@ -13,7 +13,6 @@ import CalendarIcon from "@mui/icons-material/CalendarTodayTwoTone";
 import StarRateIcon from "@mui/icons-material/StarRate";
 import Grid from "@mui/material/Grid";
 import img from '../../images/film-poster-placeholder.png'
-import { MoviesContext } from "../../contexts/moviesContext";
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import RearrangeFooter from '../rearrangeFavourites';
 
@@ -26,14 +25,6 @@ const styles = {
 };
 
 export default function TvSeriesCard({ movie, action, rearrangeFavourites, listSize, index }) {
-
-  const { favouriteTvSeries, addToFavouriteTvSeries } = useContext(MoviesContext);
-
-  if (favouriteTvSeries.find((id) => id === movie.id)) {
-    movie.favourite = true;
-  } else {
-    movie.favourite = false
-  }
 
   return (
     <Card sx={styles.card}>
