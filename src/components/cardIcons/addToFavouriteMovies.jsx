@@ -30,7 +30,8 @@ const AddToFavouriteMoviesIcon = ({ movie }) => {
   const onUserSelect = async (e) => {
     e.preventDefault();
     context.addToFavouriteMovies(movie);
-    await addToFavouriteMovies(user.user.id, movie.id)
+    await addToFavouriteMovies(user.user.id, movie.id);
+    window.location.reload(false);
   };
   return (
     <>

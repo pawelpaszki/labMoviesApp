@@ -5,7 +5,7 @@ import Spinner from "../components/spinner";
 import RemoveFromFavourites from "../components/cardIcons/removeFromFavourites";
 import WriteReview from "../components/cardIcons/writeReview";
 import { rearrangeList } from "../util";
-import { getFavouriteMovies } from "../supabase/client";
+import { getFavouriteMovies, updateFavouriteMovieOrder } from "../supabase/client";
 import { useAuth } from "../contexts/AuthProvider";
 
 const FavouriteMoviesPage = () => {
@@ -17,16 +17,14 @@ const FavouriteMoviesPage = () => {
     if (!loading) {
       if (user !== null) {
         async function getFavourites(userId) {
-          if (!loading) {
-            const favourites = await getFavouriteMovies(userId);
-            let movies = [];
-            for (const favourite of favourites) {
-              const movie = await getFavouriteMovie(favourite.movie_id);
-              movies.push(movie);
-            }
-            setDisplayedMovies(movies);
-            setFetched(true);
+          const favourites = await getFavouriteMovies(userId);
+          let movies = [];
+          for (const favourite of favourites) {
+            const movie = await getFavouriteMovie(favourite.movie_id);
+            movies.push(movie);
           }
+          setDisplayedMovies(movies);
+          setFetched(true);
         }
         getFavourites(user.user.id);
       }
@@ -38,9 +36,13 @@ const FavouriteMoviesPage = () => {
     return <Spinner />;
   }
 
-  const rearrangeFavourites = (swapA, swapB) => {
+  const rearrangeFavourites = async (swapA, swapB) => {
+    const movieA = displayedMovies[swapA];
+    const movieB = displayedMovies[swapB];
     const rearranged = [...rearrangeList(displayedMovies, swapA, swapB)];
     setDisplayedMovies(rearranged);
+    await updateFavouriteMovieOrder(user.user.id, movieA.id, movieB.id);
+    window.location.reload(false);
   }
 
   return (

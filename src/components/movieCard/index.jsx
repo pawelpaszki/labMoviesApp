@@ -13,7 +13,6 @@ import CalendarIcon from "@mui/icons-material/CalendarTodayTwoTone";
 import StarRateIcon from "@mui/icons-material/StarRate";
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import img from '../../images/film-poster-placeholder.png'
-import { MoviesContext } from "../../contexts/moviesContext";
 import Grid from "@mui/material/Grid";
 import RearrangeFooter from '../rearrangeFavourites';
 
@@ -26,14 +25,6 @@ const styles = {
 };
 
 export default function MovieCard({ movie, action, rearrangeFavourites, listSize, index }) {
-
-  const { favouriteMovies, addToFavouriteMovies } = useContext(MoviesContext);
-
-  if (favouriteMovies.find((id) => id === movie.id)) {
-    movie.favourite = true;
-  } else {
-    movie.favourite = false
-  }
 
   return (
     <Card sx={styles.card}>
