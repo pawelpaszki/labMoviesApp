@@ -4,13 +4,13 @@ import Grid from "@mui/material/Grid";
 import { getFavouriteMovies, } from "../../supabase/client";
 import { useAuth } from "../../contexts/AuthProvider";
 
-const MovieList = ({ movies, action, rearrangeFavourites, listSize }) => {
+const MovieList = ({ movies, action, rearrangeFavourites, listSize, disableReload }) => {
   const { user, loading } = useAuth();
   const [displayedMovies, setDisplayedMovies] = React.useState([]);
   const [fetched, setFetched] = React.useState(false);
   useEffect(() => {
-    if (!window.location.pathname.includes("favourites")) {
-      if (!loading && user !== null && user !== undefined && user.user !== null && user.user !== undefined) {
+    if (!window.location.pathname.includes("favourites") && !disableReload) {
+      if (!disableReload && !loading && user !== null && user !== undefined && user.user !== null && user.user !== undefined) {
         getFavourites(user?.user.id);
       } else {
         setTimeout(() => window.location.reload(false), 200);
