@@ -14,7 +14,7 @@ const FavouriteTvSeriesPage = () => {
 
   useEffect(() => {
     if (!loading) {
-      if (user !== null) {
+      if (!loading && user !== null && user !== undefined && user.user !== null && user.user !== undefined) {
         async function getFavourites(userId) {
           const favourites = await getFavouriteTvSeries(userId);
           let movies = [];
@@ -26,6 +26,8 @@ const FavouriteTvSeriesPage = () => {
           setFetched(true);
         }
         getFavourites(user.user.id);
+      } else {
+        setTimeout(() => window.location.reload(false), 200);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
