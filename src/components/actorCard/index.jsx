@@ -14,7 +14,6 @@ import MaleIcon from '@mui/icons-material/Male';
 import StarsIcon from '@mui/icons-material/Stars';
 import Grid from "@mui/material/Grid";
 import img from '../../images/profile-placeholder.png'
-import { MoviesContext } from "../../contexts/moviesContext";
 import RearrangeFooter from '../rearrangeFavourites';
 
 const styles = {
@@ -26,14 +25,6 @@ const styles = {
 };
 
 export default function ActorCard({ actor, action, rearrangeFavourites, listSize, index }) {
-
-  const { favouriteActors, addToFavouriteActors } = useContext(MoviesContext);
-
-  if (favouriteActors.find((id) => id === actor.id)) {
-    actor.favourite = true;
-  } else {
-    actor.favourite = false
-  }
 
   return (
     <Card sx={styles.card}>

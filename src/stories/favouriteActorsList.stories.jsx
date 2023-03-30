@@ -27,6 +27,7 @@ export const Basic = () => {
     <Grid container spacing={5}>
       <ActorsList
         actors={actors}
+        disableReload={true}
         action={(actor) => null}
         listSize={5}
         index={3}

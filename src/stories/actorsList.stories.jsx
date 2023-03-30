@@ -27,6 +27,7 @@ export const Basic = () => {
     <Grid container spacing={5}>
       <ActorsList
         actors={actors}
+        disableReload={true}
         action={(actor) => <AddToFavouriteActorsIcon actor={actor} />}
       />
     </Grid>

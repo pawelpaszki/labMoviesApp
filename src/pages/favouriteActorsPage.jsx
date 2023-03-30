@@ -1,43 +1,50 @@
-import React, { useContext } from "react";
+import React, { useEffect } from "react";
 import ActorsListPage from "../components/actorsListPage";
-import { MoviesContext } from "../contexts/moviesContext";
-import { useQueries } from "react-query";
-import { getActorDetails } from "../api/tmdb-api";
 import Spinner from "../components/spinner";
 import RemoveFromFavouriteActors from "../components/cardIcons/removeFromFavouriteActors";
 import { rearrangeList } from "../util";
+import { getFavouriteActor } from "../api/tmdb-api";
+import { getFavouriteActors, updateFavouriteActorOrder } from "../supabase/client";
+import { useAuth } from "../contexts/AuthProvider";
 
 const FavouriteActorsPage = () => {
+  const [fetched, setFetched] = React.useState(false);
+  const { user, loading } = useAuth();
   const [displayedActors, setDisplayedActors] = React.useState([]);
-  const { favouriteActors: actorIds } = useContext(MoviesContext);
-  const [loadingFinished, setLoadingFinished] = React.useState(false);
 
-  // Create an array of queries and run them in parallel.
-  const favouriteActorsQueries = useQueries(
-    actorIds.map((actorId) => {
-      return {
-        queryKey: ["movie", { id: actorId }],
-        queryFn: getActorDetails,
-      };
-    })
-  );
-  // Check if any of the parallel queries is still loading.
-  const isLoading = favouriteActorsQueries.find((m) => m.isLoading === true);
+  useEffect(() => {
+    if (!loading) {
+      if (!loading && user !== null && user !== undefined && user.user !== null && user.user !== undefined) {
+        async function getFavourites(userId) {
+          const favourites = await getFavouriteActors(userId);
+          let actors = [];
+          for (const favourite of favourites) {
+            const actor = await getFavouriteActor(favourite.actor_id);
+            actors.push(actor);
+          }
+          setDisplayedActors(actors);
+          setFetched(true);
+        }
+        getFavourites(user.user.id);
+      } else {
+        setTimeout(() => window.location.reload(false), 200);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  if (isLoading) {
+  if (!fetched) {
     return <Spinner />;
   }
 
-  const displayActors = favouriteActorsQueries.map((q) => q.data);
-
-  if (!loadingFinished && displayActors.length > 0) {
-    setDisplayedActors(displayActors);
-    setLoadingFinished(true);
-  }
-
-  const rearrangeFavourites = (swapA, swapB) => {
+  const rearrangeFavourites = async (swapA, swapB) => {
+    const actorA = displayedActors[swapA];
+    const actorB = displayedActors[swapB];
+    console.log();
     const rearranged = [...rearrangeList(displayedActors, swapA, swapB)];
     setDisplayedActors(rearranged);
+    await updateFavouriteActorOrder(user.user.id, actorA.id, actorB.id);
+    window.location.reload(false);
   }
 
   return (
@@ -53,7 +60,7 @@ const FavouriteActorsPage = () => {
           );
         }}
         rearrangeFavourites={rearrangeFavourites}
-        listSize={displayActors.length}
+        listSize={displayedActors.length}
       />
     </>
   );

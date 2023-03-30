@@ -105,6 +105,54 @@ async function updateFavouriteMovieOrder(user_id, swapA, swapB) {
     .eq('movie_id', swapB);
 }
 
+async function getFavouriteActors(user_id) {
+  const { data } = await supabase.from("favouriteActors").select().eq('user_id', user_id).order('order_id', { ascending: true });
+  return data
+}
+
+async function addToFavouriteActors(user_id, actor_id) {
+  const actors = await getFavouriteActors(user_id);
+  const orderId = Math.max(...actors.map(m => m.order_id), 0) + 1;
+
+  if (!actors.filter(e => e.actor_id === actor_id).length > 0) {
+    let resp = await supabase
+      .from('favouriteActors')
+      .insert({ "id": uuidv4(), "user_id": user_id, "actor_id": actor_id, "order_id": orderId });
+    console.log(resp);
+  }
+}
+
+async function removeFavouriteActor(user_id, actor_id) {
+  await supabase
+    .from('favouriteActors')
+    .delete()
+    .eq('user_id', user_id)
+    .eq('actor_id', actor_id)
+}
+
+async function updateFavouriteActorOrder(user_id, swapA, swapB) {
+  const actorsA = await supabase
+    .from('favouriteActors')
+    .select()
+    .eq('user_id', user_id)
+    .eq('actor_id', swapA);
+  const actorsB = await supabase
+    .from('favouriteActors')
+    .select()
+    .eq('user_id', user_id)
+    .eq('actor_id', swapB);
+  await supabase
+    .from('favouriteActors')
+    .update({ "order_id": actorsB.data[0].order_id })
+    .eq('user_id', user_id)
+    .eq('actor_id', swapA);
+  await supabase
+    .from('favouriteActors')
+    .update({ "order_id": actorsA.data[0].order_id })
+    .eq('user_id', user_id)
+    .eq('actor_id', swapB);
+}
+
 export {
   supabase,
   getFavouriteMovies,
@@ -114,5 +162,9 @@ export {
   getFavouriteTvSeries,
   addToFavouriteTvSeries,
   removeFavouriteTvSeries,
-  updateFavouriteTvSeriesOrder
+  updateFavouriteTvSeriesOrder,
+  getFavouriteActors,
+  addToFavouriteActors,
+  removeFavouriteActor,
+  updateFavouriteActorOrder
 }
