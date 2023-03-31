@@ -9,17 +9,18 @@ const ListFantasyMoviesPage = () => {
   const [fetched, setFetched] = React.useState(false);
   const { user, loading } = useAuth();
 
+  async function getFantasy(userId) {
+    const favourites = await getFantasyMovies(userId);
+    setDisplayedMovies(favourites);
+    setFetched(true);
+  }
+
   useEffect(() => {
     if (!loading) {
       if (!loading && user !== null && user !== undefined && user.user !== null && user.user !== undefined) {
-        async function getFavourites(userId) {
-          const favourites = await getFantasyMovies(userId);
-          setDisplayedMovies(favourites);
-          setFetched(true);
-        }
-        getFavourites(user.user.id);
+        getFantasy(user.user.id);
       } else {
-        setTimeout(() => getFavourites(user.user.id), 200);
+        setTimeout(() => getFantasy(user.user.id), 500);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

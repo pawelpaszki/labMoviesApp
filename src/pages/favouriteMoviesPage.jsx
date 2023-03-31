@@ -4,7 +4,6 @@ import { getFavouriteMovie } from "../api/tmdb-api";
 import Spinner from "../components/spinner";
 import RemoveFromFavourites from "../components/cardIcons/removeFromFavourites";
 import WriteReview from "../components/cardIcons/writeReview";
-import { rearrangeList } from "../util";
 import { getFavouriteMovies, updateFavouriteMovieOrder } from "../supabase/client";
 import { useAuth } from "../contexts/AuthProvider";
 
@@ -13,22 +12,23 @@ const FavouriteMoviesPage = () => {
   const [fetched, setFetched] = React.useState(false);
   const { user, loading } = useAuth();
 
+  async function getFavourites(userId) {
+    const favourites = await getFavouriteMovies(userId);
+    let movies = [];
+    for (const favourite of favourites) {
+      const movie = await getFavouriteMovie(favourite.movie_id);
+      movies.push(movie);
+    }
+    setDisplayedMovies(movies);
+    setFetched(true);
+  }
+
   useEffect(() => {
     if (!loading) {
       if (!loading && user !== null && user !== undefined && user.user !== null && user.user !== undefined) {
-        async function getFavourites(userId) {
-          const favourites = await getFavouriteMovies(userId);
-          let movies = [];
-          for (const favourite of favourites) {
-            const movie = await getFavouriteMovie(favourite.movie_id);
-            movies.push(movie);
-          }
-          setDisplayedMovies(movies);
-          setFetched(true);
-        }
         getFavourites(user.user.id);
       } else {
-        setTimeout(() => getFavourites(user.user.id), 200);
+        setTimeout(() => getFavourites(user.user.id), 500);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -41,10 +41,9 @@ const FavouriteMoviesPage = () => {
   const rearrangeFavourites = async (swapA, swapB) => {
     const movieA = displayedMovies[swapA];
     const movieB = displayedMovies[swapB];
-    const rearranged = [...rearrangeList(displayedMovies, swapA, swapB)];
-    setDisplayedMovies(rearranged);
+    setFetched(false);
     await updateFavouriteMovieOrder(user.user.id, movieA.id, movieB.id);
-    window.location.reload(false);
+    setTimeout(async () => await getFavourites(user.user.id), 500);
   }
 
   return (

@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import ActorsListPage from "../components/actorsListPage";
 import Spinner from "../components/spinner";
 import RemoveFromFavouriteActors from "../components/cardIcons/removeFromFavouriteActors";
-import { rearrangeList } from "../util";
 import { getFavouriteActor } from "../api/tmdb-api";
 import { getFavouriteActors, updateFavouriteActorOrder } from "../supabase/client";
 import { useAuth } from "../contexts/AuthProvider";
@@ -12,22 +11,23 @@ const FavouriteActorsPage = () => {
   const { user, loading } = useAuth();
   const [displayedActors, setDisplayedActors] = React.useState([]);
 
+  async function getFavourites(userId) {
+    const favourites = await getFavouriteActors(userId);
+    let actors = [];
+    for (const favourite of favourites) {
+      const actor = await getFavouriteActor(favourite.actor_id);
+      actors.push(actor);
+    }
+    setDisplayedActors(actors);
+    setFetched(true);
+  }
+
   useEffect(() => {
     if (!loading) {
       if (!loading && user !== null && user !== undefined && user.user !== null && user.user !== undefined) {
-        async function getFavourites(userId) {
-          const favourites = await getFavouriteActors(userId);
-          let actors = [];
-          for (const favourite of favourites) {
-            const actor = await getFavouriteActor(favourite.actor_id);
-            actors.push(actor);
-          }
-          setDisplayedActors(actors);
-          setFetched(true);
-        }
         getFavourites(user.user.id);
       } else {
-        setTimeout(() => getFavourites(user.user.id), 200);
+        setTimeout(() => getFavourites(user.user.id), 500);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -40,11 +40,9 @@ const FavouriteActorsPage = () => {
   const rearrangeFavourites = async (swapA, swapB) => {
     const actorA = displayedActors[swapA];
     const actorB = displayedActors[swapB];
-    console.log();
-    const rearranged = [...rearrangeList(displayedActors, swapA, swapB)];
-    setDisplayedActors(rearranged);
+    setFetched(false);
     await updateFavouriteActorOrder(user.user.id, actorA.id, actorB.id);
-    window.location.reload(false);
+    setTimeout(async () => await getFavourites(user.user.id), 500);
   }
 
   return (

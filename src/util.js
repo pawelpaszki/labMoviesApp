@@ -23,25 +23,6 @@ export function sortCollection(key, ascending, numeric) {
   });
 }
 
-export function rearrangeList(list, swapAindex, swapBindex) {
-  let rearrangedList = [];
-  for (let index = 0; index < list.length; index++) {
-    if (index < swapAindex || index > swapBindex) {
-      let element = list[index];
-      rearrangedList.push(...[element]);
-    } else {
-      if (index === swapAindex) {
-        let element = list[swapBindex];
-        rearrangedList.push(...[element]);
-      } else {
-        let element = list[swapAindex];
-        rearrangedList.push(...[element]);
-      }
-    }
-  }
-  return rearrangedList
-}
-
 export const movieSortKeys = [
   {
     "key": "popularity.ascending",

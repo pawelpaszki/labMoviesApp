@@ -13,7 +13,7 @@ const MovieList = ({ movies, action, rearrangeFavourites, listSize, disableReloa
       if (!disableReload && !loading && user !== null && user !== undefined && user.user !== null && user.user !== undefined) {
         getFavourites(user?.user.id);
       } else {
-        setTimeout(() => getFavourites(user?.user.id), 200);
+        setTimeout(() => getFavourites(user?.user.id), 500);
       }
     } else {
       setDisplayedMovies(movies)
