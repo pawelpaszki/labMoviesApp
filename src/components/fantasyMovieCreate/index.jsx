@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
@@ -15,15 +15,14 @@ import { useQuery } from "react-query";
 import Spinner from '../spinner';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
-import { MoviesContext } from "../../contexts/moviesContext";
-import { v4 as uuidv4 } from 'uuid';
 import { useAuth } from "../../contexts/AuthProvider";
 import { useNavigate } from "react-router-dom";
+import { createFantasyMovie } from "../../supabase/client";
+import Alert from '@mui/material/Alert';
 
 const CreateFantasyMovie = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
-  const context = useContext(MoviesContext);
+  const { user, loading } = useAuth();
   const { data, error, isLoading, isError } = useQuery("genres", getGenres);
   const [releaseDate, setReleaseDate] = useState(new Date());
   const [selectedGenres, setSelectedGenres] = useState([]);
@@ -33,8 +32,11 @@ const CreateFantasyMovie = () => {
   const [runtime, setRuntime] = React.useState(1);
   const [moviePoster, setMoviePoster] = React.useState("");
   const [productionCompanies, setProductionCompanies] = React.useState("");
+  const [createInitiated, setCreateInitiated] = React.useState(false);
+  const [createFailed, setCreateFailed] = React.useState(false);
+  const [alertText, setAlertText] = React.useState("movie creation failed! Try again.");
 
-  if (isLoading) {
+  if (isLoading || createInitiated) {
     return <Spinner />;
   }
 
@@ -42,29 +44,30 @@ const CreateFantasyMovie = () => {
     return <h1>{error.message}</h1>;
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // console.log(`title: ${title}`);
-    // console.log(`overview: ${overview}`);
-    // console.log(`runtime: ${runtime}`);
-    // console.log(`moviePoster: ${moviePoster}`);
-    // console.log(`productionCompanies: ${productionCompanies}`);
-    // console.log(`selectedGenres: ${selectedGenres}`);
-    // console.log(`releaseDate: ${releaseDate}`);
-    let movie = {
-      "id": uuidv4(),
-      "user_id": user?.id,
-      "title": title,
-      "overview": overview,
-      "runtime": runtime,
-      "poster_path": moviePoster,
-      "production_companies": productionCompanies.split(',').map(item => item.trim()),
-      "genres": selectedGenres,
-      "release_date": releaseDate,
-      "cast": []
+    if (!loading && user !== null && user !== undefined && user.user !== null && user.user !== undefined) {
+      setCreateInitiated(true);
+      const { data, error } = await createFantasyMovie(
+        user.user.id,
+        title.trim(),
+        overview.trim(),
+        runtime,
+        moviePoster.trim(),
+        productionCompanies.split(',').map(item => item.trim()),
+        selectedGenres,
+        releaseDate
+      );
+      setCreateInitiated(false);
+      if (error !== null) {
+        setAlertText("movie creation failed! Try again.")
+        setCreateFailed(true);
+      } else {
+        navigate("/fantasy");
+      }
+    } else {
+      setAlertText("Unable to get user details. Please logout and log back in.")
     }
-    context.addToFantasyMovies(movie);
-    navigate("/fantasy");
   };
 
   const updateSelectedGenres = (genre) => {
@@ -208,6 +211,11 @@ const CreateFantasyMovie = () => {
           >
             Create
           </Button>
+          {createFailed ? (
+            <Alert severity="error">{alertText}</Alert>
+          ) : (
+            <></>
+          )}
         </Box>
       </Box>
     </Container>

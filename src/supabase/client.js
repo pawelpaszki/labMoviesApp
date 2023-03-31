@@ -9,6 +9,24 @@ const viteKey = import.meta.env.VITE_TMDB_KEY
 
 const supabase = createClient(supabaseUrl, supabaseKey)
 
+async function createFantasyMovie(
+  user_id,
+  title,
+  overview,
+  runtime,
+  poster_path,
+  production_companies,
+  genres,
+  release_date
+) {
+  const { data, error } = await supabase
+    .from('fantasyMovies')
+    .insert({ "id": uuidv4(), "user_id": user_id, "title": title, "overview": overview, "runtime": runtime,
+    "poster_path": poster_path, "production_companies": production_companies, "genres": genres, "release_date": release_date
+   });
+   return {data, error};
+}
+
 async function getFavouriteTvSeries(user_id) {
   const { data } = await supabase.from("favouriteTvSeries").select().eq('user_id', user_id).order('order_id', { ascending: true });
   return data
@@ -19,10 +37,9 @@ async function addToFavouriteTvSeries(user_id, movie_id) {
   const orderId = Math.max(...movies.map(m => m.order_id), 0) + 1;
 
   if (!movies.filter(e => e.movie_id === movie_id).length > 0) {
-    let resp = await supabase
+    await supabase
       .from('favouriteTvSeries')
       .insert({ "id": uuidv4(), "user_id": user_id, "movie_id": movie_id, "order_id": orderId });
-    console.log(resp);
   }
 }
 
@@ -67,10 +84,9 @@ async function addToFavouriteMovies(user_id, movie_id) {
   const orderId = Math.max(...movies.map(m => m.order_id), 0) + 1;
 
   if (!movies.filter(e => e.movie_id === movie_id).length > 0) {
-    let resp = await supabase
+    await supabase
       .from('favouriteMovies')
       .insert({ "id": uuidv4(), "user_id": user_id, "movie_id": movie_id, "order_id": orderId });
-    console.log(resp);
   }
 }
 
@@ -115,10 +131,9 @@ async function addToFavouriteActors(user_id, actor_id) {
   const orderId = Math.max(...actors.map(m => m.order_id), 0) + 1;
 
   if (!actors.filter(e => e.actor_id === actor_id).length > 0) {
-    let resp = await supabase
+    await supabase
       .from('favouriteActors')
       .insert({ "id": uuidv4(), "user_id": user_id, "actor_id": actor_id, "order_id": orderId });
-    console.log(resp);
   }
 }
 
@@ -166,5 +181,6 @@ export {
   getFavouriteActors,
   addToFavouriteActors,
   removeFavouriteActor,
-  updateFavouriteActorOrder
+  updateFavouriteActorOrder,
+  createFantasyMovie
 }
