@@ -26,3 +26,71 @@ This application can be easily deployed using [Vercel](https://vercel.com/). To 
 
 ## Navigation
 In wide screen resolution [react-dropdown](https://www.npmjs.com/package/react-dropdown) is used (with some customizations)
+
+## TMDB database
+These databases need to be created in the [supabase](https://app.supabase.com/) to be able to use this application:
+
+* `favouriteMovies`:
+
+```
+    - id                     VARCHAR PK
+    - movie_id               VARCHAR
+    - user_id                VARCHAR
+    - order_id               NUMERIC
+```
+
+* `favouriteTvSeries`:
+
+```
+    - id                     VARCHAR PK
+    - movie_id               VARCHAR
+    - user_id                VARCHAR
+    - order_id               NUMERIC
+```
+
+* `favouriteActors`:
+
+```
+    - id                     VARCHAR PK
+    - actor_id               VARCHAR
+    - user_id                VARCHAR
+    - order_id               NUMERIC
+```
+
+* `fantasyMovies`:
+
+```
+    - id                     VARCHAR PK
+    - user_id                VARCHAR
+    - title                  VARCHAR     
+    - overview               VARCHAR
+    - runtime                NUMERIC
+    - poster_path            VARCHAR
+    - production_companies   TEXT ARRAY
+    - genres                 TEXT ARRAY
+    - release_date           VARCHAR
+```
+
+* `movieCast`:
+
+```
+    - id                     VARCHAR PK
+    - movie_id               VARCHAR
+    - name                   VARCHAR
+    - role_name              VARCHAR
+    - avatar_url             VARCHAR
+    - description            VARCHAR
+```
+
+## TMDB storage
+In order to be able to upload images to supabase storage, bucket needs to be created with policies attached to it.
+
+Policies also need to be defined to be able to upload/ delete images, e.g.:
+
+```
+create policy "Images are publicly accessible." on storage.objects
+  for select using (bucket_id = '<bucket_name>');
+
+create policy "Anyone can upload an image." on storage.objects
+  for insert with check (bucket_id = '<bucket_name>');
+```

@@ -17,8 +17,10 @@ async function createFantasyMovie(
   poster_path,
   production_companies,
   genres,
-  release_date
+  release_date,
+  file
 ) {
+  await supabase.storage.from('tmdb').upload(poster_path, file);
   const { data, error } = await supabase
     .from('fantasyMovies')
     .insert({
@@ -31,6 +33,20 @@ async function createFantasyMovie(
 async function getFantasyMovies(user_id) {
   const { data } = await supabase.from("fantasyMovies").select().eq('user_id', user_id);
   return data
+}
+
+async function deleteFantasyMovie(id, poster_path) {
+  // TODO - remove cast and images
+  const { data, error } = await supabase
+    .storage
+    .from('tmdb')
+    .remove([poster_path]);
+  console.log(error);
+  console.log(data);
+  await supabase
+    .from('fantasyMovies')
+    .delete()
+    .eq('id', id)
 }
 
 async function getFavouriteTvSeries(user_id) {
@@ -189,5 +205,6 @@ export {
   removeFavouriteActor,
   updateFavouriteActorOrder,
   createFantasyMovie,
-  getFantasyMovies
+  getFantasyMovies,
+  deleteFantasyMovie
 }
