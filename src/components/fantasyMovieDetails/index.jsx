@@ -93,7 +93,7 @@ const FantasyMovieDetails = ({ movie }) => {
 
   if (displayedMovie === undefined && movie !== undefined) {
     setDisplayedMovie(movie);
-    let date = movie.release_date;
+    let date = new Date(movie.release_date);
     let outputDate = "";
     try {
       outputDate = `${date.getFullYear()} / ${date.getMonth() + 1} / ${date.getDate()}`

@@ -24,8 +24,9 @@ const styles = {
 
 export default function FantasyMovieCard({ movie }) {
   const context = useContext(MoviesContext);
-  let date = movie.release_date;
+  let date = new Date(movie.release_date);
   let outputDate = "";
+  console.log(date.getFullYear());
   try {
     outputDate = `${date.getFullYear()} / ${date.getMonth() + 1} / ${date.getDate()}`
   } catch {
