@@ -1,18 +1,20 @@
-import React, { useContext } from "react";
-import { MoviesContext } from "../../contexts/moviesContext";
+import React from "react";
 import IconButton from "@mui/material/IconButton";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { useAuth } from "../../contexts/AuthProvider";
-import { supabase, addToFavouriteTvSeries } from "../../supabase/client";
+import { supabase, addToFavouriteTvSeries, removeFavouriteTvSeries } from "../../supabase/client";
 
 const AddToFavouriteTvSeriesIcon = ({ movie }) => {
   const { user, loading } = useAuth();
   const [loggedIn, setLoggedIn] = React.useState(false)
-  const context = useContext(MoviesContext);
+  const [favourite, setFavourite] = React.useState(false);
+  const [updating, setUpdating] = React.useState(false);
 
   React.useEffect(() => {
     if (!loading) {
       setLoggedIn(user !== null);
+      setFavourite(movie?.favourite ? true : false);
     }
   });
 
@@ -27,19 +29,37 @@ const AddToFavouriteTvSeriesIcon = ({ movie }) => {
     };
   });
 
-  const onUserSelect = async (e) => {
+  const add = async (e) => {
     e.preventDefault();
-    context.addToFavouriteTvSeries(movie);
+    setUpdating(true);
     await addToFavouriteTvSeries(user.user.id, movie.id);
-    window.location.reload(false);
+    setFavourite(true);
+    movie.favourite = true;
+    setUpdating(false);
   };
+
+  const remove = async (e) => {
+    e.preventDefault();
+    setUpdating(true);
+    await removeFavouriteTvSeries(user.user.id, movie.id);
+    setFavourite(false);
+    movie.favourite = false;
+    setUpdating(false);
+  };
+
   return (
     <>
-      {loggedIn ? (
+      {loggedIn && !updating ? (
         <>
-          <IconButton aria-label="add to favorites" onClick={onUserSelect}>
-            <FavoriteIcon color="primary" fontSize="large" />
-          </IconButton>
+          {favourite ? (
+            <IconButton aria-label="favourite" onClick={remove}>
+              <FavoriteIcon color="primary" fontSize="large" />
+            </IconButton>
+          ) : (
+            <IconButton aria-label="add to favorites" onClick={add}>
+              <FavoriteBorderIcon color="primary" fontSize="large" />
+            </IconButton>
+          )}
         </>
       ) : (
         <></>

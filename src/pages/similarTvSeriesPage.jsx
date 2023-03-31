@@ -45,7 +45,7 @@ const SimilarTvSeriesPage = () => {
 
   return (
     <>
-      {movie && tvSeries ? (
+      {movie && tvSeries && !isLoading ? (
         <>
           <PageTemplate
             title={title}

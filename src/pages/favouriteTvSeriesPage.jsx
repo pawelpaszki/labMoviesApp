@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import PageTemplate from "../components/templateTvSeriesListPage";
 import Spinner from "../components/spinner";
-import RemoveFromFavourites from "../components/cardIcons/removeFromFavouriteTvSeries";
 import { getFavouriteTvSeriesById } from "../api/tmdb-api";
 import { getFavouriteTvSeries, updateFavouriteTvSeriesOrder } from "../supabase/client";
 import { useAuth } from "../contexts/AuthProvider";
@@ -51,13 +50,7 @@ const FavouriteTvSeriesPage = () => {
       <PageTemplate
         title="Favourite Tv Series"
         tvSeries={displayedTvSeries}
-        action={(movie) => {
-          return (
-            <>
-              <RemoveFromFavourites movie={movie} />
-            </>
-          );
-        }}
+        action={(movie) => null}
         rearrangeFavourites={rearrangeFavourites}
         listSize={displayedTvSeries.length}
       />

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
@@ -15,6 +15,11 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { deleteFantasyMovie } from "../../supabase/client";
 
 const styles = {
+  header: {
+    lineHeight: "2.5ex",
+    height: "5ex",
+    display: "flex",
+  },
   card: { maxWidth: 345 },
   media: { height: 500 },
   avatar: {
@@ -47,10 +52,10 @@ export default function FantasyMovieCard({ movie }) {
   };
   return (
     <Card sx={styles.card}>
-      <CardHeader
-        sx={styles.header}
+      <CardHeader 
+        sx={{lineHeight: 2}}
         title={
-          <Typography variant="h5" component="p">
+          <Typography variant="h5" component="p" sx={{lineHeight: 2}}>
             {movie.title}{" "}
           </Typography>
         }

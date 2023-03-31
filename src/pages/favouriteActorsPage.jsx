@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import ActorsListPage from "../components/actorsListPage";
 import Spinner from "../components/spinner";
-import RemoveFromFavouriteActors from "../components/cardIcons/removeFromFavouriteActors";
 import { getFavouriteActor } from "../api/tmdb-api";
 import { getFavouriteActors, updateFavouriteActorOrder } from "../supabase/client";
 import { useAuth } from "../contexts/AuthProvider";
@@ -50,13 +49,7 @@ const FavouriteActorsPage = () => {
       <ActorsListPage
         title="Favourite Actors"
         actors={displayedActors}
-        action={(actor) => {
-          return (
-            <>
-              <RemoveFromFavouriteActors actor={actor} />
-            </>
-          );
-        }}
+        action={(actor) => null}
         rearrangeFavourites={rearrangeFavourites}
         listSize={displayedActors.length}
       />

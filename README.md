@@ -85,7 +85,7 @@ These databases need to be created in the [supabase](https://app.supabase.com/) 
 ## TMDB storage
 In order to be able to upload images to supabase storage, bucket needs to be created with policies attached to it.
 
-Policies also need to be defined to be able to upload/ delete images, e.g.:
+Policies also need to be defined to be able to upload/ select/ delete images, e.g.:
 
 ```
 create policy "Images are publicly accessible." on storage.objects
@@ -93,4 +93,7 @@ create policy "Images are publicly accessible." on storage.objects
 
 create policy "Anyone can upload an image." on storage.objects
   for insert with check (bucket_id = '<bucket_name>');
+
+create policy "Anyone can delete an image." on storage.objects
+  for delete using (bucket_id = '<bucket_name>');
 ```

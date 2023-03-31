@@ -45,7 +45,7 @@ const SimilarMoviesPage = () => {
 
   return (
     <>
-      {movie && movies ? (
+      {movie && movies && !isLoading ? (
         <>
           <PageTemplate
             title={title}

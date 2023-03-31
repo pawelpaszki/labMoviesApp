@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import PageTemplate from "../components/templateMovieListPage";
 import { getFavouriteMovie } from "../api/tmdb-api";
 import Spinner from "../components/spinner";
-import RemoveFromFavourites from "../components/cardIcons/removeFromFavourites";
 import WriteReview from "../components/cardIcons/writeReview";
 import { getFavouriteMovies, updateFavouriteMovieOrder } from "../supabase/client";
 import { useAuth } from "../contexts/AuthProvider";
@@ -51,14 +50,7 @@ const FavouriteMoviesPage = () => {
       <PageTemplate
         title="Favourite Movies"
         movies={displayedMovies}
-        action={(movie) => {
-          return (
-            <>
-              <RemoveFromFavourites movie={movie} />
-              <WriteReview movie={movie} />
-            </>
-          );
-        }}
+        action={(movie) => null}
         rearrangeFavourites={rearrangeFavourites}
         listSize={displayedMovies.length}
       />

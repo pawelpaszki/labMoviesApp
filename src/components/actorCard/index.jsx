@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
-import React, { useContext } from "react";
-import Avatar from "@mui/material/Avatar";
+import React from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -8,13 +7,13 @@ import CardMedia from "@mui/material/CardMedia";
 import CardHeader from "@mui/material/CardHeader";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import FemaleIcon from '@mui/icons-material/Female';
 import MaleIcon from '@mui/icons-material/Male';
 import StarsIcon from '@mui/icons-material/Stars';
 import Grid from "@mui/material/Grid";
-import img from '../../images/profile-placeholder.png'
+import img from '../../images/profile-placeholder.png';
 import RearrangeFooter from '../rearrangeFavourites';
+import Tooltip from "@mui/material/Tooltip";
 
 const styles = {
   card: { maxWidth: 345 },
@@ -25,22 +24,21 @@ const styles = {
 };
 
 export default function ActorCard({ actor, action, rearrangeFavourites, listSize, index }) {
-
+  const [title, setTitle] = React.useState("");
+  React.useEffect(() => {
+    if (actor) {
+      setTitle(actor.title);
+    }
+  });
   return (
     <Card sx={styles.card}>
       <CardHeader
-        sx={styles.header}
-        avatar={
-          actor.favourite ? (
-            <Avatar sx={styles.avatar}>
-              <FavoriteIcon />
-            </Avatar>
-          ) : null
-        }
         title={
-          <Typography variant="h5" component="p">
-            {actor.name}{" "}
-          </Typography>
+          <Tooltip title={title} placement="top">
+            <Typography variant="h5" component="p">
+              {actor.name}{" "}
+            </Typography>
+          </Tooltip>
         }
       />
       <CardMedia
