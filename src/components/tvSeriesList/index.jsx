@@ -13,7 +13,7 @@ const TvSeriesList = ({ tvSeries, action, rearrangeFavourites, listSize, disable
       if (!disableReload && !loading && user !== null && user !== undefined && user.user !== null && user.user !== undefined) {
         getFavourites(user?.user.id);
       } else {
-        setTimeout(() => window.location.reload(false), 200);
+        setTimeout(() => getFavourites(user?.user.id), 200);
       }
     } else {
       setDisplayedMovies(tvSeries)

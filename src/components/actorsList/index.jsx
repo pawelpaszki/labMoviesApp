@@ -13,7 +13,7 @@ const ActorsList = ({ actors, action, rearrangeFavourites, listSize, disableRelo
       if (!disableReload && !loading && user !== null && user !== undefined && user.user !== null && user.user !== undefined) {
         getFavourites(user?.user.id);
       } else {
-        setTimeout(() => window.location.reload(false), 200);
+        setTimeout(() => getFavourites(user?.user.id), 200);
       }
     } else {
       setDisplayedActors(actors)

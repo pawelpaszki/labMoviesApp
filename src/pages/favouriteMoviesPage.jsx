@@ -28,7 +28,7 @@ const FavouriteMoviesPage = () => {
         }
         getFavourites(user.user.id);
       } else {
-        setTimeout(() => window.location.reload(false), 200);
+        setTimeout(() => getFavourites(user.user.id), 200);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
