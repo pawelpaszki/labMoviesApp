@@ -21,10 +21,16 @@ async function createFantasyMovie(
 ) {
   const { data, error } = await supabase
     .from('fantasyMovies')
-    .insert({ "id": uuidv4(), "user_id": user_id, "title": title, "overview": overview, "runtime": runtime,
-    "poster_path": poster_path, "production_companies": production_companies, "genres": genres, "release_date": release_date
-   });
-   return {data, error};
+    .insert({
+      "id": uuidv4(), "user_id": user_id, "title": title, "overview": overview, "runtime": runtime,
+      "poster_path": poster_path, "production_companies": production_companies, "genres": genres, "release_date": release_date
+    });
+  return { data, error };
+}
+
+async function getFantasyMovies(user_id) {
+  const { data } = await supabase.from("fantasyMovies").select().eq('user_id', user_id);
+  return data
 }
 
 async function getFavouriteTvSeries(user_id) {
@@ -182,5 +188,6 @@ export {
   addToFavouriteActors,
   removeFavouriteActor,
   updateFavouriteActorOrder,
-  createFantasyMovie
+  createFantasyMovie,
+  getFantasyMovies
 }
