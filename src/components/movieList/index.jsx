@@ -11,9 +11,9 @@ const MovieList = ({ movies, action, rearrangeFavourites, listSize, disableReloa
   useEffect(() => {
     if (!window.location.pathname.includes("favourites") && !disableReload) {
       if (!disableReload && !loading && user !== null && user !== undefined && user.user !== null && user.user !== undefined) {
-        getFavourites(user?.user.id);
+        setTimeout(async () => getFavourites(user?.user.id), 100);
       } else {
-        setTimeout(() => getFavourites(user?.user.id), 500);
+        setTimeout(async () => getFavourites(user?.user.id), 200);
       }
     } else {
       setDisplayedMovies(movies)
@@ -34,7 +34,7 @@ const MovieList = ({ movies, action, rearrangeFavourites, listSize, disableReloa
     setDisplayedMovies(movieList);
     setFetched(true);
   }
-  if (displayedMovies.length > 0 && movies.length > 0 && displayedMovies[0].id !== movies[0].id && user !== null) {
+  if (displayedMovies.length > 0 && movies.length > 0 && displayedMovies[0].id !== movies[0].id && user !== null && !loading) {
     getFavourites(user?.user.id);
   }
   let movieCards = displayedMovies.map((m, index) => (

@@ -11,9 +11,9 @@ const ActorsList = ({ actors, action, rearrangeFavourites, listSize, disableRelo
   useEffect(() => {
     if (!window.location.pathname.includes("favourites") && !disableReload) {
       if (!disableReload && !loading && user !== null && user !== undefined && user.user !== null && user.user !== undefined) {
-        getFavourites(user?.user.id);
+        setTimeout(async () => getFavourites(user?.user.id), 100);
       } else {
-        setTimeout(() => getFavourites(user?.user.id), 500);
+        setTimeout(async () => getFavourites(user?.user.id), 200);
       }
     } else {
       setDisplayedActors(actors)
@@ -34,7 +34,7 @@ const ActorsList = ({ actors, action, rearrangeFavourites, listSize, disableRelo
     setDisplayedActors(actorList);
     setFetched(true);
   }
-  if (displayedActors.length > 0 && actors.length > 0 && displayedActors[0].id !== actors[0].id && user !== null) {
+  if (displayedActors.length > 0 && actors.length > 0 && displayedActors[0].id !== actors[0].id && user !== null && !loading) {
     getFavourites(user?.user.id);
   }
   let actorCards = displayedActors.map((m, index) => (

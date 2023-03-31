@@ -26,9 +26,9 @@ const FavouriteTvSeriesPage = () => {
   useEffect(() => {
     if (!loading) {
       if (!loading && user !== null && user !== undefined && user.user !== null && user.user !== undefined) {
-        getFavourites(user.user.id);
+        setTimeout(async () => getFavourites(user?.user.id), 100);
       } else {
-        setTimeout(() => getFavourites(user.user.id), 500);
+        setTimeout(async () => getFavourites(user?.user.id), 200);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
