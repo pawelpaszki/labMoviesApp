@@ -32,7 +32,16 @@ async function createFantasyMovie(
 
 async function getFantasyMovies(user_id) {
   const { data } = await supabase.from("fantasyMovies").select().eq('user_id', user_id);
-  return data
+  return data;
+}
+
+async function getFantasyMovieById(id) {
+  const { data } = await supabase.from("fantasyMovies").select().eq('id', id);
+  if (data.length === 1) {
+    return data[0];
+  } else {
+    return undefined;
+  }
 }
 
 async function deleteFantasyMovie(id, poster_path) {
@@ -41,8 +50,6 @@ async function deleteFantasyMovie(id, poster_path) {
     .storage
     .from('tmdb')
     .remove([poster_path]);
-  console.log(error);
-  console.log(data);
   await supabase
     .from('fantasyMovies')
     .delete()
@@ -206,5 +213,6 @@ export {
   updateFavouriteActorOrder,
   createFantasyMovie,
   getFantasyMovies,
-  deleteFantasyMovie
+  deleteFantasyMovie,
+  getFantasyMovieById
 }

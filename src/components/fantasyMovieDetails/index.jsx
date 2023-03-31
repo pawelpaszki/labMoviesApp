@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Chip from "@mui/material/Chip";
 import Paper from "@mui/material/Paper";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
@@ -40,6 +40,7 @@ const styles = {
 };
 
 const FantasyMovieDetails = ({ movie }) => {
+  const [imagePath, setImagePath] = React.useState("");
   const [name, setName] = React.useState("");
   const [roleName, setRoleName] = React.useState("");
   const [avatar, setAvatar] = React.useState("");
@@ -48,6 +49,14 @@ const FantasyMovieDetails = ({ movie }) => {
   const [displayedMovie, setDisplayedMovie] = React.useState(undefined);
   const [cast, setCast] = React.useState(undefined);
   const [addCastEnabled, setAddCastEnabled] = React.useState(false);
+
+  useEffect(() => {
+    if (!movie.poster_path.startsWith("http")) {
+      setImagePath(`${import.meta.env.VITE_REACT_APP_SUPABASE_URL}/storage/v1/object/public/tmdb/${movie.poster_path}`);
+    } else {
+      setImagePath(movie.poster_path);
+    }
+  });
 
   const handleNameChange = (event) => {
     setName(event.target.value);
@@ -123,13 +132,13 @@ const FantasyMovieDetails = ({ movie }) => {
             </Grid>
             <Grid item xs={3}>
               <ImageListItem
-                key={displayedMovie.file_path}
+                key={imagePath}
                 sx={styles.gridListTile}
                 cols={1}
               >
                 <img
-                  src={`${displayedMovie.poster_path}`}
-                  alt={displayedMovie.poster_path}
+                  src={imagePath}
+                  alt={imagePath}
                 />
               </ImageListItem>
             </Grid>
@@ -183,9 +192,9 @@ const FantasyMovieDetails = ({ movie }) => {
 
             </Grid>
             <Grid item xs={9} style={{ paddingTop: "0px", marginTop: "0px" }}>
-              {cast.map((c) => (
+              {/* {cast.map((c) => ( TODO - uncomment
                 <CastMemberCard member={c} removeCastMember={removeCastMember}/>
-              ))}
+              ))} */}
             </Grid>
             <Grid item xs={3}> {/* empty placeholder */}
 
