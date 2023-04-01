@@ -38,7 +38,7 @@ export default function FantasyMovieCard({ movie }) {
     outputDate = "2000 / 01 / 01";
   }
   useEffect(() => {
-    if (!movie.poster_path.startsWith("http")) {
+    if (movie.poster_path !== undefined && !movie.poster_path.startsWith("http")) {
       setImagePath(`${import.meta.env.VITE_REACT_APP_SUPABASE_URL}/storage/v1/object/public/tmdb/${movie.poster_path}`);
     } else {
       setImagePath(movie.poster_path);

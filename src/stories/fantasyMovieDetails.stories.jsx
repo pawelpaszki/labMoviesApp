@@ -13,6 +13,6 @@ export default {
   ],
 };
 
-export const Basic = () => <MovieDetails movie={SampleMovie} />;
+export const Basic = () => <MovieDetails movie={SampleMovie} movieCast={SampleMovie.cast}/>;
 
 Basic.storyName = "Default";

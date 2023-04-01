@@ -69,3 +69,7 @@
   background-color: #f2f9fc;
   color: #333;
 }
+
+.Dropdown-root {
+  margin-left: -8px !important;
+}
