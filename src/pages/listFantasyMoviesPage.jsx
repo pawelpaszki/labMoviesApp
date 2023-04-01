@@ -11,7 +11,6 @@ const ListFantasyMoviesPage = () => {
 
   async function getFantasy(userId) {
     const favourites = await getFantasyMovies(userId);
-    console.log(favourites);
     setDisplayedMovies(favourites);
     setFetched(true);
   }

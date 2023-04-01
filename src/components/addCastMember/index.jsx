@@ -1,11 +1,12 @@
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import FormLabel from '@mui/material/FormLabel';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import React, { useState } from "react";
 
-function AddCastMember({ handleNameChange, handleRoleNameChange, handleAvatarChange, handleDescriptionChange, handleSubmit }) {
-
+function AddCastMember({ handleNameChange, handleRoleNameChange, handleSetAvatar, handleDescriptionChange, handleSubmit, uploading }) {
   return (
     <Box
       sx={{
@@ -53,16 +54,15 @@ function AddCastMember({ handleNameChange, handleRoleNameChange, handleAvatarCha
               onChange={handleDescriptionChange}
             />
           </Grid>
-          <Grid item xs={12}> {/* TODO - use file upload when implementing persistence */}
+          <Grid item xs={12}>
+            <FormLabel id="poster" style={{ display: "block", marginBottom: "6px", fontSize: "12px" }}>{uploading ? 'Uploading avatar...' : 'Upload avatar'}</FormLabel>
             <TextField
               required
-              fullWidth
-              name="avatar"
-              label="Avatar url"
+              type="file"
               id="avatarUrl"
-              autoComplete="none"
-              inputProps={{ minLength: 12 }}
-              onChange={handleAvatarChange}
+              accept="image/*"
+              onChange={handleSetAvatar}
+              disabled={uploading}
             />
           </Grid>
         </Grid>

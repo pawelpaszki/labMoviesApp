@@ -27,11 +27,49 @@ async function createFantasyMovie(
       "id": uuidv4(), "user_id": user_id, "title": title, "overview": overview, "runtime": runtime,
       "poster_path": poster_path, "production_companies": production_companies, "genres": genres, "release_date": release_date
     });
+    console.log('data');
+    console.log(data);
+    console.log('error');
+    console.log(error);
   return { data, error };
+}
+
+async function addCastToFantasyMovie(
+  movie_id,
+  name,
+  role_name,
+  avatar,
+  description,
+  file
+) {
+  await supabase.storage.from('tmdb').upload(avatar, file);
+  const { data, error } = await supabase
+    .from('fantasyMovieCast')
+    .insert({
+      "id": uuidv4(), "movie_id": movie_id, "name": name, "role_name": role_name, "avatar_url": avatar,
+      "description": description
+    });
+  return { data, error };
+}
+
+async function deleteCastMember(id, avatar_url) {
+  const { data, error } = await supabase
+    .storage
+    .from('tmdb')
+    .remove([avatar_url]);
+  await supabase
+    .from('fantasyMovieCast')
+    .delete()
+    .eq('id', id)
 }
 
 async function getFantasyMovies(user_id) {
   const { data } = await supabase.from("fantasyMovies").select().eq('user_id', user_id);
+  return data;
+}
+
+async function getFantasyMovieCast(movie_id) {
+  const { data } = await supabase.from("fantasyMovieCast").select().eq('movie_id', movie_id);
   return data;
 }
 
@@ -45,7 +83,13 @@ async function getFantasyMovieById(id) {
 }
 
 async function deleteFantasyMovie(id, poster_path) {
-  // TODO - remove cast and images
+  const movieCast = await getFantasyMovieCast(id);
+  if (movieCast.length > 0) {
+    for (const cast of movieCast) {
+      console.log(cast);
+      await deleteCastMember(cast.id, cast.avatar_url);
+    }
+  }
   const { data, error } = await supabase
     .storage
     .from('tmdb')
@@ -214,5 +258,8 @@ export {
   createFantasyMovie,
   getFantasyMovies,
   deleteFantasyMovie,
-  getFantasyMovieById
+  getFantasyMovieById,
+  addCastToFantasyMovie,
+  getFantasyMovieCast,
+  deleteCastMember
 }

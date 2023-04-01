@@ -71,7 +71,7 @@ These databases need to be created in the [supabase](https://app.supabase.com/) 
     - release_date           VARCHAR
 ```
 
-* `movieCast`:
+* `fantasyMovieCast`:
 
 ```
     - id                     VARCHAR PK

@@ -28,15 +28,15 @@ const CreateFantasyMovie = () => {
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [selectedGenresDisplayValue, setSelectedGenresDisplayValue] = useState("");
   const [title, setTitle] = React.useState("");
-  const [fileName, setFileName] = React.useState("");
   const [overview, setOverview] = React.useState("");
   const [runtime, setRuntime] = React.useState(1);
   const [moviePoster, setMoviePoster] = React.useState("");
+  const [uploading, setUploading] = useState(false);
+  const [fileName, setFileName] = React.useState("");
   const [productionCompanies, setProductionCompanies] = React.useState("");
   const [createInitiated, setCreateInitiated] = React.useState(false);
   const [createFailed, setCreateFailed] = React.useState(false);
   const [alertText, setAlertText] = React.useState("movie creation failed! Try again.");
-  const [uploading, setUploading] = useState(false)
 
   if (isLoading || createInitiated) {
     return <Spinner />;
@@ -102,23 +102,22 @@ const CreateFantasyMovie = () => {
 
   const handleSetMoviePoster = async (event) => {
     try {
-      setUploading(true)
+      setUploading(true);
 
       if (!event.target.files || event.target.files.length === 0) {
-        throw new Error('You must select an image to upload.')
+        throw new Error('You must select an image to upload.');
       }
 
       const file = event.target.files[0];
-      setFileName(file)
-      const fileExt = file.name.split('.').pop()
-      const fileName = `${Math.random()}.${fileExt}`
-      const filePath = `${fileName}`
+      setFileName(file);
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Math.random()}.${fileExt}`;
+      const filePath = `${fileName}`;
       setMoviePoster(filePath);
-
     } catch (error) {
-      alert(error.message)
+      alert(error.message);
     } finally {
-      setUploading(false)
+      setUploading(false);
     }
   }
 
@@ -183,26 +182,6 @@ const CreateFantasyMovie = () => {
                 onChange={handleSetRuntime}
               />
             </Grid>
-            <Grid item xs={12}> {/* TODO - use file upload when implementing persistence */}
-              {/* <TextField
-                required
-                fullWidth
-                name="moviePosterUrl"
-                label="Movie poster url"
-                id="moviePosterUrl"
-                autoComplete="none"
-                inputProps={{ minLength: 12 }}
-                onChange={handleSetMoviePoster}
-              /> */}
-              <FormLabel id="poster" style={{ display: "block", marginBottom: "6px", fontSize: "12px" }}>{uploading ? 'Uploading poster...' : 'Upload poster'}</FormLabel>
-              <TextField
-                type="file"
-                id="moviePosterUrl"
-                accept="image/*"
-                onChange={handleSetMoviePoster}
-                disabled={uploading}
-              />
-            </Grid>
             <Grid item xs={12}>
               <TextField
                 required
@@ -230,6 +209,16 @@ const CreateFantasyMovie = () => {
                   );
                 })}
               </Select>
+            </Grid>
+            <Grid item xs={12}>
+              <FormLabel id="poster" style={{ display: "block", marginBottom: "6px", fontSize: "12px" }}>{uploading ? 'Uploading poster...' : 'Upload poster'}</FormLabel>
+              <TextField
+                type="file"
+                id="moviePosterUrl"
+                accept="image/*"
+                onChange={handleSetMoviePoster}
+                disabled={uploading}
+              />
             </Grid>
           </Grid>
           <Button

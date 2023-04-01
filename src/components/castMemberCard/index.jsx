@@ -36,7 +36,7 @@ export default function CastMemberCard({ member, removeCastMember }) {
             <Paper component="ul" sx={styles.chipSet}>
               <Chip label={member.name} sx={styles.chipLabel} color="primary" />
               &nbsp; playing &nbsp;
-              <Chip label={member.roleName} />
+              <Chip label={member.role_name} />
             </Paper>
           </Grid>
           <Grid item xs={2}>

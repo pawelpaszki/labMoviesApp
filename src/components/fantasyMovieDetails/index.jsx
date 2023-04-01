@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Chip from "@mui/material/Chip";
 import Paper from "@mui/material/Paper";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
@@ -8,9 +8,11 @@ import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
 import ImageListItem from "@mui/material/ImageListItem";
 import AddCastMember from "../addCastMember";
-import { v4 as uuidv4 } from 'uuid';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import CastMemberCard from "../castMemberCard";
+import Spinner from '../spinner';
+import Alert from '@mui/material/Alert';
+import { addCastToFantasyMovie, deleteCastMember } from "../../supabase/client";
 
 const styles = {
   gridListRoot: {
@@ -39,7 +41,7 @@ const styles = {
   },
 };
 
-const FantasyMovieDetails = ({ movie }) => {
+const FantasyMovieDetails = ({ movie, movieCast, reload }) => {
   const [imagePath, setImagePath] = React.useState("");
   const [name, setName] = React.useState("");
   const [roleName, setRoleName] = React.useState("");
@@ -47,8 +49,14 @@ const FantasyMovieDetails = ({ movie }) => {
   const [outputDate, setOutputDate] = React.useState("");
   const [description, setDescription] = React.useState("");
   const [displayedMovie, setDisplayedMovie] = React.useState(undefined);
-  const [cast, setCast] = React.useState(undefined);
+  const [cast, setCast] = React.useState([]);
   const [addCastEnabled, setAddCastEnabled] = React.useState(false);
+  const [uploading, setUploading] = useState(false)
+  const [fileName, setFileName] = React.useState("");
+  const [createInitiated, setCreateInitiated] = React.useState(false);
+  const [createFailed, setCreateFailed] = React.useState(false);
+  const [alertText, setAlertText] = React.useState("cast addition failed! Try again.");
+  const [loaded, setLoaded] = React.useState(false);
 
   useEffect(() => {
     if (!movie.poster_path.startsWith("http")) {
@@ -56,7 +64,21 @@ const FantasyMovieDetails = ({ movie }) => {
     } else {
       setImagePath(movie.poster_path);
     }
+    if (movieCast.length > 0) {
+      movieCast.forEach(c => {
+        if (!c.avatar_url.startsWith("http")) {
+          c.avatar_url = `${import.meta.env.VITE_REACT_APP_SUPABASE_URL}/storage/v1/object/public/tmdb/${c.avatar_url}`;
+          console.log(c);
+        }
+      });
+    }
+    setCast(movieCast);
+    setLoaded(true);
   });
+
+  if (uploading || createInitiated) {
+    return <Spinner />;
+  }
 
   const handleNameChange = (event) => {
     setName(event.target.value);
@@ -66,38 +88,39 @@ const FantasyMovieDetails = ({ movie }) => {
     setRoleName(event.target.value);
   };
 
-  const handleAvatarChange = (event) => {
-    setAvatar(event.target.value);
-  };
-
   const handleDescriptionChange = (event) => {
     setDescription(event.target.value);
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    let castMember = {
-      "id": uuidv4(),
-      "name": name,
-      "roleName": roleName,
-      "avatar_url": avatar,
-      "description": description,
+    setCreateInitiated(true);
+    const { data, error } = await addCastToFantasyMovie(
+      movie.id,
+      name.trim(),
+      roleName.trim(),
+      avatar.trim(),
+      description.trim(),
+      fileName
+    );
+    setCreateInitiated(false);
+    if (error !== null) {
+      setAlertText("movie creation failed! Try again.")
+      setCreateFailed(true);
     }
-    let updatedCast = [...displayedMovie.cast];
-    updatedCast.push(castMember);
-    let updatedMovie = displayedMovie;
-    updatedMovie.cast = updatedCast;
-    setDisplayedMovie(updatedMovie);
-    setCast(updatedCast);
+    await reload();
     setAddCastEnabled(false);
   };
 
-  const removeCastMember = (id) => {
-    let updatedCast = [...displayedMovie.cast.filter((item) => item.id !== id)]
-    let updatedMovie = displayedMovie;
-    updatedMovie.cast = updatedCast;
-    setDisplayedMovie(updatedMovie);
-    setCast(updatedCast);
+  const removeCastMember = async (id) => {
+    let avatar_url = "";
+    cast.forEach(c => {
+      if (c.id === id) {
+        avatar_url = c.avatar_url;
+      }
+    });
+    await deleteCastMember(id, avatar_url.slice(avatar_url.indexOf("tmdb") + 5));
+    await reload();
   }
 
   if (displayedMovie === undefined && movie !== undefined) {
@@ -111,6 +134,27 @@ const FantasyMovieDetails = ({ movie }) => {
     }
     setOutputDate(outputDate);
     setCast(movie.cast);
+  }
+
+  const handleSetAvatar = async (event) => {
+    try {
+      setUploading(true);
+
+      if (!event.target.files || event.target.files.length === 0) {
+        throw new Error('You must select an image to upload.');
+      }
+
+      const file = event.target.files[0];
+      setFileName(file);
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Math.random()}.${fileExt}`;
+      const filePath = `${fileName}`;
+      setAvatar(filePath);
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      setUploading(false);
+    }
   }
 
   const enableCastAddition = (event) => {
@@ -192,9 +236,19 @@ const FantasyMovieDetails = ({ movie }) => {
 
             </Grid>
             <Grid item xs={9} style={{ paddingTop: "0px", marginTop: "0px" }}>
-              {/* {cast.map((c) => ( TODO - uncomment
-                <CastMemberCard member={c} removeCastMember={removeCastMember}/>
-              ))} */}
+              {loaded ? (
+                <>
+                  {cast.map((c) => (
+                    <CastMemberCard
+                      member={c}
+                      removeCastMember={removeCastMember}
+                      key={c.avatar_url} />
+                  ))}
+                </>
+              ) : (
+                <>
+                </>
+              )}
             </Grid>
             <Grid item xs={3}> {/* empty placeholder */}
 
@@ -204,20 +258,28 @@ const FantasyMovieDetails = ({ movie }) => {
                 <AddCastMember
                   handleNameChange={handleNameChange}
                   handleRoleNameChange={handleRoleNameChange}
-                  handleAvatarChange={handleAvatarChange}
+                  handleSetAvatar={handleSetAvatar}
                   handleDescriptionChange={handleDescriptionChange}
                   handleSubmit={handleSubmit}
+                  uploading={uploading}
                 />
               </Grid>
             ) : (
-              <Grid item xs={9} sx={styles.chipSet}>
-                <IconButton
-                  aria-label="enable add cast"
-                  onClick={enableCastAddition}
-                >
-                  <AddCircleIcon color="primary" fontSize="large" />
-                </IconButton>
-              </Grid>
+              <>
+                {createFailed ? (
+                  <Alert severity="error">{alertText}</Alert>
+                ) : (
+                  <></>
+                )}
+                <Grid item xs={9} sx={styles.chipSet}>
+                  <IconButton
+                    aria-label="enable add cast"
+                    onClick={enableCastAddition}
+                  >
+                    <AddCircleIcon color="primary" fontSize="large" />
+                  </IconButton>
+                </Grid>
+              </>
             )}
           </Grid>
         </>
