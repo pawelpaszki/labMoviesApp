@@ -76,7 +76,7 @@ const UpcomingMoviesPage = (props) => {
 
   const handleSetPage = async (number) => {
     setPage(number);
-    let moviesResults = await getMovies(number);
+    let moviesResults = await getUpcomingMovies(number);
     if (moviesResults && moviesResults.results.length > 0) {
       setDisplayedMovies(moviesResults.results);
     }
