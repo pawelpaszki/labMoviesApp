@@ -188,12 +188,12 @@ Features:
     * Multi-criteria Search.
         * Search for movies based on criteria submitted on a web form. The form should use appropriate controls - menus, checkboxes, etc.
             * `done for tv or movies (available to chose either of them) - search by`:
-                * `minRating}`
-                * `maxRating}`
-                * `releaseStartDate}` (range from)
-                * `releaseEndDate}` (range to)
-                * `genre}`
-                * `keywords}`
+                * `minRating`
+                * `maxRating`
+                * `releaseStartDate` (range from)
+                * `releaseEndDate` (range to)
+                * `genre`
+                * `keywords`
                 * (`not providing value means skip particular search query`)
 * Storybook support.
     * `should be done for most pages/ components`
