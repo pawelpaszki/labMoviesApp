@@ -24,7 +24,7 @@ export const Basic = () => {
     { ...sampleActor, id: 5 },
   ];
   return (
-    <Grid container spacing={5}>
+    <Grid container>
       <ActorsList
         actors={actors}
         disableReload={true}

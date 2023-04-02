@@ -29,7 +29,7 @@ export default {
 
 export const Basic = () => {
   return (
-    <Grid container spacing={5}>
+    <Grid container>
       <ActorsSearchPage/>
     </Grid>
   );
@@ -45,7 +45,7 @@ export const Populated = () => {
     { ...sampleActor, id: 5 },
   ];
   return (
-    <Grid container spacing={5}>
+    <Grid container>
       <ActorsList
         actors={actors}
         searchResultLoaded={true}
