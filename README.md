@@ -218,7 +218,7 @@ Outstanding (90+)
 Features:
 
 * Backend persistence using Supabase - e.g. Favourites, Fantasy movie.
-    * `done` - persistence of favourite movies/ tv series/ actors/ fantasy movies/ playlists per logged in user (each user has their own set of data)
+    * `done` - persistence of favourite movies/ tv series/ actors/ fantasy movies (including movie poster and cast avatars)/ playlists per logged in user (each user has their own set of data)
 * Rich feature set - `up to the lecturer to decide. Some extra features included`:
     * `navbar not showing private routes when not logged in`
     * `uncluttered navbar in wide view -> dropdowns for themed pages (e.g. movies)`
