@@ -134,6 +134,8 @@ Features:
             * `/playlists/create/:id` - create playlist (only accessible from home view) and add movie from which the option was selected to the playlists table (each logged in user has their own list)
             * `/playlists/:id` - show playlist movies (each logged in user has their own list)
             * `/playlists` - show playlists cards (title, theme, number of movies) (each logged in user has their own list)
+            * `/login` - login existing user
+            * `/register` - register new user
     * Detail view (e.g. Actor Bio, TV Series).
         * see above (actor, tv series, fantasy movie)
 * Routing - New routes.
