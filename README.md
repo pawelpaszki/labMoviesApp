@@ -28,7 +28,7 @@ This application can be easily deployed using [Vercel](https://vercel.com/). To 
 In wide screen resolution [react-dropdown](https://www.npmjs.com/package/react-dropdown) is used (with some customizations)
 
 ## Data picker
-When creating fantasy movie or performing advanced search, [dropdowns](https://www.npmjs.com/package/react-dropdown) are provided to easily select date(s). 
+When creating fantasy movie or performing advanced search, [data pickers](https://www.npmjs.com/package/react-dropdown) are provided to easily select date(s). 
 
 ## TMDB database
 These databases need to be created in the [supabase](https://app.supabase.com/) to be able to use this application:
