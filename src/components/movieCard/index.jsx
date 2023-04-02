@@ -14,6 +14,13 @@ import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import img from '../../images/film-poster-placeholder.png';
 import Grid from "@mui/material/Grid";
 import RearrangeFooter from '../rearrangeFavourites';
+import MenuItem from "@mui/material/MenuItem";
+import Select from '@mui/material/Select';
+import PostAddIcon from '@mui/icons-material/PostAdd';
+import IconButton from "@mui/material/IconButton";
+import { useNavigate } from "react-router-dom";
+import { updatePlaylist } from '../../supabase/client';
+import Alert from '@mui/material/Alert';
 
 const styles = {
   card: { maxWidth: 345 },
@@ -23,13 +30,59 @@ const styles = {
   },
 };
 
-export default function MovieCard({ movie, action, rearrangeFavourites, listSize, index }) {
+const MovieCard = ({ movie, action, rearrangeFavourites, listSize, index, playlistsArray, user }) => {
+  const navigate = useNavigate();
   const [title, setTitle] = React.useState("");
+  const [playlists, setPlaylists] = React.useState([]);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [playlist, setPlaylist] = React.useState('Create new');
+  const [playlistsLoaded, setPlaylistsLoaded] = React.useState(null);
+  const [duplicateAddToPlaylist, setDuplicateAddToPlaylist] = React.useState(false);
+  const [isPlaylistEnabledPage, setIsPlaylistEnabledPage] = React.useState(false);
+  const open = Boolean(anchorEl);
   React.useEffect(() => {
+    if (window.location.pathname === ("/") && !isPlaylistEnabledPage) {
+      setIsPlaylistEnabledPage(true);
+    }
     if (movie) {
       setTitle(movie.title);
     }
+    if (!playlistsLoaded) {
+      if (playlistsArray) {
+        const merged = [...[{ title: "Create new", id: "12345" }], ...playlistsArray];
+        setPlaylists(merged);
+      } else {
+        setPlaylists([{ title: "Create new", id: "12345" }]);
+      }
+      setPlaylistsLoaded(true);
+    }
   });
+
+  async function addToPlaylist() {
+    if (playlist === "Create new") {
+      navigate(`playlists/create/${movie.id}`);
+    } else {
+      for (const pl of playlists) {
+        if (pl.title == playlist) {
+          if (pl.movies.indexOf(movie.id.toString()) > -1) {
+            setDuplicateAddToPlaylist(true);
+            setTimeout(async () => setDuplicateAddToPlaylist(false), 3000);
+          } else {
+            const merged = [...pl.movies, ...[movie.id.toString()]];
+            console.log(merged);
+            const { data, error } = await updatePlaylist(pl.id, merged);
+            console.log(data);
+            console.log(error);
+          }
+        }
+      };
+    }
+  }
+
+  const handlePlaylistSelect = (e) => {
+    setAnchorEl(null);
+    setPlaylist(e.target.value);
+  };
   return (
     <Card sx={styles.card}>
       <CardHeader
@@ -65,9 +118,34 @@ export default function MovieCard({ movie, action, rearrangeFavourites, listSize
               {"  "} {movie.vote_average}{" "}
             </Typography>
           </Grid>
-          <Grid item xs={4}></Grid>
           <Grid item xs={8}>
-            <Typography variant="h6" component="p">
+            {playlistsLoaded && user && isPlaylistEnabledPage? (
+              <>
+                <Select
+                  labelId="genre-label"
+                  id="genre-select"
+                  value={playlist}
+                  onChange={handlePlaylistSelect}
+                >
+                  {playlists.map((playlist) => {
+                    return (
+                      <MenuItem key={playlist.id} value={playlist.title}>
+                        {playlist.title.substring(0, 10)}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+                <IconButton aria-label="add-to-playlist" onClick={addToPlaylist}>
+                  <PostAddIcon color="primary" fontSize="large" />
+                </IconButton>
+              </>
+            ) : (
+              <>
+              </>
+            )}
+          </Grid>
+          <Grid item xs={4}>
+            <Typography variant="h6" component="p" style={{ paddingTop: "0.8em" }}>
               <ThumbUpAltIcon fontSize="small" />
               {"  "} {Math.floor(movie.popularity)}{" "}
             </Typography>
@@ -87,6 +165,11 @@ export default function MovieCard({ movie, action, rearrangeFavourites, listSize
           </Button>
         </Link>
       </CardActions>
+      {duplicateAddToPlaylist ? (
+        <Alert severity="error">Movie already added to the {playlist} playlist</Alert>
+      ) : (
+        <></>
+      )}
       {listSize !== undefined ? (
         <RearrangeFooter rearrangeFavourites={rearrangeFavourites} index={index} listSize={listSize} />
       ) : (
@@ -95,3 +178,5 @@ export default function MovieCard({ movie, action, rearrangeFavourites, listSize
     </Card>
   );
 }
+
+export default MovieCard;

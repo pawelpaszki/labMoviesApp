@@ -82,6 +82,16 @@ These databases need to be created in the [supabase](https://app.supabase.com/) 
     - description            VARCHAR
 ```
 
+* `playlists`:
+
+```
+    - id                     VARCHAR PK
+    - user_id                VARCHAR
+    - title                  VARCHAR
+    - theme                  VARCHAR
+    - movies                 TEXT ARRAY
+```
+
 ## TMDB storage
 In order to be able to upload images to supabase storage, bucket needs to be created with policies attached to it.
 

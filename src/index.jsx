@@ -28,6 +28,9 @@ import ActorsSearchPage from "./pages/actorsSearchPage";
 import CreateFantasyMoviePage from "./pages/createFantasyMoviePage";
 import ListFantasyMoviesPage from "./pages/listFantasyMoviesPage";
 import FantasyMovieDetailsPage from "./pages/fantasyMovieDetailsPage";
+import CreatePlaylistPage from "./pages/createPlaylistPage";
+import PlaylistPage from "./pages/playlistPage";
+import ListPlaylistsPage from './pages/listPlaylistsPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -66,6 +69,9 @@ const App = () => {
                 <Route path="/actors/search" element={<ActorsSearchPage />} />
                 <Route path="/actors/favourites" element={<FavouriteActorsPage />} />
                 <Route path="/actors/:id" element={< ActorDetailsPage />} />
+                <Route path="/playlists/create/:id" element={< CreatePlaylistPage />} />
+                <Route path="/playlists/:id" element={< PlaylistPage />} />
+                <Route path="/playlists" element={< ListPlaylistsPage />} />
                 <Route path="*" element={<Navigate to="/" />} />
               </Route>
               <Route path="/" element={<HomePage />} />

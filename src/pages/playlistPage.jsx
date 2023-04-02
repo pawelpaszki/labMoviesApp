@@ -2,23 +2,35 @@ import React, { useEffect } from "react";
 import PageTemplate from "../components/templateMovieListPage";
 import { getFavouriteMovie } from "../api/tmdb-api";
 import Spinner from "../components/spinner";
-import { getFavouriteMovies, updateFavouriteMovieOrder } from "../supabase/client";
+import { getPlaylist } from "../supabase/client";
 import { useAuth } from "../contexts/AuthProvider";
+import { useParams } from "react-router-dom";
 
-const FavouriteMoviesPage = () => {
+const PlaylistPage = () => {
+  const { id } = useParams();
   const [displayedMovies, setDisplayedMovies] = React.useState([]);
   const [fetched, setFetched] = React.useState(false);
+  const [title, setTitle] = React.useState("");
   const { user, loading } = useAuth();
 
   async function getFavourites(userId) {
-    const favourites = await getFavouriteMovies(userId);
-    let movies = [];
-    for (const favourite of favourites) {
-      const movie = await getFavouriteMovie(favourite.movie_id);
-      movies.push(movie);
+    const playlist = await getPlaylist(userId, id);
+    console.log(playlist);
+    if (playlist.length > 0) {
+      setTitle(`Playlist: ${playlist[0].title}. Theme: ${playlist[0].theme}`);
+      console.log(playlist);
+      let movies = [];
+      for (const m of playlist[0].movies) {
+        const movie = await getFavouriteMovie(m);
+        movies.push(movie);
+      }
+      setDisplayedMovies(movies);
+      setFetched(true);
+    } else {
+      setTitle('Playlist not found!');
+      setFetched(true);
+      setDisplayedMovies([]);
     }
-    setDisplayedMovies(movies);
-    setFetched(true);
   }
 
   useEffect(() => {
@@ -36,25 +48,15 @@ const FavouriteMoviesPage = () => {
     return <Spinner />;
   }
 
-  const rearrangeFavourites = async (swapA, swapB) => {
-    const movieA = displayedMovies[swapA];
-    const movieB = displayedMovies[swapB];
-    setFetched(false);
-    await updateFavouriteMovieOrder(user.user.id, movieA.id, movieB.id);
-    setTimeout(async () => await getFavourites(user.user.id), 500);
-  }
-
   return (
     <>
       <PageTemplate
-        title="Favourite Movies"
+        title={title}
         movies={displayedMovies}
         action={(movie) => null}
-        rearrangeFavourites={rearrangeFavourites}
-        listSize={displayedMovies.length}
       />
     </>
   );
 };
 
-export default FavouriteMoviesPage;
+export default PlaylistPage;

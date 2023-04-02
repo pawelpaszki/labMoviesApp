@@ -9,6 +9,44 @@ const viteKey = import.meta.env.VITE_TMDB_KEY
 
 const supabase = createClient(supabaseUrl, supabaseKey)
 
+async function createPlaylist(user_id, title, theme, movies) {
+  const { data, error } = await supabase
+    .from('playlists')
+    .insert({
+      "id": uuidv4(), "user_id": user_id, "title": title, "theme": theme, "movies": movies
+    });
+  console.log('data');
+  console.log(data);
+  console.log('error');
+  console.log(error);
+  return { data, error };
+}
+
+async function getPlaylists(user_id) {
+  const { data } = await supabase.from("playlists").select().eq('user_id', user_id);
+  return data;
+}
+
+async function getPlaylist(user_id, id) {
+  const { data } = await supabase.from("playlists").select().eq('user_id', user_id).eq('id', id);
+  return data;
+}
+
+async function deletePlaylist(id) {
+  await supabase
+    .from('playlists')
+    .delete()
+    .eq('id', id);
+}
+
+async function updatePlaylist(id, movies) {
+  const { data, error } = await supabase
+    .from('playlists')
+    .update({ "movies": movies })
+    .eq('id', id);
+  return { data, error };
+}
+
 async function createFantasyMovie(
   user_id,
   title,
@@ -27,10 +65,10 @@ async function createFantasyMovie(
       "id": uuidv4(), "user_id": user_id, "title": title, "overview": overview, "runtime": runtime,
       "poster_path": poster_path, "production_companies": production_companies, "genres": genres, "release_date": release_date
     });
-    console.log('data');
-    console.log(data);
-    console.log('error');
-    console.log(error);
+  console.log('data');
+  console.log(data);
+  console.log('error');
+  console.log(error);
   return { data, error };
 }
 
@@ -261,5 +299,10 @@ export {
   getFantasyMovieById,
   addCastToFantasyMovie,
   getFantasyMovieCast,
-  deleteCastMember
+  deleteCastMember,
+  createPlaylist,
+  getPlaylists,
+  updatePlaylist,
+  getPlaylist,
+  deletePlaylist
 }

@@ -54,6 +54,7 @@ const SiteHeader = () => {
     { label: "Home", path: "/" },
     { label: "Favorite movies", path: "/movies/favourites" },
     { label: "Upcoming movies", path: "/upcoming" },
+    { label: "Movie playlists", path: "/playlists" },
     { label: "Create fantasy movie", path: "/fantasy/create" },
     { label: "List fantasy movies", path: "/fantasy" },
     { label: "Tv series", path: "/tv" },
@@ -110,6 +111,7 @@ const SiteHeader = () => {
         { label: "Discover movies", path: "/" },
         { label: "Favorite movies", path: "/movies/favourites" },
         { label: "Upcoming movies", path: "/upcoming" },
+        { label: "Movie playlists", path: "/playlists" },
       ]
     },
     {
