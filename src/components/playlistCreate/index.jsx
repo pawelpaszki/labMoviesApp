@@ -46,10 +46,9 @@ const CreateFantasyPlaylist = () => {
       );
       setCreateInitiated(false);
       if (error !== null) {
-        setAlertText("movie creation failed! Try again.")
+        setAlertText("playlist creation failed! Try again.")
         setCreateFailed(true);
       } else {
-        console.log("created");
         navigate("/playlists");
       }
     } else {

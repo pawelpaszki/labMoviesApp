@@ -91,14 +91,14 @@ async function addCastToFantasyMovie(
 }
 
 async function deleteCastMember(id, avatar_url) {
-  const { data, error } = await supabase
+  await supabase
     .storage
     .from('tmdb')
     .remove([avatar_url]);
   await supabase
     .from('fantasyMovieCast')
     .delete()
-    .eq('id', id)
+    .eq('id', id);
 }
 
 async function getFantasyMovies(user_id) {
@@ -128,19 +128,19 @@ async function deleteFantasyMovie(id, poster_path) {
       await deleteCastMember(cast.id, cast.avatar_url);
     }
   }
-  const { data, error } = await supabase
+  await supabase
     .storage
     .from('tmdb')
     .remove([poster_path]);
   await supabase
     .from('fantasyMovies')
     .delete()
-    .eq('id', id)
+    .eq('id', id);
 }
 
 async function getFavouriteTvSeries(user_id) {
   const { data } = await supabase.from("favouriteTvSeries").select().eq('user_id', user_id).order('order_id', { ascending: true });
-  return data
+  return data;
 }
 
 async function addToFavouriteTvSeries(user_id, movie_id) {
@@ -159,7 +159,7 @@ async function removeFavouriteTvSeries(user_id, movie_id) {
     .from('favouriteTvSeries')
     .delete()
     .eq('user_id', user_id)
-    .eq('movie_id', movie_id)
+    .eq('movie_id', movie_id);
 }
 
 async function updateFavouriteTvSeriesOrder(user_id, swapA, swapB) {
@@ -187,7 +187,7 @@ async function updateFavouriteTvSeriesOrder(user_id, swapA, swapB) {
 
 async function getFavouriteMovies(user_id) {
   const { data } = await supabase.from("favouriteMovies").select().eq('user_id', user_id).order('order_id', { ascending: true });
-  return data
+  return data;
 }
 
 async function addToFavouriteMovies(user_id, movie_id) {
@@ -206,7 +206,7 @@ async function removeFavouriteMovie(user_id, movie_id) {
     .from('favouriteMovies')
     .delete()
     .eq('user_id', user_id)
-    .eq('movie_id', movie_id)
+    .eq('movie_id', movie_id);
 }
 
 async function updateFavouriteMovieOrder(user_id, swapA, swapB) {
@@ -234,7 +234,7 @@ async function updateFavouriteMovieOrder(user_id, swapA, swapB) {
 
 async function getFavouriteActors(user_id) {
   const { data } = await supabase.from("favouriteActors").select().eq('user_id', user_id).order('order_id', { ascending: true });
-  return data
+  return data;
 }
 
 async function addToFavouriteActors(user_id, actor_id) {
@@ -253,7 +253,7 @@ async function removeFavouriteActor(user_id, actor_id) {
     .from('favouriteActors')
     .delete()
     .eq('user_id', user_id)
-    .eq('actor_id', actor_id)
+    .eq('actor_id', actor_id);
 }
 
 async function updateFavouriteActorOrder(user_id, swapA, swapB) {

@@ -36,6 +36,9 @@ const TvSeriesDetails = ({ movie }) => {
 
   return (
     <>
+      <Typography variant="h3" component="h2">
+        {movie.original_name}
+      </Typography>
       <Typography variant="h5" component="h3">
         Overview
       </Typography>
