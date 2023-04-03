@@ -84,99 +84,110 @@ const MovieCard = ({ movie, action, rearrangeFavourites, listSize, index, playli
     setPlaylist(e.target.value);
   };
   return (
-    <Card sx={styles.card}>
-      <CardHeader
-        title={
+    <>
+      {
+        playlistsLoaded ? (
           <>
-            <Tooltip title={title} placement="top">
-              <Typography variant="h5" component="p" noWrap={true}>
-                {movie.title}{" "}
-              </Typography>
-            </Tooltip>
+            <Card sx={styles.card}>
+              <CardHeader
+                title={
+                  <>
+                    <Tooltip title={title} placement="top">
+                      <Typography variant="h5" component="p" noWrap={true}>
+                        {movie.title}{" "}
+                      </Typography>
+                    </Tooltip>
+                  </>
+                }
+              />
+              <CardMedia
+                sx={styles.media}
+                image={
+                  movie.poster_path
+                    ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
+                    : img
+                }
+              />
+              <CardContent>
+                <Grid container>
+                  <Grid item xs={8}>
+                    <Typography variant="h6" component="p">
+                      <CalendarIcon fontSize="small" />
+                      {movie.release_date}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Typography variant="h6" component="p">
+                      <StarRateIcon fontSize="small" />
+                      {"  "} {movie.vote_average}{" "}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={8}>
+                    {playlistsLoaded && user && isPlaylistEnabledPage ? (
+                      <>
+                        <Select
+                          labelId="genre-label"
+                          id="genre-select"
+                          value={playlist}
+                          onChange={handlePlaylistSelect}
+                        >
+                          {playlists.map((playlist) => {
+                            return (
+                              <MenuItem key={playlist.id} value={playlist.title}>
+                                {playlist.title.substring(0, 10)}
+                              </MenuItem>
+                            );
+                          })}
+                        </Select>
+                        <IconButton aria-label="add-to-playlist" onClick={addToPlaylist}>
+                          <PostAddIcon color="primary" fontSize="large" />
+                        </IconButton>
+                      </>
+                    ) : (
+                      <>
+                      </>
+                    )}
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Typography variant="h6" component="p" style={{ paddingTop: "0.8em" }}>
+                      <ThumbUpAltIcon fontSize="small" />
+                      {"  "} {Math.floor(movie.popularity)}{" "}
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </CardContent>
+              <CardActions disableSpacing>
+                {action(movie)}
+                <Link to={`/movies/${movie.id}`}>
+                  <Button variant="outlined" size="medium" color="primary">
+                    More Info
+                  </Button>
+                </Link>
+                <Link to={`/movies/${movie.id}/similar`} style={{ paddingLeft: "1em" }}>
+                  <Button variant="outlined" size="medium" color="primary">
+                    Similar
+                  </Button>
+                </Link>
+              </CardActions>
+              {duplicateAddToPlaylist ? (
+                <Alert severity="error">Movie already added to the {playlist} playlist</Alert>
+              ) : (
+                <></>
+              )}
+              {listSize !== undefined ? (
+                <RearrangeFooter rearrangeFavourites={rearrangeFavourites} index={index} listSize={listSize} />
+              ) : (
+                <></>
+              )}
+            </Card>
           </>
-        }
-      />
-      <CardMedia
-        sx={styles.media}
-        image={
-          movie.poster_path
-            ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
-            : img
-        }
-      />
-      <CardContent>
-        <Grid container>
-          <Grid item xs={8}>
-            <Typography variant="h6" component="p">
-              <CalendarIcon fontSize="small" />
-              {movie.release_date}
-            </Typography>
-          </Grid>
-          <Grid item xs={4}>
-            <Typography variant="h6" component="p">
-              <StarRateIcon fontSize="small" />
-              {"  "} {movie.vote_average}{" "}
-            </Typography>
-          </Grid>
-          <Grid item xs={8}>
-            {playlistsLoaded && user && isPlaylistEnabledPage? (
-              <>
-                <Select
-                  labelId="genre-label"
-                  id="genre-select"
-                  value={playlist}
-                  onChange={handlePlaylistSelect}
-                >
-                  {playlists.map((playlist) => {
-                    return (
-                      <MenuItem key={playlist.id} value={playlist.title}>
-                        {playlist.title.substring(0, 10)}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-                <IconButton aria-label="add-to-playlist" onClick={addToPlaylist}>
-                  <PostAddIcon color="primary" fontSize="large" />
-                </IconButton>
-              </>
-            ) : (
-              <>
-              </>
-            )}
-          </Grid>
-          <Grid item xs={4}>
-            <Typography variant="h6" component="p" style={{ paddingTop: "0.8em" }}>
-              <ThumbUpAltIcon fontSize="small" />
-              {"  "} {Math.floor(movie.popularity)}{" "}
-            </Typography>
-          </Grid>
-        </Grid>
-      </CardContent>
-      <CardActions disableSpacing>
-        {action(movie)}
-        <Link to={`/movies/${movie.id}`}>
-          <Button variant="outlined" size="medium" color="primary">
-            More Info
-          </Button>
-        </Link>
-        <Link to={`/movies/${movie.id}/similar`} style={{ paddingLeft: "1em" }}>
-          <Button variant="outlined" size="medium" color="primary">
-            Similar
-          </Button>
-        </Link>
-      </CardActions>
-      {duplicateAddToPlaylist ? (
-        <Alert severity="error">Movie already added to the {playlist} playlist</Alert>
-      ) : (
-        <></>
-      )}
-      {listSize !== undefined ? (
-        <RearrangeFooter rearrangeFavourites={rearrangeFavourites} index={index} listSize={listSize} />
-      ) : (
-        <></>
-      )}
-    </Card>
-  );
+        ) : (
+          <>
+          </>
+        )
+      }
+    </>
+  )
 }
 
 export default MovieCard;
