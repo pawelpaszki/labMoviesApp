@@ -20,13 +20,13 @@ __Name:__ Pawel Paszki
 
  +  `/fantasy`
  
-> list fantasy movies (each logged in user has their own list)
+> list fantasy movies (each logged in user has their own list). items can also be removed from this list (removal of movie also removes all of the cast and posters/ avatars)
 
 ![][fantasy_movies_list]
 
  +  `/fantasy/:id`
  
-> view fantasy movie (and cast with option to add cast) - (each logged in user has their own list)
+> view fantasy movie (and cast with option to add/ remove cast) - (each logged in user has their own list)
 
 ![][fantasy_movie]
 
@@ -96,7 +96,7 @@ __Name:__ Pawel Paszki
 
  +  `/playlists` 
 
-> show playlists cards (title, theme, number of movies) (each logged in user has their own list)
+> show playlists cards (title, theme, number of movies) (each logged in user has their own list). playlists can also be removed and new movies can be added to them (non-duplicated only)
 
 ![][playlists]
 
