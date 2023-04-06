@@ -10,7 +10,7 @@ import MovieFilterUI, {
   genreFilter,
 } from "../components/movieFilterUI";
 import Pagination from "../components/pagination";
-import { sortCollection, movieSortKeys } from "../util"; 
+import { sortCollection, movieSortKeys } from "../util";
 
 const titleFiltering = {
   name: "title",
@@ -84,22 +84,28 @@ const HomePage = (props) => {
 
   return (
     <>
-      <PageTemplate
-        title="Discover Movies"
-        movies={displayedMovies}
-        action={(movie) => {
-          return <AddToFavouriteMoviesIcon movie={movie} />
-        }}
-      />
-      <MovieFilterUI
-        onFilterValuesChange={changeFilterValues}
-        titleFilter={filterValues[0].value}
-        genreFilter={filterValues[1].value}
-        onSortChange={onSortChange}
-        sortKeys={movieSortKeys}
-        titleKey={titleKey}
-      />
-      <Pagination data={data} page={page} setPage={handleSetPage} />
+      {loadingFinished ? (
+        <>
+          <PageTemplate
+            title="Discover Movies"
+            movies={displayedMovies}
+            action={(movie) => {
+              return <AddToFavouriteMoviesIcon movie={movie} />
+            }}
+          />
+          <MovieFilterUI
+            onFilterValuesChange={changeFilterValues}
+            titleFilter={filterValues[0].value}
+            genreFilter={filterValues[1].value}
+            onSortChange={onSortChange}
+            sortKeys={movieSortKeys}
+            titleKey={titleKey}
+          />
+          <Pagination data={data} page={page} setPage={handleSetPage} />
+        </>
+      ) : (
+        <></>
+      )}
     </>
   );
 };

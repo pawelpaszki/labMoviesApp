@@ -41,7 +41,7 @@ const MovieList = ({ movies, action, rearrangeFavourites, listSize, disableReloa
     getUserData(user?.user.id);
   }
   let movieCards = displayedMovies.map((m, index) => (
-    <Grid key={m.id} item xs={12} sm={6} md={4} lg={3} xl={3}>
+    <Grid key={m.id} item xs={12} sm={6} md={4} lg={3} xl={2}>
       <Movie
         key={m.id}
         movie={m}

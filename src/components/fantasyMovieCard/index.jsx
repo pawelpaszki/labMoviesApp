@@ -20,7 +20,10 @@ const styles = {
     height: "5ex",
     display: "flex",
   },
-  card: { maxWidth: 345 },
+  card: { 
+    maxWidth: 345,
+    margin: "6px"
+  },
   media: { height: 500 },
   avatar: {
     backgroundColor: "rgb(255, 0, 0)",
