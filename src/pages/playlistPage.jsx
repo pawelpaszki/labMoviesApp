@@ -15,10 +15,8 @@ const PlaylistPage = () => {
 
   async function getFavourites(userId) {
     const playlist = await getPlaylist(userId, id);
-    console.log(playlist);
     if (playlist.length > 0) {
       setTitle(`Playlist: ${playlist[0].title}. Theme: ${playlist[0].theme}`);
-      console.log(playlist);
       let movies = [];
       for (const m of playlist[0].movies) {
         const movie = await getFavouriteMovie(m);

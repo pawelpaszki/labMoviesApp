@@ -49,7 +49,6 @@ export default function FantasyMovieCard({ movie }) {
   });
   const remove = async (e) => {
     e.preventDefault();
-    console.log(movie);
     await deleteFantasyMovie(movie.id, movie.poster_path);
     window.location.reload(false);
   };

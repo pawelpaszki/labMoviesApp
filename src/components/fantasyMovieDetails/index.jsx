@@ -68,7 +68,6 @@ const FantasyMovieDetails = ({ movie, movieCast, reload }) => {
       movieCast.forEach(c => {
         if (!c.avatar_url.startsWith("http")) {
           c.avatar_url = `${import.meta.env.VITE_REACT_APP_SUPABASE_URL}/storage/v1/object/public/tmdb/${c.avatar_url}`;
-          console.log(c);
         }
       });
     }

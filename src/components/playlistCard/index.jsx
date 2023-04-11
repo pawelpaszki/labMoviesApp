@@ -3,13 +3,19 @@ import React from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
+import CardHeader from "@mui/material/CardHeader";
+import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Chip from "@mui/material/Chip";
 import Button from "@mui/material/Button";
 import { deletePlaylist } from '../../supabase/client';
 
 const styles = {
-  card: { maxWidth: 345 },
+  card: {
+    maxWidth: 345,
+    padding: "1em",
+    margin: "0.5em"
+  },
   chipSet: {
     display: "flex",
     justifyContent: "center",
@@ -39,10 +45,13 @@ export default function PlaylistCard({ playlist, reload }) {
   return (
     <Card sx={styles.card}>
       <CardContent>
-        <Grid item>
-          <Chip label="Title" sx={styles.chipLabel} color="primary" />
-          {playlist.title}
-        </Grid>
+        <CardHeader
+          title={
+            <Typography variant="h5" component="p">
+              {playlist.title}{" "}
+            </Typography>
+          }
+        />
         <Grid item>
           <Chip label="Theme" sx={styles.chipLabel} color="primary" />
           {playlist.theme}

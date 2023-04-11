@@ -15,10 +15,6 @@ async function createPlaylist(user_id, title, theme, movies) {
     .insert({
       "id": uuidv4(), "user_id": user_id, "title": title, "theme": theme, "movies": movies
     });
-  console.log('data');
-  console.log(data);
-  console.log('error');
-  console.log(error);
   return { data, error };
 }
 
@@ -65,10 +61,6 @@ async function createFantasyMovie(
       "id": uuidv4(), "user_id": user_id, "title": title, "overview": overview, "runtime": runtime,
       "poster_path": poster_path, "production_companies": production_companies, "genres": genres, "release_date": release_date
     });
-  console.log('data');
-  console.log(data);
-  console.log('error');
-  console.log(error);
   return { data, error };
 }
 
@@ -124,7 +116,6 @@ async function deleteFantasyMovie(id, poster_path) {
   const movieCast = await getFantasyMovieCast(id);
   if (movieCast.length > 0) {
     for (const cast of movieCast) {
-      console.log(cast);
       await deleteCastMember(cast.id, cast.avatar_url);
     }
   }

@@ -69,10 +69,7 @@ const MovieCard = ({ movie, action, rearrangeFavourites, listSize, index, playli
             setTimeout(async () => setDuplicateAddToPlaylist(false), 3000);
           } else {
             const merged = [...pl.movies, ...[movie.id.toString()]];
-            console.log(merged);
             const { data, error } = await updatePlaylist(pl.id, merged);
-            console.log(data);
-            console.log(error);
           }
         }
       };

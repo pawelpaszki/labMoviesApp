@@ -82,14 +82,6 @@ const Search = () => {
 
   const sendSearchQUery = () => {
     query = "";
-    // console.log(`discoverCategory: ${discoverCategory}`);
-    // console.log(`useDateRangeChecked: ${useDateRangeChecked}`);
-    // console.log(`minRating: ${minRating}`);
-    // console.log(`maxRating: ${maxRating}`);
-    // console.log(`releaseStartDate: ${releaseStartDate}`);
-    // console.log(`releaseEndDate: ${releaseEndDate}`);
-    // console.log(`genre: ${genre}`);
-    // console.log(`keywords: ${keywords}`);
     query = constructQuery(
       discoverCategory,
       useDateRangeChecked,
@@ -103,7 +95,6 @@ const Search = () => {
     let resource = discoverCategory === "movie" ? "movie" : "tv";
 
     getSearchResults(resource, query).then(result => {
-      console.log(result.results);
       setMovies(result.results);
       setSearchResultLoaded(true);
     })

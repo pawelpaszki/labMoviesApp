@@ -18,7 +18,7 @@ const PlaylistList = ({ playlists, reload }) => {
           <Header title="User playlists" />
         </Grid>
         {playlists.map((p) => (
-          <Grid key={p.id} item xs={12} sm={6} md={4} lg={3} xl={2}>
+          <Grid key={p.id} item xs={12} sm={6} md={4} lg={3} xl={3}>
             <PlaylistCard playlist={p} reload={reload}/>
           </Grid>
         ))}
