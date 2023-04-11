@@ -206,8 +206,6 @@ __Name:__ Pawel Paszki
 
 #### Protected features (if relevant)
 
-[ Briefly state other areas where you used authentication in the app, for example, to protect access to functionality, e.g. only authenticated users can 'favourite' a movie.]
-
 * all pages but home (partially restricted)/ login and register are protected
 * favourites are per logged in user (including playlists and fantasy movies)
 * nav bar shows all available pages links if logged in (sign in only if logged out)
