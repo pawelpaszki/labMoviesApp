@@ -1,17 +1,16 @@
-import { useAuth } from "../../contexts/AuthProvider";
+import React, { useContext } from "react";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { AuthenticationContext } from "../../contexts/AuthenticationContext";
 
 const AuthRoute = () => {
-  const { user, loading } = useAuth();
+  const context = useContext(AuthenticationContext)
   const location = useLocation();
-
-  if (!loading) {
-    return user ? (
-      <Outlet />
-    ) : (
-      <Navigate to={"/login"} replace state={{ path: location.pathname }} />
-    );
-  }
+  console.log(context.isAuthenticated);
+  return context.isAuthenticated ? (
+    <Outlet />
+  ) : (
+    <Navigate to={"/login"} replace state={{ path: location.pathname }} />
+  );
 };
 
 export default AuthRoute;
