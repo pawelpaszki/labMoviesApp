@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Input from '@mui/material/Input';
 import FormGroup from '@mui/material/FormGroup';
 import FormControl from '@mui/material/FormControl';
@@ -13,8 +13,10 @@ import Avatar from '@mui/material/Avatar';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
+import { AuthenticationContext } from "../../contexts/AuthenticationContext";
 
 const LoginForm = () => {
+  const context = useContext(AuthenticationContext);
   let password = "";
   let email = "";
   const [errorMsg, setErrorMsg] = useState("");
@@ -35,8 +37,16 @@ const LoginForm = () => {
         data: { user, session },
         error
       } = await login(email, password);
-      if (error) setErrorMsg(error.message);
-      if (user && session) navigate("/");
+      if (error) {
+        setErrorMsg(error.message);
+      }
+      if (user && session) {
+        const result = await context.authenticate(email, password);
+        console.log(result);
+        if (result?.token !== undefined) {
+          navigate("/");
+        }
+      }
     } catch (error) {
       setErrorMsg("Incorrect credentials");
     }

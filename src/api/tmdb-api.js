@@ -5,6 +5,21 @@ export const signup = (email, password, firstName, lastName) => {
     },
     method: 'post',
     body: JSON.stringify({ email: email, password: password, firstName: firstName, lastName: lastName })
+  }).then((response) => {
+    return response.json();
+  })
+    .catch((error) => {
+      throw error
+    });
+};
+
+export const login = (email, password) => {
+  return fetch('/api/accounts/security/token', {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    method: 'post',
+    body: JSON.stringify({ email: email, password: password })
   }).then(res => res.json())
 };
 
@@ -96,16 +111,12 @@ export const getMovie = (args) => {
   const [, idPart] = args.queryKey;
   const { id } = idPart;
   return fetch(
-    `/api/movies/${id}`
-  ).then((response) => {
-    if (!response.ok) {
-      throw new Error(response.json().message);
+    `/api/movie/${id}`, {
+    headers: {
+      'Authorization': window.localStorage.getItem('token')
     }
-    return response.json();
-  })
-    .catch((error) => {
-      throw error
-    });
+  }
+  ).then((res) => res.json());
 };
 
 export const getPopularActors = (page = 1) => {

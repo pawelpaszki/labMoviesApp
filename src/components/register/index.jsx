@@ -6,7 +6,6 @@ import InputLabel from '@mui/material/InputLabel';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import { Link } from "react-router-dom";
-import { supabase } from "../../supabase/client";
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
@@ -26,12 +25,6 @@ const RegistrationForm = () => {
   const [errorMsg, setErrorMsg] = useState("");
   const [msg, setMsg] = useState("");
   const [loading, setLoading] = useState(false);
-
-  const register = (email, password) =>
-    supabase.auth.signUp({
-      email,
-      password
-    });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -58,7 +51,6 @@ const RegistrationForm = () => {
         firstName,
         lastName
       );
-      console.log(account);
       if (account?.id !== undefined) {
         navigate("/");
       } else {
