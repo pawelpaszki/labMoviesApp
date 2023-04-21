@@ -1,3 +1,13 @@
+export const signup = (email, password, firstName, lastName) => {
+  return fetch('/api/accounts', {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    method: 'post',
+    body: JSON.stringify({ email: email, password: password, firstName: firstName, lastName: lastName })
+  }).then(res => res.json())
+};
+
 export const getSearchResults = (resource, query) => {
   return fetch(
     `https://api.themoviedb.org/3/discover/${resource}?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&include_adult=false&include_video=false&vote_count.gte=200${query}`

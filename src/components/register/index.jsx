@@ -13,11 +13,16 @@ import Avatar from '@mui/material/Avatar';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
+import { useNavigate } from "react-router-dom";
+import { signup } from '../../api/tmdb-api';
 
 const RegistrationForm = () => {
-  let password = "";
-  let passwordConfirm = "";
-  let email = "";
+  const navigate = useNavigate();
+  const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [msg, setMsg] = useState("");
   const [loading, setLoading] = useState(false);
@@ -33,7 +38,9 @@ const RegistrationForm = () => {
     if (
       password === "" ||
       email === "" ||
-      passwordConfirm === ""
+      passwordConfirm === "" ||
+      firstName === "" ||
+      lastName === ""
     ) {
       setErrorMsg("Please provide all the fields");
       return;
@@ -45,14 +52,17 @@ const RegistrationForm = () => {
     try {
       setErrorMsg("");
       setLoading(true);
-      const { data, error } = await register(
+      const account = await signup(
         email,
-        password
+        password,
+        firstName,
+        lastName
       );
-      if (!error && data) {
-        setMsg(
-          "Registration Successful. Go to login page to access the app"
-        );
+      console.log(account);
+      if (account?.id !== undefined) {
+        navigate("/");
+      } else {
+        setErrorMsg("Error occurred when creating account");
       }
     } catch (error) {
       setErrorMsg("Error occurred when creating account");
@@ -60,16 +70,24 @@ const RegistrationForm = () => {
     setLoading(false);
   };
 
-  const setEmail = (e) => {
-    email = e;
+  const handleSetEmail = (e) => {
+    setEmail(e);
   }
 
-  const setPassword = (p) => {
-    password = p;
+  const handleSetPassword = (p) => {
+    setPassword(p);
   }
 
-  const setPasswordConfirm = (pc) => {
-    passwordConfirm = pc;
+  const handleSetPasswordConfirm = (pc) => {
+    setPasswordConfirm(pc);
+  }
+
+  const handleSetFirstName = (fn) => {
+    setFirstName(fn);
+  }
+
+  const handleSetLastName = (ln) => {
+    setLastName(ln);
   }
 
   return (
@@ -95,7 +113,23 @@ const RegistrationForm = () => {
             <FormGroup id="email">
               <FormControl>
                 <InputLabel>Email address</InputLabel>
-                <Input id="email" onInput={e => setEmail(e.target.value)} />
+                <Input id="email" onInput={e => handleSetEmail(e.target.value)} />
+              </FormControl>
+            </FormGroup>
+          </Grid>
+          <Grid item xs={12}>
+            <FormGroup id="firstName" noValidate style={{ marginTop: "15px", marginBottom: "10px" }}>
+              <FormControl>
+                <InputLabel>First name</InputLabel>
+                <Input id="firstName" onInput={e => handleSetFirstName(e.target.value)} />
+              </FormControl>
+            </FormGroup>
+          </Grid>
+          <Grid item xs={12}>
+            <FormGroup id="lastName" style={{ marginTop: "15px", marginBottom: "10px" }}>
+              <FormControl>
+                <InputLabel>Last name</InputLabel>
+                <Input id="lastName" onInput={e => handleSetLastName(e.target.value)} />
               </FormControl>
             </FormGroup>
           </Grid>
@@ -103,7 +137,7 @@ const RegistrationForm = () => {
             <FormGroup id="password" style={{ marginTop: "15px", marginBottom: "10px" }}>
               <FormControl>
                 <InputLabel>Password</InputLabel>
-                <Input id="password" onInput={e => setPassword(e.target.value)} />
+                <Input id="password" onInput={e => handleSetPassword(e.target.value)} />
               </FormControl>
             </FormGroup>
           </Grid>
@@ -111,7 +145,7 @@ const RegistrationForm = () => {
             <FormGroup id="passwordConfirm" style={{ marginTop: "15px", marginBottom: "10px" }}>
               <FormControl>
                 <InputLabel>Confirm Password</InputLabel>
-                <Input id="passwordConfirm" onInput={e => setPasswordConfirm(e.target.value)} />
+                <Input id="passwordConfirm" onInput={e => handleSetPasswordConfirm(e.target.value)} />
               </FormControl>
             </FormGroup>
           </Grid>
