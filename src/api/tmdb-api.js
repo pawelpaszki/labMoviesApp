@@ -70,7 +70,23 @@ export const getSimilarTvSeries = (page = 1, id) => {
 
 export const getMovies = (page = 1) => {
   return fetch(
-    `https://api.themoviedb.org/3/discover/movie?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&include_adult=false&include_video=false&page=${page}`
+    `/api/movies?page=${page}`
+  ).then((response) => {
+    if (!response.ok) {
+      throw new Error(response.json().message);
+    }
+    return response.json();
+  })
+    .catch((error) => {
+      throw error
+    });
+};
+
+export const getMovie = (args) => {
+  const [, idPart] = args.queryKey;
+  const { id } = idPart;
+  return fetch(
+    `/api/movies/${id}`
   ).then((response) => {
     if (!response.ok) {
       throw new Error(response.json().message);
@@ -141,22 +157,6 @@ export const getFavouriteTvSeriesById = (id) => {
 export const getFavouriteActor = (id) => {
   return fetch(
     `https://api.themoviedb.org/3/person/${id}?api_key=${import.meta.env.VITE_TMDB_KEY}`
-  ).then((response) => {
-    if (!response.ok) {
-      throw new Error(response.json().message);
-    }
-    return response.json();
-  })
-    .catch((error) => {
-      throw error
-    });
-};
-
-export const getMovie = (args) => {
-  const [, idPart] = args.queryKey;
-  const { id } = idPart;
-  return fetch(
-    `https://api.themoviedb.org/3/movie/${id}?api_key=${import.meta.env.VITE_TMDB_KEY}`
   ).then((response) => {
     if (!response.ok) {
       throw new Error(response.json().message);

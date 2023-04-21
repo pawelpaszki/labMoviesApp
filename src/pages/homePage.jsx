@@ -75,10 +75,12 @@ const HomePage = (props) => {
   }
 
   const handleSetPage = async (number) => {
+    setLoadingFinished(false);
     setPage(number);
     let moviesResults = await getMovies(number);
     if (moviesResults && moviesResults.results.length > 0) {
       setDisplayedMovies(moviesResults.results);
+      setLoadingFinished(true);
     }
   }
 
