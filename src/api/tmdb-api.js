@@ -95,7 +95,11 @@ export const getSimilarTvSeries = (page = 1, id) => {
 
 export const getMovies = (page = 1) => {
   return fetch(
-    `/api/movies?page=${page}`
+    `/api/movies?page=${page}`,{
+      headers: {
+        'Authorization': window.localStorage.getItem('token')
+      }
+    }
   ).then((response) => {
     if (!response.ok) {
       throw new Error(response.json().message);
@@ -111,7 +115,7 @@ export const getMovie = (args) => {
   const [, idPart] = args.queryKey;
   const { id } = idPart;
   return fetch(
-    `/api/movie/${id}`, {
+    `/api/movies/${id}`, {
     headers: {
       'Authorization': window.localStorage.getItem('token')
     }

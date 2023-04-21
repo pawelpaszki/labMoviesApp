@@ -44,7 +44,9 @@ const LoginForm = () => {
         const result = await context.authenticate(email, password);
         console.log(result);
         if (result?.token !== undefined) {
-          navigate("/");
+          setTimeout(() => navigate("/"), 500);
+        } else {
+          setErrorMsg(result.message);
         }
       }
     } catch (error) {

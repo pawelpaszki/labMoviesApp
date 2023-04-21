@@ -74,12 +74,12 @@ const App = () => {
                   <Route path="/playlists/create/:id" element={< CreatePlaylistPage />} />
                   <Route path="/playlists/:id" element={< PlaylistPage />} />
                   <Route path="/playlists" element={< ListPlaylistsPage />} />
-                  <Route path="*" element={<Navigate to="/" />} />
+                  <Route path="*" element={<Navigate to="/login" />} />
+                  <Route path="/" element={<HomePage />} />
                 </Route>
-                <Route path="/" element={<HomePage />} />
                 <Route path="/register" element={<RegisterPage />} />
                 <Route path="/login" element={<LoginPage />} />
-                <Route path="*" element={<HomePage />} />
+                <Route path="*" element={<Navigate to="/login" />} />
               </Routes>
 
             </MoviesContextProvider>

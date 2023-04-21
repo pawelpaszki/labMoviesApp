@@ -52,7 +52,7 @@ const RegistrationForm = () => {
         lastName
       );
       if (account?.id !== undefined) {
-        navigate("/");
+        setMsg("Signed up successfully. Go to login page");
       } else {
         setErrorMsg("Error occurred when creating account");
       }

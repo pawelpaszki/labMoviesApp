@@ -18,7 +18,7 @@ const AuthContextProvider = (props) => {
   const authenticate = async (email, password) => {
     const result = await login(email, password);
     if (result.token) {
-      setToken(result.token)
+      setToken(result.token);
       setIsAuthenticated(true);
       setEmail(email);
     };
@@ -32,7 +32,10 @@ const AuthContextProvider = (props) => {
   };
 
   const signout = () => {
-    setTimeout(() => setIsAuthenticated(false), 100);
+    setTimeout(() => {
+      setIsAuthenticated(false);
+      setToken(null);
+    }, 100);
   }
 
   return (
