@@ -33,14 +33,16 @@ export const getFavouriteCollection = (collection) => {
 };
 
 export const addToFavouriteCollection = (id, collection) => {
-  console.log(id);
+
   return fetch(`/api/accounts/${window.localStorage.getItem('accountId')}/favourite_${collection}`, {
     headers: {
       'Content-Type': 'application/json'
     },
     method: 'post',
-    body: JSON.stringify(id)
-  }).then(res => res.json())
+    body: JSON.stringify({ id: id })
+  }).then(res => res.json()).catch((error) => {
+    console.log(error);
+  });
 };
 
 export const removeFromFavouriteCollection = (id, collection) => {

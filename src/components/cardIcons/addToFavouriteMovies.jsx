@@ -15,7 +15,7 @@ const AddToFavouriteMoviesIcon = ({ movie }) => {
   const add = async (e) => {
     e.preventDefault();
     setUpdating(true);
-    await addToFavouriteCollection({movieId: movie.id}, "movies");
+    await addToFavouriteCollection(movie.id, "movies");
     setFavourite(true);
     movie.favourite = true;
     setUpdating(false);
