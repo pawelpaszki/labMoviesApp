@@ -190,7 +190,11 @@ export const getTvSeriesById = (args) => {
 
 export const getPopularActors = (page = 1) => {
   return fetch(
-    `https://api.themoviedb.org/3/person/popular?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=${page}`
+    `/api/actors?page=${page}`, {
+    headers: {
+      'Authorization': window.localStorage.getItem('token')
+    }
+  }
   ).then((response) => {
     if (!response.ok) {
       throw new Error(response.json().message);
@@ -230,20 +234,6 @@ export const getFavouriteMovie = (id) => {
     });
 };
 
-export const getFavouriteTvSeriesById = (id) => {
-  return fetch(
-    `https://api.themoviedb.org/3/tv/${id}?api_key=${import.meta.env.VITE_TMDB_KEY}`
-  ).then((response) => {
-    if (!response.ok) {
-      throw new Error(response.json().message);
-    }
-    return response.json();
-  })
-    .catch((error) => {
-      throw error
-    });
-};
-
 export const getFavouriteActor = (id) => {
   return fetch(
     `https://api.themoviedb.org/3/person/${id}?api_key=${import.meta.env.VITE_TMDB_KEY}`
@@ -259,19 +249,20 @@ export const getFavouriteActor = (id) => {
 };
 
 export const getActorDetails = (args) => {
-  const [, idPart] = args.queryKey;
-  const { id } = idPart;
+  let id = ""
+  if (args?.queryKey) {
+    const [, idPart] = args.queryKey;
+    id = idPart.id;
+  } else {
+    id = args.id;
+  }
   return fetch(
-    `https://api.themoviedb.org/3/person/${id}?api_key=${import.meta.env.VITE_TMDB_KEY}`
-  ).then((response) => {
-    if (!response.ok) {
-      throw new Error(response.json().message);
+    `/api/actors/${id}`, {
+    headers: {
+      'Authorization': window.localStorage.getItem('token')
     }
-    return response.json();
-  })
-    .catch((error) => {
-      throw error
-    });
+  }
+  ).then((res) => res.json());
 };
 
 export const getGenres = async () => {
