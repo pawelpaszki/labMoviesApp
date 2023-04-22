@@ -3,7 +3,7 @@ import Actor from "../actorCard";
 import Grid from "@mui/material/Grid";
 import { getFavouriteCollection } from "../../api/tmdb-api";
 
-const ActorsList = ({ actors, action, rearrangeFavourites, listSize, disableReload }) => {
+const ActorsList = ({ actors, action, disableReload }) => {
   const [displayedActors, setDisplayedActors] = React.useState([]);
   const [fetched, setFetched] = React.useState(false);
   useEffect(() => {
@@ -37,8 +37,6 @@ const ActorsList = ({ actors, action, rearrangeFavourites, listSize, disableRelo
         key={m.id}
         actor={m}
         action={action}
-        rearrangeFavourites={rearrangeFavourites}
-        listSize={listSize}
         index={index} />
     </Grid>
   ));

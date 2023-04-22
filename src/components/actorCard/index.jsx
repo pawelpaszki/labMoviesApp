@@ -12,7 +12,6 @@ import MaleIcon from '@mui/icons-material/Male';
 import StarsIcon from '@mui/icons-material/Stars';
 import Grid from "@mui/material/Grid";
 import img from '../../images/profile-placeholder.png';
-import RearrangeFooter from '../rearrangeFavourites';
 import Tooltip from "@mui/material/Tooltip";
 
 const styles = {
@@ -23,7 +22,7 @@ const styles = {
   },
 };
 
-export default function ActorCard({ actor, action, rearrangeFavourites, listSize, index }) {
+export default function ActorCard({ actor, action }) {
   const [title, setTitle] = React.useState("");
   React.useEffect(() => {
     if (actor) {
@@ -72,11 +71,6 @@ export default function ActorCard({ actor, action, rearrangeFavourites, listSize
           </Button>
         </Link>
       </CardActions>
-      {listSize !== undefined ? (
-        <RearrangeFooter rearrangeFavourites={rearrangeFavourites} index={index} listSize={listSize} />
-      ) : (
-        <></>
-      )}
     </Card>
   );
 }

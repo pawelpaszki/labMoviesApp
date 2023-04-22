@@ -9,7 +9,7 @@ const styles = {
   }
 };
 
-function ActorsListPage({ actors, title, action, rearrangeFavourites, listSize }) {
+function ActorsListPage({ actors, title, action, listSize }) {
   return (
     <Grid container sx={styles.root}>
       <Grid item xs={12}>
@@ -19,7 +19,6 @@ function ActorsListPage({ actors, title, action, rearrangeFavourites, listSize }
         <ActorsList
           action={action}
           actors={actors}
-          rearrangeFavourites={rearrangeFavourites}
           listSize={listSize}
         />
       </Grid>
