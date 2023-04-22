@@ -9,7 +9,7 @@ const styles = {
   }
 };
 
-function TvSeriesListPageTemplate({ tvSeries, title, action, rearrangeFavourites, listSize }) {
+function TvSeriesListPageTemplate({ tvSeries, title, action, listSize }) {
   return (
     <Grid container sx={styles.root}>
       <Grid item xs={12}>
@@ -19,7 +19,6 @@ function TvSeriesListPageTemplate({ tvSeries, title, action, rearrangeFavourites
         <TvSeriesList
           action={action}
           tvSeries={tvSeries}
-          rearrangeFavourites={rearrangeFavourites}
           listSize={listSize} />
       </Grid>
     </Grid>

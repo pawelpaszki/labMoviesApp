@@ -85,11 +85,6 @@ export default function TvSeriesCard({ movie, action, rearrangeFavourites, listS
           </Button>
         </Link>
       </CardActions>
-      {listSize !== undefined ? (
-        <RearrangeFooter rearrangeFavourites={rearrangeFavourites} index={index} listSize={listSize} />
-      ) : (
-        <></>
-      )}
     </Card>
   );
 }

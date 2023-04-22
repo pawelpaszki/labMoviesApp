@@ -70,7 +70,11 @@ export const getSearchResults = (resource, query) => {
 
 export const getSeries = (page = 1) => {
   return fetch(
-    `https://api.themoviedb.org/3/discover/tv?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&include_adult=false&include_video=false&page=${page}`
+    `/api/tv?page=${page}`, {
+    headers: {
+      'Authorization': window.localStorage.getItem('token')
+    }
+  }
   ).then((response) => {
     if (!response.ok) {
       throw new Error(response.json().message);
@@ -116,7 +120,11 @@ export const searchActors = (query) => {
 
 export const getSimilarTvSeries = (page = 1, id) => {
   return fetch(
-    `https://api.themoviedb.org/3/tv/${id}/similar?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=${page}`
+    `/api/tv/${id}/similar?page=${page}`, {
+    headers: {
+      'Authorization': window.localStorage.getItem('token')
+    }
+  }
   ).then((response) => {
     if (!response.ok) {
       throw new Error(response.json().message);
@@ -156,6 +164,23 @@ export const getMovie = (args) => {
   }
   return fetch(
     `/api/movies/${id}`, {
+    headers: {
+      'Authorization': window.localStorage.getItem('token')
+    }
+  }
+  ).then((res) => res.json());
+};
+
+export const getTvSeriesById = (args) => {
+  let id = ""
+  if (args?.queryKey) {
+    const [, idPart] = args.queryKey;
+    id = idPart.id;
+  } else {
+    id = args.id;
+  }
+  return fetch(
+    `/api/tv/${id}`, {
     headers: {
       'Authorization': window.localStorage.getItem('token')
     }
@@ -222,22 +247,6 @@ export const getFavouriteTvSeriesById = (id) => {
 export const getFavouriteActor = (id) => {
   return fetch(
     `https://api.themoviedb.org/3/person/${id}?api_key=${import.meta.env.VITE_TMDB_KEY}`
-  ).then((response) => {
-    if (!response.ok) {
-      throw new Error(response.json().message);
-    }
-    return response.json();
-  })
-    .catch((error) => {
-      throw error
-    });
-};
-
-export const getTvSeriesById = (args) => {
-  const [, idPart] = args.queryKey;
-  const { id } = idPart;
-  return fetch(
-    `https://api.themoviedb.org/3/tv/${id}?api_key=${import.meta.env.VITE_TMDB_KEY}`
   ).then((response) => {
     if (!response.ok) {
       throw new Error(response.json().message);

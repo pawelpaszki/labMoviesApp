@@ -38,7 +38,6 @@ const TvSeriesList = ({ tvSeries, action, rearrangeFavourites, listSize, disable
         key={m.id}
         movie={m}
         action={action}
-        rearrangeFavourites={rearrangeFavourites}
         listSize={listSize}
         index={index}
       />
