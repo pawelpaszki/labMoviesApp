@@ -13,7 +13,6 @@ import StarRateIcon from "@mui/icons-material/StarRate";
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import img from '../../images/film-poster-placeholder.png';
 import Grid from "@mui/material/Grid";
-import RearrangeFooter from '../rearrangeFavourites';
 import MenuItem from "@mui/material/MenuItem";
 import Select from '@mui/material/Select';
 import PostAddIcon from '@mui/icons-material/PostAdd';
@@ -30,7 +29,7 @@ const styles = {
   },
 };
 
-const MovieCard = ({ movie, action, rearrangeFavourites, listSize, index, playlistsArray }) => {
+const MovieCard = ({ movie, action, playlistsArray }) => {
   const navigate = useNavigate();
   const [title, setTitle] = React.useState("");
   const [playlists, setPlaylists] = React.useState([]);
@@ -168,11 +167,6 @@ const MovieCard = ({ movie, action, rearrangeFavourites, listSize, index, playli
               </CardActions>
               {duplicateAddToPlaylist ? (
                 <Alert severity="error">Movie already added to the {playlist} playlist</Alert>
-              ) : (
-                <></>
-              )}
-              {listSize !== undefined ? (
-                <RearrangeFooter rearrangeFavourites={rearrangeFavourites} index={index} listSize={listSize} />
               ) : (
                 <></>
               )}

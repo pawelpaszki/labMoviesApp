@@ -42,7 +42,6 @@ const LoginForm = () => {
       }
       if (user && session) {
         const result = await context.authenticate(email, password);
-        console.log(result);
         if (result?.token !== undefined) {
           setTimeout(() => navigate("/"), 500);
         } else {
@@ -50,8 +49,7 @@ const LoginForm = () => {
         }
       }
     } catch (error) {
-      console.log(error); // TODO - remove once API migrated to node
-      setErrorMsg("Incorrect credentials");
+      setErrorMsg("Incorrect credentials used or account don't exist");
     }
     setLoading(false);
   };

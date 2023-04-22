@@ -22,7 +22,6 @@ const MovieList = ({ movies, action, rearrangeFavourites, listSize, disableReloa
     // setPlaylistArray(playlists);
     let movieList = [];
     for (const movie of movies) {
-      console.log(favourites)
       if (favourites.some(f => f.toString() === movie.id.toString())) {
         movie.favourite = true;
       } else {
@@ -42,9 +41,6 @@ const MovieList = ({ movies, action, rearrangeFavourites, listSize, disableReloa
         key={m.id}
         movie={m}
         action={action}
-        rearrangeFavourites={rearrangeFavourites}
-        listSize={listSize}
-        index={index}
         playlistsArray={playlistArray}
       />
     </Grid>

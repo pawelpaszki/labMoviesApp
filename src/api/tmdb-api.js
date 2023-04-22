@@ -143,8 +143,13 @@ export const getMovies = (page = 1) => {
 };
 
 export const getMovie = (args) => {
-  const [, idPart] = args.queryKey;
-  const { id } = idPart;
+  let id = ""
+  if (args?.queryKey) {
+    const [, idPart] = args.queryKey;
+    id = idPart.id;
+  } else {
+    id = args.id;
+  }
   return fetch(
     `/api/movies/${id}`, {
     headers: {
