@@ -50,6 +50,7 @@ const LoginForm = () => {
         }
       }
     } catch (error) {
+      console.log(error); // TODO - remove once API migrated to node
       setErrorMsg("Incorrect credentials");
     }
     setLoading(false);

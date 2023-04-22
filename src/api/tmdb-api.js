@@ -23,6 +23,35 @@ export const login = (email, password) => {
   }).then(res => res.json())
 };
 
+export const getFavouriteMovies = () => {
+  return fetch(`/api/accounts/${window.localStorage.getItem('accountId')}/favourite_movies`, {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    method: 'get',
+  }).then(res => res.json())
+};
+
+export const addToFavouriteMovies = (movieId) => {
+  return fetch(`/api/accounts/${window.localStorage.getItem('accountId')}/favourite_movies`, {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    method: 'post',
+    body: JSON.stringify({ movieId: movieId })
+  }).then(res => res.json())
+};
+
+export const removeFromFavouriteMovies = (movieId) => {
+  return fetch(`/api/accounts/${window.localStorage.getItem('accountId')}/favourite_movies/${movieId}`, {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    method: 'delete',
+  }).then(res => res.json())
+};
+
+
 export const getSearchResults = (resource, query) => {
   return fetch(
     `https://api.themoviedb.org/3/discover/${resource}?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&include_adult=false&include_video=false&vote_count.gte=200${query}`
@@ -95,11 +124,11 @@ export const getSimilarTvSeries = (page = 1, id) => {
 
 export const getMovies = (page = 1) => {
   return fetch(
-    `/api/movies?page=${page}`,{
-      headers: {
-        'Authorization': window.localStorage.getItem('token')
-      }
+    `/api/movies?page=${page}`, {
+    headers: {
+      'Authorization': window.localStorage.getItem('token')
     }
+  }
   ).then((response) => {
     if (!response.ok) {
       throw new Error(response.json().message);

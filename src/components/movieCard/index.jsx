@@ -30,7 +30,7 @@ const styles = {
   },
 };
 
-const MovieCard = ({ movie, action, rearrangeFavourites, listSize, index, playlistsArray, user }) => {
+const MovieCard = ({ movie, action, rearrangeFavourites, listSize, index, playlistsArray }) => {
   const navigate = useNavigate();
   const [title, setTitle] = React.useState("");
   const [playlists, setPlaylists] = React.useState([]);
@@ -120,7 +120,7 @@ const MovieCard = ({ movie, action, rearrangeFavourites, listSize, index, playli
                     </Typography>
                   </Grid>
                   <Grid item xs={8}>
-                    {playlistsLoaded && user && isPlaylistEnabledPage ? (
+                    {playlistsLoaded && isPlaylistEnabledPage ? (
                       <>
                         <Select
                           labelId="genre-label"
