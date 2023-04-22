@@ -9,7 +9,7 @@ const styles = {
   }
 };
 
-function MovieListPageTemplate({ movies, title, action, listSize }) {
+function MovieListPageTemplate({ movies, title, action }) {
   return (
     <Grid container sx={styles.root}>
       <Grid item xs={12}>
@@ -19,7 +19,6 @@ function MovieListPageTemplate({ movies, title, action, listSize }) {
         <MovieList
           action={action}
           movies={movies}
-          listSize={listSize}
         />
       </Grid>
     </Grid>

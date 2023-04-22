@@ -1,10 +1,9 @@
 import React, { useEffect } from "react";
 import Movie from "../movieCard";
 import Grid from "@mui/material/Grid";
-// import { getPlaylists} from "../../supabase/client";
 import { getFavouriteCollection } from "../../api/tmdb-api";
 
-const MovieList = ({ movies, action, rearrangeFavourites, listSize, disableReload }) => {
+const MovieList = ({ movies, action, disableReload }) => {
   const [displayedMovies, setDisplayedMovies] = React.useState([]);
   const [playlistArray, setPlaylistArray] = React.useState([]);
   const [fetched, setFetched] = React.useState(false);
@@ -18,8 +17,6 @@ const MovieList = ({ movies, action, rearrangeFavourites, listSize, disableReloa
   }, []);
   async function getUserData() {
     const favourites = await getFavouriteCollection("movies");
-    // const playlists = await getPlaylists(userId);
-    // setPlaylistArray(playlists);
     let movieList = [];
     for (const movie of movies) {
       if (favourites.some(f => f.toString() === movie.id.toString())) {
@@ -41,7 +38,6 @@ const MovieList = ({ movies, action, rearrangeFavourites, listSize, disableReloa
         key={m.id}
         movie={m}
         action={action}
-        playlistsArray={playlistArray}
       />
     </Grid>
   ));

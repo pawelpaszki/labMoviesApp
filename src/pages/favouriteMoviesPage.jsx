@@ -32,7 +32,6 @@ const FavouriteMoviesPage = () => {
         title="Favourite Movies"
         movies={displayedMovies}
         action={(movie) => null}
-        listSize={displayedMovies.length}
       />
     </>
   );

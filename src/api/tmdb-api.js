@@ -207,27 +207,12 @@ export const getPopularActors = (page = 1) => {
 };
 
 export const getUpcomingMovies = (page = 1) => {
-  console.log(`upcoming page: ${page}`);
   return fetch(
     `/api/movies/upcoming?page=${page}`, {
     headers: {
       'Authorization': window.localStorage.getItem('token')
     }
   }
-  ).then((response) => {
-    if (!response.ok) {
-      throw new Error(response.json().message);
-    }
-    return response.json();
-  })
-    .catch((error) => {
-      throw error
-    });
-};
-
-export const getFavouriteMovie = (id) => {
-  return fetch(
-    `https://api.themoviedb.org/3/movie/${id}?api_key=${import.meta.env.VITE_TMDB_KEY}`
   ).then((response) => {
     if (!response.ok) {
       throw new Error(response.json().message);
