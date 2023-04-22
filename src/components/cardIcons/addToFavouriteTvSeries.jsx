@@ -2,7 +2,7 @@ import React from "react";
 import IconButton from "@mui/material/IconButton";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import { addToFavouriteTvSeries, removeFromFavouriteTvSeries } from "../../api/tmdb-api";
+import { addToFavouriteCollection, removeFromFavouriteCollection } from "../../api/tmdb-api";
 
 const AddToFavouriteTvSeriesIcon = ({ movie }) => {
   const [favourite, setFavourite] = React.useState(false);
@@ -15,7 +15,7 @@ const AddToFavouriteTvSeriesIcon = ({ movie }) => {
   const add = async (e) => {
     e.preventDefault();
     setUpdating(true);
-    await addToFavouriteTvSeries(movie.id);
+    await addToFavouriteCollection({movieId: movie.id}, "tv");
     setFavourite(true);
     movie.favourite = true;
     setUpdating(false);
@@ -24,7 +24,7 @@ const AddToFavouriteTvSeriesIcon = ({ movie }) => {
   const remove = async (e) => {
     e.preventDefault();
     setUpdating(true);
-    await removeFromFavouriteTvSeries(movie.id);
+    await removeFromFavouriteCollection(movie.id, "tv");
     setFavourite(false);
     movie.favourite = false;
     setUpdating(false);

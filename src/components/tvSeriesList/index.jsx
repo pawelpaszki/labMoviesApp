@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
 import Movie from "../tvSeriesCard";
 import Grid from "@mui/material/Grid";
-import { getFavouriteTvSeries } from "../../api/tmdb-api";
-// import { useAuth } from "../../contexts/AuthProvider";
+import { getFavouriteCollection } from "../../api/tmdb-api";
 
 const TvSeriesList = ({ tvSeries, action, rearrangeFavourites, listSize, disableReload }) => {
   // const { user, loading } = useAuth();
@@ -17,7 +16,7 @@ const TvSeriesList = ({ tvSeries, action, rearrangeFavourites, listSize, disable
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   async function getFavourites() {
-    const favourites = await getFavouriteTvSeries();
+    const favourites = await getFavouriteCollection("tv");
     let movieList = [];
       for (const movie of tvSeries) {
         if(favourites.some(f => f.toString() === movie.id.toString())) {

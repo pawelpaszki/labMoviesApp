@@ -2,7 +2,7 @@ import React from "react";
 import IconButton from "@mui/material/IconButton";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import { addToFavouriteActors, removeFromFavouriteActors } from "../../api/tmdb-api";
+import { addToFavouriteCollection, removeFromFavouriteCollection } from "../../api/tmdb-api";
 
 const AddToFavouriteActorsIcon = ({ actor }) => {
   const [favourite, setFavourite] = React.useState(false);
@@ -15,7 +15,7 @@ const AddToFavouriteActorsIcon = ({ actor }) => {
   const add = async (e) => {
     e.preventDefault();
     setUpdating(true);
-    await addToFavouriteActors(actor.id);
+    await addToFavouriteCollection({actorId: actor.id}, "actors");
     setFavourite(true);
     actor.favourite = true;
     setUpdating(false);
@@ -24,7 +24,7 @@ const AddToFavouriteActorsIcon = ({ actor }) => {
   const remove = async (e) => {
     e.preventDefault();
     setUpdating(true);
-    await removeFromFavouriteActors(actor.id);
+    await removeFromFavouriteCollection(actor.id, "actors");
     setFavourite(false);
     actor.favourite = false;
     setUpdating(false);

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import Movie from "../movieCard";
 import Grid from "@mui/material/Grid";
 // import { getPlaylists} from "../../supabase/client";
-import { getFavouriteMovies } from "../../api/tmdb-api";
+import { getFavouriteCollection } from "../../api/tmdb-api";
 
 const MovieList = ({ movies, action, rearrangeFavourites, listSize, disableReload }) => {
   const [displayedMovies, setDisplayedMovies] = React.useState([]);
@@ -17,18 +17,19 @@ const MovieList = ({ movies, action, rearrangeFavourites, listSize, disableReloa
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   async function getUserData() {
-    const favourites = await getFavouriteMovies();
+    const favourites = await getFavouriteCollection("movies");
     // const playlists = await getPlaylists(userId);
     // setPlaylistArray(playlists);
     let movieList = [];
-      for (const movie of movies) {
-        if(favourites.some(f => f.toString() === movie.id.toString())) {
-          movie.favourite = true;
-        } else {
-          movie.favourite = false
-        }
-        movieList.push(movie);
+    for (const movie of movies) {
+      console.log(favourites)
+      if (favourites.some(f => f.toString() === movie.id.toString())) {
+        movie.favourite = true;
+      } else {
+        movie.favourite = false
       }
+      movieList.push(movie);
+    }
     setDisplayedMovies(movieList);
     setFetched(true);
   }

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Actor from "../actorCard";
 import Grid from "@mui/material/Grid";
-import { getFavouriteActors } from "../../api/tmdb-api";
+import { getFavouriteCollection } from "../../api/tmdb-api";
 
 const ActorsList = ({ actors, action, rearrangeFavourites, listSize, disableReload }) => {
   const [displayedActors, setDisplayedActors] = React.useState([]);
@@ -15,7 +15,7 @@ const ActorsList = ({ actors, action, rearrangeFavourites, listSize, disableRelo
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   async function getFavourites() {
-    const favourites = await getFavouriteActors();
+    const favourites = await getFavouriteCollection("actors");
     let actorList = [];
       for (const actor of actors) {
         if(favourites.some(f => f === actor.id)) {
