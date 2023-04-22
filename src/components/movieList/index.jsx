@@ -2,11 +2,9 @@ import React, { useEffect } from "react";
 import Movie from "../movieCard";
 import Grid from "@mui/material/Grid";
 // import { getPlaylists} from "../../supabase/client";
-// import { useAuth } from "../../contexts/AuthProvider";
 import { getFavouriteMovies } from "../../api/tmdb-api";
 
 const MovieList = ({ movies, action, rearrangeFavourites, listSize, disableReload }) => {
-  // const { user, loading } = useAuth();
   const [displayedMovies, setDisplayedMovies] = React.useState([]);
   const [playlistArray, setPlaylistArray] = React.useState([]);
   const [fetched, setFetched] = React.useState(false);

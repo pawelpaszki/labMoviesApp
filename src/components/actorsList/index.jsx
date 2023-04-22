@@ -1,30 +1,24 @@
 import React, { useEffect } from "react";
 import Actor from "../actorCard";
 import Grid from "@mui/material/Grid";
-import { getFavouriteActors } from "../../supabase/client";
-import { useAuth } from "../../contexts/AuthProvider";
+import { getFavouriteActors } from "../../api/tmdb-api";
 
 const ActorsList = ({ actors, action, rearrangeFavourites, listSize, disableReload }) => {
-  const { user, loading } = useAuth();
   const [displayedActors, setDisplayedActors] = React.useState([]);
   const [fetched, setFetched] = React.useState(false);
   useEffect(() => {
     if (!window.location.pathname.includes("favourites") && !disableReload) {
-      if (!disableReload && !loading && user !== null && user !== undefined && user.user !== null && user.user !== undefined) {
-        setTimeout(async () => getFavourites(user?.user.id), 100);
-      } else {
-        setTimeout(async () => getFavourites(user?.user.id), 200);
-      }
+      setTimeout(async () => getFavourites(), 100);
     } else {
       setDisplayedActors(actors)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  async function getFavourites(userId) {
-    const favourites = await getFavouriteActors(userId);
+  async function getFavourites() {
+    const favourites = await getFavouriteActors();
     let actorList = [];
       for (const actor of actors) {
-        if(favourites.some(f => f.actor_id === actor.id)) {
+        if(favourites.some(f => f === actor.id)) {
           actor.favourite = true;
         } else {
           actor.favourite = false
@@ -34,8 +28,8 @@ const ActorsList = ({ actors, action, rearrangeFavourites, listSize, disableRelo
     setDisplayedActors(actorList);
     setFetched(true);
   }
-  if (displayedActors.length > 0 && actors.length > 0 && displayedActors[0].id !== actors[0].id && user !== null && !loading) {
-    getFavourites(user?.user.id);
+  if (displayedActors.length > 0 && actors.length > 0 && displayedActors[0].id !== actors[0].id) {
+    getFavourites();
   }
   let actorCards = displayedActors.map((m, index) => (
     <Grid key={m.id} item xs={12} sm={6} md={4} lg={3} xl={2}>

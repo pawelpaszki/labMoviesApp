@@ -79,6 +79,34 @@ export const removeFromFavouriteTvSeries = (movieId) => {
   }).then(res => res.json())
 };
 
+export const getFavouriteActors = () => {
+  return fetch(`/api/accounts/${window.localStorage.getItem('accountId')}/favourite_actors`, {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    method: 'get',
+  }).then(res => res.json())
+};
+
+export const addToFavouriteActors = (actorId) => {
+  return fetch(`/api/accounts/${window.localStorage.getItem('accountId')}/favourite_actors`, {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    method: 'post',
+    body: JSON.stringify({ actorId: actorId })
+  }).then(res => res.json())
+};
+
+export const removeFromFavouriteActors = (actorId) => {
+  return fetch(`/api/accounts/${window.localStorage.getItem('accountId')}/favourite_actors/${actorId}`, {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    method: 'delete',
+  }).then(res => res.json())
+};
+
 export const getSearchResults = (resource, query) => {
   return fetch(
     `https://api.themoviedb.org/3/discover/${resource}?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&include_adult=false&include_video=false&vote_count.gte=200${query}`
