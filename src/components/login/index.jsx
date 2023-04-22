@@ -17,12 +17,13 @@ import { AuthenticationContext } from "../../contexts/AuthenticationContext";
 
 const LoginForm = () => {
   const context = useContext(AuthenticationContext);
-  let password = "";
-  let email = "";
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { login } = useAuth();
+  const unauthorizedMessage = "Incorrect credentials used or account don't exist";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -38,28 +39,28 @@ const LoginForm = () => {
         error
       } = await login(email, password);
       if (error) {
-        setErrorMsg(error.message);
+        setErrorMsg(unauthorizedMessage);
       }
       if (user && session) {
         const result = await context.authenticate(email, password);
         if (result?.token !== undefined) {
           setTimeout(() => navigate("/"), 500);
         } else {
-          setErrorMsg(result.message);
+          setErrorMsg(unauthorizedMessage);
         }
       }
     } catch (error) {
-      setErrorMsg("Incorrect credentials used or account don't exist");
+      setErrorMsg(unauthorizedMessage);
     }
     setLoading(false);
   };
 
-  const setEmail = (e) => {
-    email = e;
+  const handleSetEmail = (e) => {
+    setEmail(e);
   }
 
-  const setPassword = (p) => {
-    password = p;
+  const handlePassword = (p) => {
+    setPassword(p);
   }
   return (
     <>
@@ -84,7 +85,7 @@ const LoginForm = () => {
             <FormGroup id="email">
               <FormControl>
                 <InputLabel>Email address</InputLabel>
-                <Input id="email" onInput={e => setEmail(e.target.value)} />
+                <Input id="email" onInput={e => handleSetEmail(e.target.value)} />
               </FormControl>
             </FormGroup>
           </Grid>
@@ -92,7 +93,7 @@ const LoginForm = () => {
             <FormGroup id="password" style={{ marginTop: "15px", marginBottom: "10px" }}>
               <FormControl>
                 <InputLabel >Password</InputLabel>
-                <Input id="password" onInput={e => setPassword(e.target.value)} />
+                <Input id="password" onInput={e => handlePassword(e.target.value)} />
               </FormControl>
             </FormGroup>
           </Grid>

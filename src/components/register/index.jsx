@@ -12,11 +12,9 @@ import Avatar from '@mui/material/Avatar';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
-import { useNavigate } from "react-router-dom";
 import { signup } from '../../api/tmdb-api';
 
 const RegistrationForm = () => {
-  const navigate = useNavigate();
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

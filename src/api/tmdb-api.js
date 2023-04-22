@@ -84,7 +84,11 @@ export const getSeries = (page = 1) => {
 
 export const getSimilarMovies = (page = 1, id) => {
   return fetch(
-    `https://api.themoviedb.org/3/movie/${id}/similar?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=${page}`
+    `/api/movies/${id}/similar?page=${page}`, {
+    headers: {
+      'Authorization': window.localStorage.getItem('token')
+    }
+  }
   ).then((response) => {
     if (!response.ok) {
       throw new Error(response.json().message);
