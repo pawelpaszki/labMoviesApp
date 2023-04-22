@@ -203,7 +203,7 @@ const CreateFantasyMovie = () => {
               >
                 {genres.map((genre) => {
                   return (
-                    <MenuItem onClick={(genre) => updateSelectedGenres(genre)} key={genre.id} value={genre}>
+                    <MenuItem onClick={(genre) => updateSelectedGenres(genre)} key={genre.tmdbID} value={genre}>
                       {genre.name}
                     </MenuItem>
                   );

@@ -207,8 +207,13 @@ export const getPopularActors = (page = 1) => {
 };
 
 export const getUpcomingMovies = (page = 1) => {
+  console.log(`upcoming page: ${page}`);
   return fetch(
-    `https://api.themoviedb.org/3/movie/upcoming?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&include_adult=false&page=${page}`
+    `/api/movies/upcoming?page=${page}`, {
+    headers: {
+      'Authorization': window.localStorage.getItem('token')
+    }
+  }
   ).then((response) => {
     if (!response.ok) {
       throw new Error(response.json().message);
@@ -223,20 +228,6 @@ export const getUpcomingMovies = (page = 1) => {
 export const getFavouriteMovie = (id) => {
   return fetch(
     `https://api.themoviedb.org/3/movie/${id}?api_key=${import.meta.env.VITE_TMDB_KEY}`
-  ).then((response) => {
-    if (!response.ok) {
-      throw new Error(response.json().message);
-    }
-    return response.json();
-  })
-    .catch((error) => {
-      throw error
-    });
-};
-
-export const getFavouriteActor = (id) => {
-  return fetch(
-    `https://api.themoviedb.org/3/person/${id}?api_key=${import.meta.env.VITE_TMDB_KEY}`
   ).then((response) => {
     if (!response.ok) {
       throw new Error(response.json().message);
@@ -267,9 +258,11 @@ export const getActorDetails = (args) => {
 
 export const getGenres = async () => {
   return fetch(
-    "https://api.themoviedb.org/3/genre/movie/list?api_key=" +
-    import.meta.env.VITE_TMDB_KEY +
-    "&language=en-US"
+    `/api/genres`, {
+    headers: {
+      'Authorization': window.localStorage.getItem('token')
+    }
+  }
   ).then((response) => {
     if (!response.ok) {
       throw new Error(response.json().message);

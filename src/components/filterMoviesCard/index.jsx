@@ -40,9 +40,9 @@ export default function FilterMoviesCard(props) {
   if (isError) {
     return <h1>{error.message}</h1>;
   }
-  const genres = data.genres;
+  const genres = data;
   if (genres[0].name !== "All") {
-    genres.unshift({ id: "0", name: "All" });
+    genres.unshift({ id: "0", tmdbID: "0", name: "All" });
   }
 
   const handleUserImput = (e, type, value) => {
@@ -95,7 +95,7 @@ export default function FilterMoviesCard(props) {
             >
               {genres.map((genre) => {
                 return (
-                  <MenuItem key={genre.id} value={genre.id}>
+                  <MenuItem key={genre.tmdbID} value={genre.tmdbID}>
                     {genre.name}
                   </MenuItem>
                 );

@@ -52,7 +52,7 @@ const Search = () => {
   if (isError) {
     return <h1>{error.message}</h1>;
   }
-  const genres = data.genres;
+  const genres = data;
 
   const handleGenreChange = (e) => {
     setGenre(e.target.value);
@@ -89,7 +89,7 @@ const Search = () => {
       maxRating,
       releaseStartDate,
       releaseEndDate,
-      genre.id,
+      genre.tmdbID,
       keywords
     );
     let resource = discoverCategory === "movie" ? "movie" : "tv";
@@ -203,7 +203,7 @@ const Search = () => {
                   >
                     {genres.map((genre) => {
                       return (
-                        <MenuItem key={genre.id} value={genre}>
+                        <MenuItem key={genre.tmdbID} value={genre}>
                           {genre.name}
                         </MenuItem>
                       );
