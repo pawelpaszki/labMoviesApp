@@ -2,7 +2,7 @@ import React from "react";
 import IconButton from "@mui/material/IconButton";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import { addToFavouriteMovies, removeFromFavouriteMovies } from "../../api/tmdb-api"
+import { addToFavouriteMovies, removeFromFavouriteMovies } from "../../api/tmdb-api";
 
 const AddToFavouriteMoviesIcon = ({ movie }) => {
   const [favourite, setFavourite] = React.useState(false);

@@ -51,6 +51,33 @@ export const removeFromFavouriteMovies = (movieId) => {
   }).then(res => res.json())
 };
 
+export const getFavouriteTvSeries = () => {
+  return fetch(`/api/accounts/${window.localStorage.getItem('accountId')}/favourite_tv`, {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    method: 'get',
+  }).then(res => res.json())
+};
+
+export const addToFavouriteTvSeries = (movieId) => {
+  return fetch(`/api/accounts/${window.localStorage.getItem('accountId')}/favourite_tv`, {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    method: 'post',
+    body: JSON.stringify({ movieId: movieId })
+  }).then(res => res.json())
+};
+
+export const removeFromFavouriteTvSeries = (movieId) => {
+  return fetch(`/api/accounts/${window.localStorage.getItem('accountId')}/favourite_tv/${movieId}`, {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    method: 'delete',
+  }).then(res => res.json())
+};
 
 export const getSearchResults = (resource, query) => {
   return fetch(
