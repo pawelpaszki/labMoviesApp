@@ -271,11 +271,14 @@ export const getGenres = async () => {
     });
 };
 
-export const getMovieImages = ({ queryKey }) => {
-  const [, idPart] = queryKey;
-  const { id } = idPart;
+export const getMovieImages = (args) => {
+  const id = args.queryKey[1].id;
   return fetch(
-    `https://api.themoviedb.org/3/movie/${id}/images?api_key=${import.meta.env.VITE_TMDB_KEY}`
+    `/api/movies/${id}/images`, {
+    headers: {
+      'Authorization': window.localStorage.getItem('token')
+    }
+  }
   ).then((response) => {
     if (!response.ok) {
       throw new Error(response.json().message);
@@ -288,11 +291,14 @@ export const getMovieImages = ({ queryKey }) => {
     });
 };
 
-export const getTvSeriesImages = ({ queryKey }) => {
-  const [, idPart] = queryKey;
-  const { id } = idPart;
+export const getTvSeriesImages = (args) => {
+  const id = args.queryKey[1].id;
   return fetch(
-    `https://api.themoviedb.org/3/tv/${id}/images?api_key=${import.meta.env.VITE_TMDB_KEY}`
+    `/api/tv/${id}/images`, {
+    headers: {
+      'Authorization': window.localStorage.getItem('token')
+    }
+  }
   ).then((response) => {
     if (!response.ok) {
       throw new Error(response.json().message);
@@ -305,11 +311,14 @@ export const getTvSeriesImages = ({ queryKey }) => {
     });
 };
 
-export const getActorImages = ({ queryKey }) => {
-  const [, idPart] = queryKey;
-  const { id } = idPart;
+export const getActorImages = (args) => {
+  const id = args.queryKey[1].id;
   return fetch(
-    `https://api.themoviedb.org/3/person/${id}/images?api_key=${import.meta.env.VITE_TMDB_KEY}`
+    `/api/actors/${id}/images`, {
+    headers: {
+      'Authorization': window.localStorage.getItem('token')
+    }
+  }
   ).then((response) => {
     if (!response.ok) {
       throw new Error(response.json().message);
