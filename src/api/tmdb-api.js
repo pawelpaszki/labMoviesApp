@@ -333,10 +333,16 @@ export const getActorImages = (args) => {
 
 export const getMovieReviews = (id) => {
   return fetch(
-    `https://api.themoviedb.org/3/movie/${id}/reviews?api_key=${import.meta.env.VITE_TMDB_KEY}`
-  )
-    .then((res) => res.json())
-    .then((json) => {
-      return json.results;
-    });
+    `/api/movies/${id}/reviews`, {
+    headers: {
+      'Authorization': window.localStorage.getItem('token')
+    }
+  })
+  .then((res) => res.json())
+  .then((json) => {
+    return json.results;
+  })
+    .catch((error) => {
+      throw error
+    })
 };
