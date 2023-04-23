@@ -86,7 +86,7 @@ const CreateFantasyMovie = () => {
     setSelectedGenresDisplayValue(`[ ${updatedSelectedGenres.toString()} ]`)
   }
 
-  const genres = data.genres;
+  const genres = data;
 
   const handleTitleChange = (event) => {
     setTitle(event.target.value);
