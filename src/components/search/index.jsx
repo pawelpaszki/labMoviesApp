@@ -17,6 +17,7 @@ import { useQuery } from "react-query";
 import Spinner from '../spinner'
 import { constructQuery } from "../../api/searchQuery";
 import PageTemplate from "../templateMovieListPage";
+import TvSeriesListPageTemplate from "../templateTvSeriesListPage"
 import Fab from "@mui/material/Fab";
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -104,12 +105,20 @@ const Search = () => {
     <>
       {searchResultLoaded ?
         <>
-          <PageTemplate
-            title="Search results"
-            movies={movies}
-            action={(movie) => null}
-          />
-          <Fab
+          {discoverCategory === "movie" ? (
+            <PageTemplate
+              title="Search results"
+              movies={movies}
+              action={(movie) => null}
+            />
+          ) : (
+            <TvSeriesListPageTemplate
+              title="Search results"
+              tvSeries={movies}
+              action={(movie) => null}
+            />
+          )}
+          < Fab
             color="secondary"
             variant="extended"
             onClick={() => setSearchResultLoaded(false)}

@@ -55,8 +55,16 @@ export const removeFromFavouriteCollection = (id, collection) => {
 };
 
 export const getSearchResults = (resource, query) => {
+  let url = `/api/movies?vote_count.gte=200${query}`;
+  if (resource === "tv") {
+    url = `/api/tv?vote_count.gte=200&${query}`;
+  }
   return fetch(
-    `https://api.themoviedb.org/3/discover/${resource}?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&include_adult=false&include_video=false&vote_count.gte=200${query}`
+    url, {
+      headers: {
+        'Authorization': window.localStorage.getItem('token')
+      }
+    }
   ).then((response) => {
     if (!response.ok) {
       throw new Error(response.json().message);
