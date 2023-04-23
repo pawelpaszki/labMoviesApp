@@ -23,6 +23,26 @@ export const login = (email, password) => {
   }).then(res => res.json())
 };
 
+export const addToFantasyMovies = (title, overview, runtime, productionCompanies, genres, releaseDate) => {
+  console.log("addToFantasyMovies");
+  return fetch(`/api/accounts/${window.localStorage.getItem('accountId')}/fantasy_movies`, {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    method: 'post',
+    body: JSON.stringify({ 
+      title: title,
+      overview: overview,
+      runtime: runtime,
+      productionCompanies: productionCompanies,
+      genres: genres,
+      releaseDate: releaseDate
+     })
+  }).then(res => res.json()).catch((error) => {
+    console.log(error);
+  });
+};
+
 export const getFavouriteCollection = (collection) => {
   return fetch(`/api/accounts/${window.localStorage.getItem('accountId')}/favourite_${collection}`, {
     headers: {

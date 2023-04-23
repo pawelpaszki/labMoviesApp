@@ -10,14 +10,13 @@ import FormLabel from '@mui/material/FormLabel';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./style.css";
-import { getGenres } from "../../api/tmdb-api";
+import { getGenres, addToFantasyMovies } from "../../api/tmdb-api";
 import { useQuery } from "react-query";
 import Spinner from '../spinner';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import { useAuth } from "../../contexts/AuthProvider";
 import { useNavigate } from "react-router-dom";
-import { createFantasyMovie } from "../../supabase/client";
 import Alert from '@mui/material/Alert';
 
 const CreateFantasyMovie = () => {
@@ -48,28 +47,24 @@ const CreateFantasyMovie = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (!loading && user !== null && user !== undefined && user.user !== null && user.user !== undefined) {
-      setCreateInitiated(true);
-      const { data, error } = await createFantasyMovie(
-        user.user.id,
-        title.trim(),
-        overview.trim(),
-        runtime,
-        moviePoster.trim(),
-        productionCompanies.split(',').map(item => item.trim()),
-        selectedGenres,
-        releaseDate,
-        fileName
-      );
-      setCreateInitiated(false);
-      if (error !== null) {
-        setAlertText("movie creation failed! Try again.")
-        setCreateFailed(true);
-      } else {
-        navigate("/fantasy");
-      }
+    console.log("handle submit");
+    setCreateInitiated(true);
+    const account = await addToFantasyMovies(
+      title.trim(),
+      overview.trim(),
+      runtime,
+      // moviePoster.trim(),
+      productionCompanies.split(',').map(item => item.trim()),
+      selectedGenres,
+      releaseDate
+    );
+    setCreateInitiated(false);
+    console.log(account);
+    if (account === undefined || account.fantasyMovies?.length < 1) {
+      setAlertText("movie creation failed! Try again.")
+      setCreateFailed(true);
     } else {
-      setAlertText("Unable to get user details. Please logout and log back in.")
+      navigate("/fantasy");
     }
   };
 
@@ -87,6 +82,7 @@ const CreateFantasyMovie = () => {
   }
 
   const genres = data;
+  console.log(genres);
 
   const handleTitleChange = (event) => {
     setTitle(event.target.value);
@@ -210,7 +206,7 @@ const CreateFantasyMovie = () => {
                 })}
               </Select>
             </Grid>
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
               <FormLabel id="poster" style={{ display: "block", marginBottom: "6px", fontSize: "12px" }}>{uploading ? 'Uploading poster...' : 'Upload poster'}</FormLabel>
               <TextField
                 type="file"
@@ -219,7 +215,7 @@ const CreateFantasyMovie = () => {
                 onChange={handleSetMoviePoster}
                 disabled={uploading}
               />
-            </Grid>
+            </Grid> */}
           </Grid>
           <Button
             type="submit"
