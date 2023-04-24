@@ -50,9 +50,9 @@ export default function CastMemberCard({ member, removeCastMember }) {
           </Grid>
           <Grid item xs={2}>
             <IconButton
-              id={member.id}
+              id={member._id}
               aria-label="remove from cast"
-              onClick={() => removeCastMember(member.id)}
+              onClick={() => removeCastMember(member._id)}
             >
               <DeleteIcon color="primary" fontSize="large" />
             </IconButton>

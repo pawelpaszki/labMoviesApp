@@ -42,8 +42,8 @@ export const addToFantasyMovies = (title, overview, runtime, productionCompanies
   });
 };
 
-export const addCastToFantasyMovie = (id, name, roleName, description) => {
-  return fetch(`/api/accounts/${window.localStorage.getItem('accountId')}/fantasy_movies/${id}/cast`, {
+export const addCastToFantasyMovie = (movieId, name, roleName, description) => {
+  return fetch(`/api/accounts/${window.localStorage.getItem('accountId')}/fantasy_movies/${movieId}/cast`, {
     headers: {
       'Content-Type': 'application/json'
     },
@@ -58,6 +58,15 @@ export const addCastToFantasyMovie = (id, name, roleName, description) => {
   });
 };
 
+export const removeFromFantasyMoviesCast = (movieId, castId) => {
+  return fetch(`/api/accounts/${window.localStorage.getItem('accountId')}/fantasy_movies/${movieId}/cast/${castId}`, {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    method: 'delete',
+  }).then(res => res.json())
+};
+
 export const getFantasyMovies = () => {
   return fetch(`/api/accounts/${window.localStorage.getItem('accountId')}/fantasy_movies`, {
     headers: {
@@ -67,8 +76,8 @@ export const getFantasyMovies = () => {
   }).then(res => res.json())
 };
 
-export const getFantasyMovie = (id) => {
-  return fetch(`/api/accounts/${window.localStorage.getItem('accountId')}/fantasy_movies/${id}`, {
+export const getFantasyMovie = (movieId) => {
+  return fetch(`/api/accounts/${window.localStorage.getItem('accountId')}/fantasy_movies/${movieId}`, {
     headers: {
       'Content-Type': 'application/json'
     },
@@ -76,8 +85,8 @@ export const getFantasyMovie = (id) => {
   }).then(res => res.json())
 };
 
-export const removeFromFantasyMovies = (id) => {
-  return fetch(`/api/accounts/${window.localStorage.getItem('accountId')}/fantasy_movies/${id}`, {
+export const removeFromFantasyMovies = (movieId) => {
+  return fetch(`/api/accounts/${window.localStorage.getItem('accountId')}/fantasy_movies/${movieId}`, {
     headers: {
       'Content-Type': 'application/json'
     },

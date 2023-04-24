@@ -13,7 +13,7 @@ import CastMemberCard from "../castMemberCard";
 import Spinner from '../spinner';
 import Alert from '@mui/material/Alert';
 import img from '../../images/film-poster-placeholder.png';
-import { addCastToFantasyMovie } from "../../api/tmdb-api";
+import { addCastToFantasyMovie, removeFromFantasyMoviesCast } from "../../api/tmdb-api";
 
 const styles = {
   gridListRoot: {
@@ -113,13 +113,7 @@ const FantasyMovieDetails = ({ movie, movieCast, reload }) => {
   };
 
   const removeCastMember = async (id) => {
-    let avatar_url = "";
-    cast.forEach(c => {
-      if (c._id === id) {
-        avatar_url = c.avatar_url;
-      }
-    });
-    await deleteCastMember(id, avatar_url.slice(avatar_url.indexOf("tmdb") + 5));
+    await removeFromFantasyMoviesCast(movie._id, id);
     await reload();
   }
 
