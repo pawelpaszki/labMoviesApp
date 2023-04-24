@@ -5,6 +5,7 @@ import ImageListItem from "@mui/material/ImageListItem";
 import Chip from "@mui/material/Chip";
 import Paper from "@mui/material/Paper";
 import IconButton from "@mui/material/IconButton";
+import img from '../../images/profile-placeholder.png';
 
 const styles = {
   card: { maxWidth: 345 },
@@ -15,18 +16,26 @@ const styles = {
 };
 
 export default function CastMemberCard({ member, removeCastMember }) {
+  const [imagePath, setImagePath] = React.useState("");
+  React.useEffect(() => {
+    if (member.avatarUrl) {
+      setImagePath(member.avatarUrl);
+    } else {
+      setImagePath(img);
+    }
+  });
 
   return (
     <Grid container>
       <Grid item xs={3} style={{ padding: "20px" }}>
         <ImageListItem
-          key={member.avatar_url}
+          key={img}
           sx={styles.avatar}
           cols={1}
         >
           <img
-            src={`${member.avatar_url}`}
-            alt={member.avatar_url}
+            src={img}
+            alt={img}
           />
         </ImageListItem>
       </Grid>
@@ -36,7 +45,7 @@ export default function CastMemberCard({ member, removeCastMember }) {
             <Paper component="ul" sx={styles.chipSet}>
               <Chip label={member.name} sx={styles.chipLabel} color="primary" />
               &nbsp; playing &nbsp;
-              <Chip label={member.role_name} />
+              <Chip label={member.roleName} />
             </Paper>
           </Grid>
           <Grid item xs={2}>

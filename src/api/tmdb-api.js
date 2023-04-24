@@ -24,7 +24,6 @@ export const login = (email, password) => {
 };
 
 export const addToFantasyMovies = (title, overview, runtime, productionCompanies, genres, releaseDate) => {
-  console.log("addToFantasyMovies");
   return fetch(`/api/accounts/${window.localStorage.getItem('accountId')}/fantasy_movies`, {
     headers: {
       'Content-Type': 'application/json'
@@ -37,6 +36,22 @@ export const addToFantasyMovies = (title, overview, runtime, productionCompanies
       productionCompanies: productionCompanies,
       genres: genres,
       releaseDate: releaseDate
+     })
+  }).then(res => res.json()).catch((error) => {
+    console.log(error);
+  });
+};
+
+export const addCastToFantasyMovie = (id, name, roleName, description) => {
+  return fetch(`/api/accounts/${window.localStorage.getItem('accountId')}/fantasy_movies/${id}/cast`, {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    method: 'post',
+    body: JSON.stringify({ 
+      name: name,
+      roleName: roleName,
+      description: description
      })
   }).then(res => res.json()).catch((error) => {
     console.log(error);

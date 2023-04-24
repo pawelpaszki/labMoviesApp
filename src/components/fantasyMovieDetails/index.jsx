@@ -13,7 +13,7 @@ import CastMemberCard from "../castMemberCard";
 import Spinner from '../spinner';
 import Alert from '@mui/material/Alert';
 import img from '../../images/film-poster-placeholder.png';
-import { addCastToFantasyMovie, deleteCastMember } from "../../supabase/client";
+import { addCastToFantasyMovie } from "../../api/tmdb-api";
 
 const styles = {
   gridListRoot: {
@@ -96,12 +96,12 @@ const FantasyMovieDetails = ({ movie, movieCast, reload }) => {
     event.preventDefault();
     setCreateInitiated(true);
     const { data, error } = await addCastToFantasyMovie(
-      movie.id,
+      movie._id,
       name.trim(),
       roleName.trim(),
-      avatar.trim(),
+      // avatar.trim(),
       description.trim(),
-      fileName
+      // fileName
     );
     setCreateInitiated(false);
     if (error !== null) {
@@ -115,7 +115,7 @@ const FantasyMovieDetails = ({ movie, movieCast, reload }) => {
   const removeCastMember = async (id) => {
     let avatar_url = "";
     cast.forEach(c => {
-      if (c.id === id) {
+      if (c._id === id) {
         avatar_url = c.avatar_url;
       }
     });

@@ -54,7 +54,7 @@ function AddCastMember({ handleNameChange, handleRoleNameChange, handleSetAvatar
               onChange={handleDescriptionChange}
             />
           </Grid>
-          <Grid item xs={12}>
+          {/* <Grid item xs={12}>
             <FormLabel id="poster" style={{ display: "block", marginBottom: "6px", fontSize: "12px" }}>{uploading ? 'Uploading avatar...' : 'Upload avatar'}</FormLabel>
             <TextField
               required
@@ -64,7 +64,7 @@ function AddCastMember({ handleNameChange, handleRoleNameChange, handleSetAvatar
               onChange={handleSetAvatar}
               disabled={uploading}
             />
-          </Grid>
+          </Grid> */}
         </Grid>
         <Button
           type="submit"
