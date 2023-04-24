@@ -79,7 +79,7 @@ export default function FantasyMovieCard({ movie }) {
         </Grid>
         <Grid container>
           <Grid item xs={9}>
-            <Link to={`/fantasy/${movie.id}`}>
+            <Link to={`/fantasy/${movie._id}`}>
               <Button style={{ marginTop: "6px" }} variant="outlined" size="large" color="primary">
                 More Info
               </Button>

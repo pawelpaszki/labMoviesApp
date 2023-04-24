@@ -12,6 +12,7 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import CastMemberCard from "../castMemberCard";
 import Spinner from '../spinner';
 import Alert from '@mui/material/Alert';
+import img from '../../images/film-poster-placeholder.png';
 import { addCastToFantasyMovie, deleteCastMember } from "../../supabase/client";
 
 const styles = {
@@ -59,18 +60,18 @@ const FantasyMovieDetails = ({ movie, movieCast, reload }) => {
   const [loaded, setLoaded] = React.useState(false);
 
   useEffect(() => {
-    if (!movie.poster_path.startsWith("http")) {
-      setImagePath(`${import.meta.env.VITE_REACT_APP_SUPABASE_URL}/storage/v1/object/public/tmdb/${movie.poster_path}`);
+    if (movie.posterPath) {
+      setImagePath(movie.posterPath);
     } else {
-      setImagePath(movie.poster_path);
+      setImagePath(img);
     }
-    if (movieCast.length > 0) {
-      movieCast.forEach(c => {
-        if (!c.avatar_url.startsWith("http")) {
-          c.avatar_url = `${import.meta.env.VITE_REACT_APP_SUPABASE_URL}/storage/v1/object/public/tmdb/${c.avatar_url}`;
-        }
-      });
-    }
+    // if (movieCast.length > 0) {
+    //   movieCast.forEach(c => {
+    //     if (!c.avatar_url.startsWith("http")) {
+    //       c.avatar_url = `${import.meta.env.VITE_REACT_APP_SUPABASE_URL}/storage/v1/object/public/tmdb/${c.avatar_url}`;
+    //     }
+    //   });
+    // }
     setCast(movieCast);
     setLoaded(true);
   });
@@ -124,7 +125,7 @@ const FantasyMovieDetails = ({ movie, movieCast, reload }) => {
 
   if (displayedMovie === undefined && movie !== undefined) {
     setDisplayedMovie(movie);
-    let date = new Date(movie.release_date);
+    let date = new Date(movie.releaseDate);
     let outputDate = "";
     try {
       outputDate = `${date.getFullYear()} / ${date.getMonth() + 1} / ${date.getDate()}`
@@ -198,7 +199,7 @@ const FantasyMovieDetails = ({ movie, movieCast, reload }) => {
                 <li>
                   <Chip label="Production companies" sx={styles.chipLabel} color="primary" />
                 </li>
-                {displayedMovie.production_companies.map((p) => (
+                {displayedMovie.productionCompanies.map((p) => (
                   <li key={p}>
                     <Chip label={p} />
                   </li>

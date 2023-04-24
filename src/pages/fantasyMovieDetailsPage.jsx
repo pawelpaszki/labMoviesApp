@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import FantasyMovieDetails from '../components/fantasyMovieDetails';
 import Spinner from '../components/spinner'
-import { getFantasyMovieById, getFantasyMovieCast } from "../supabase/client";
+import { getFantasyMovie } from "../api/tmdb-api";
 
 const FantasyMovieDetailsPage = () => {
   const [movie, setMovie] = React.useState(undefined);
@@ -11,17 +11,15 @@ const FantasyMovieDetailsPage = () => {
   const { id } = useParams();
   const [fetched, setFetched] = React.useState(false);
 
-  async function getMovie(id) {
-    const fetchedMovie = await getFantasyMovieById(id);
+  async function getMovie() {
+    const fetchedMovie = await getFantasyMovie(id);
     setMovie(fetchedMovie);
-    const fetchedCast = await getFantasyMovieCast(fetchedMovie.id);
-    setCast(fetchedCast);
+    setCast(fetchedMovie.cast);
     setFetched(true);
   }
 
   useEffect(() => {
-    setTimeout(async () => getMovie(id), 50);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    setTimeout(async () => getMovie(), 50);
   }, []);
 
   if (!fetched) {
