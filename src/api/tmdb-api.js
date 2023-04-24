@@ -61,6 +61,15 @@ export const getFantasyMovie = (id) => {
   }).then(res => res.json())
 };
 
+export const removeFromFantasyMovies = (id) => {
+  return fetch(`/api/accounts/${window.localStorage.getItem('accountId')}/fantasy_movies/${id}`, {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    method: 'delete',
+  }).then(res => res.json())
+};
+
 export const getFavouriteCollection = (collection) => {
   return fetch(`/api/accounts/${window.localStorage.getItem('accountId')}/favourite_${collection}`, {
     headers: {

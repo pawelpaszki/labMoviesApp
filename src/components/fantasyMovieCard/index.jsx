@@ -11,7 +11,7 @@ import Grid from "@mui/material/Grid";
 import AvTimerIcon from '@mui/icons-material/AvTimer';
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { deleteFantasyMovie } from "../../supabase/client";
+import { removeFromFantasyMovies } from "../../api/tmdb-api";
 import img from '../../images/film-poster-placeholder.png';
 
 const styles = {
@@ -41,7 +41,7 @@ export default function FantasyMovieCard({ movie }) {
   }
   const remove = async (e) => {
     e.preventDefault();
-    await deleteFantasyMovie(movie.id, movie.poster_path);
+    await removeFromFantasyMovies(movie._id);
     window.location.reload(false);
   };
   return (
