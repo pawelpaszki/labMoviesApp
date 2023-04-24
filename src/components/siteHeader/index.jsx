@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -11,22 +11,24 @@ import Menu from "@mui/material/Menu";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { useAuth } from "../../contexts/AuthProvider";
 import Dropdown from 'react-dropdown';
 import './styles.css';
-import { supabase } from "../../supabase/client";
+import { AuthenticationContext } from "../../contexts/AuthenticationContext";
 
 const styles = {
   title: {
     flexGrow: 1,
+    fontSize: "1.2em"
   },
 };
 
 const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
 
 const SiteHeader = () => {
-  const { user, loading } = useAuth();
-  const [loggedIn, setLoggedIn] = React.useState(false)
+  const context = useContext(AuthenticationContext);
+  const [loggedIn, setLoggedIn] = React.useState(false);
+  const [headerMessage, setHeaderMessage] = React.useState("");
+  const [authStatusLoaded, setAuthStatusLoaded] = React.useState(false);
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -34,21 +36,18 @@ const SiteHeader = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down("lg"));
 
   React.useEffect(() => {
-    if (!loading) {
-      setLoggedIn(user !== null);
-    }
+    setTimeout(async () => getAuthStatus(), 1);
   });
 
-  React.useEffect(() => {
-    const { data: authListener } = supabase.auth.onAuthStateChange(
-      (event, _session) => {
-        setLoggedIn(_session !== null);
-      }
-    );
-    return () => {
-      authListener.subscription.unsubscribe();
-    };
-  });
+  const getAuthStatus = async () => {
+    setLoggedIn(context.isAuthenticated);
+    setAuthStatusLoaded(true);
+    if (context.isAuthenticated) {
+      setHeaderMessage(`welcome ${context.email} to TMDB Client`);
+    } else {
+      setHeaderMessage("Login to access the TMDB Client");
+    }
+  }
 
   const menuOptions = [
     { label: "Home", path: "/" },
@@ -74,13 +73,11 @@ const SiteHeader = () => {
     }
   };
 
-  // auth
-  const { auth, signOut } = useAuth();
-
   const handleLogout = async (e) => {
     try {
       setAnchorEl(null);
-      await signOut();
+      setHeaderMessage("Login to access the TMDB Client");
+      await context.signout();
     } catch (error) {
       console.log(error);
     }
@@ -142,79 +139,87 @@ const SiteHeader = () => {
     <>
       <AppBar position="fixed" elevation={0} color="primary">
         <Toolbar>
-          <Typography variant="h4" sx={styles.title}>
-            TMDB Client
+          <Typography variant="h5" sx={styles.title}>
+            {headerMessage}
           </Typography>
-          {loggedIn ? (
-            isMobile ? (
+          {authStatusLoaded ?
+            (
               <>
-                <IconButton
-                  aria-label="menu"
-                  aria-controls="menu-appbar"
-                  aria-haspopup="true"
-                  onClick={handleMenu}
-                  color="inherit"
-                  size="large"
-                >
-                  <MenuIcon />
-                </IconButton>
-                <Menu
-                  id="menu-appbar"
-                  anchorEl={anchorEl}
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  open={open}
-                  onClose={() => setAnchorEl(null)}
-                >
-                  {menuOptions.map((opt) => (
-                    <MenuItem
-                      key={opt.label}
-                      onClick={() => handleMenuSelect(opt.path)}
+                {loggedIn ? (
+                  isMobile ? (
+                    <>
+                      <IconButton
+                        aria-label="menu"
+                        aria-controls="menu-appbar"
+                        aria-haspopup="true"
+                        onClick={handleMenu}
+                        color="inherit"
+                        size="large"
+                      >
+                        <MenuIcon />
+                      </IconButton>
+                      <Menu
+                        id="menu-appbar"
+                        anchorEl={anchorEl}
+                        anchorOrigin={{
+                          vertical: "top",
+                          horizontal: "right",
+                        }}
+                        keepMounted
+                        transformOrigin={{
+                          vertical: "top",
+                          horizontal: "right",
+                        }}
+                        open={open}
+                        onClose={() => setAnchorEl(null)}
+                      >
+                        {menuOptions.map((opt) => (
+                          <MenuItem
+                            key={opt.label}
+                            onClick={() => handleMenuSelect(opt.path)}
+                          >
+                            {opt.label}
+                          </MenuItem>
+                        ))}
+                      </Menu>
+                    </>
+                  ) : (
+                    <>
+                      {wideMenuDropdownOptions.map((opt, index) => (
+                        <>
+                          <div style={{ pointerEvents: "none" }}>
+                            <Button key={index} color="inherit">{opt.label}</Button>
+                          </div>
+                          <Dropdown key={opt.id} options={opt.items} onChange={_onSelect} value={wideMenuDropdownOptions[index].label} placeholder={wideMenuDropdownOptions[index].label} />
+                        </>
+                      ))}
+                      {wideMenuOptions.map((opt) => (
+                        <Button
+                          key={opt.label}
+                          color="inherit"
+                          onClick={() => handleMenuSelect(opt.path)}
+                        >
+                          {opt.label}
+                        </Button>
+                      ))}
+                    </>
+                  )
+                ) : (
+                  <>
+                    <Button
+                      key="login"
+                      color="inherit"
+                      onClick={() => handleMenuSelect("/login")}
                     >
-                      {opt.label}
-                    </MenuItem>
-                  ))}
-                </Menu>
+                      Sign in
+                    </Button>
+                  </>
+                )}
               </>
             ) : (
-              <>
-                {wideMenuDropdownOptions.map((opt, index) => (
-                  <>
-                    <div style={{ pointerEvents: "none" }}>
-                      <Button key={index} color="inherit">{opt.label}</Button>
-                    </div>
-                    <Dropdown key={opt.id} options={opt.items} onChange={_onSelect} value={wideMenuDropdownOptions[index].label} placeholder={wideMenuDropdownOptions[index].label} />
-                  </>
-                ))}
-                {wideMenuOptions.map((opt) => (
-                  <Button
-                    key={opt.label}
-                    color="inherit"
-                    onClick={() => handleMenuSelect(opt.path)}
-                  >
-                    {opt.label}
-                  </Button>
-                ))}
-              </>
+              <></>
             )
-          ) : (
-            <>
-              <Button
-                key="login"
-                color="inherit"
-                onClick={() => handleMenuSelect("/login")}
-              >
-                Sign in
-              </Button>
-            </>
-          )}
+          }
         </Toolbar>
       </AppBar>
       <Offset />

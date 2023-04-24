@@ -1,4 +1,4 @@
-import React, { useState, createContext } from "react";
+import React, { useState, createContext, useEffect } from "react";
 import { login, signup } from "../api/tmdb-api";
 
 export const AuthenticationContext = createContext(null);
@@ -6,23 +6,38 @@ export const AuthenticationContext = createContext(null);
 const AuthContextProvider = (props) => {
   const existingToken = localStorage.getItem("token");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticationStatusLoaded, setIsAuthenticationStatusLoaded] = useState(false);
   const [authToken, setAuthToken] = useState(existingToken);
   const [accountId, setAccountId] = useState("");
   const [email, setEmail] = useState("");
 
+  useEffect(() => {
+    let persistedAccountId = localStorage.getItem("accountId");
+    let persistedEmail = localStorage.getItem("email");
+    if (persistedAccountId !== "" && persistedEmail !== "") {
+      setIsAuthenticated(true);
+      setEmail(persistedEmail);
+      setAccountId(persistedAccountId);
+    } else {
+      setIsAuthenticated(false);
+    }
+    setIsAuthenticationStatusLoaded(true);
+  })
+
   //Function to put JWT token in local storage.
-  const setToken = (data) => {
-    localStorage.setItem("token", data);
-    setAuthToken(data);
+  const setUserData = (token, email) => {
+    localStorage.setItem("token", token);
+    localStorage.setItem("email", email);
+    setEmail(email);
+    setAuthToken(token);
   }
 
   const authenticate = async (email, password) => {
     const result = await login(email, password);
     if (result.token && result.accountId) {
-      setToken(result.token);
+      setUserData(result.token, email);
       setAccountIdInLocalStorage(result.accountId);
       setIsAuthenticated(true);
-      setEmail(email);
     };
     return result;
   };
@@ -39,17 +54,16 @@ const AuthContextProvider = (props) => {
   }
 
   const signout = () => {
-    setTimeout(() => {
-      setIsAuthenticated(false);
-      setToken(null);
-      setAccountId("");
-    }, 100);
+    setIsAuthenticated(false);
+    setUserData("", "");
+    setAccountId("");
   }
 
   return (
     <AuthenticationContext.Provider
       value={{
         isAuthenticated,
+        isAuthenticationStatusLoaded,
         authenticate,
         register,
         signout,
