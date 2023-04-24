@@ -43,6 +43,15 @@ export const addToFantasyMovies = (title, overview, runtime, productionCompanies
   });
 };
 
+export const getFantasyMovies = () => {
+  return fetch(`/api/accounts/${window.localStorage.getItem('accountId')}/fantasy_movies`, {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    method: 'get',
+  }).then(res => res.json())
+};
+
 export const getFavouriteCollection = (collection) => {
   return fetch(`/api/accounts/${window.localStorage.getItem('accountId')}/favourite_${collection}`, {
     headers: {
