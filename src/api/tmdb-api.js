@@ -26,17 +26,18 @@ export const login = (email, password) => {
 export const addToFantasyMovies = (title, overview, runtime, productionCompanies, genres, releaseDate) => {
   return fetch(`/api/accounts/${window.localStorage.getItem('accountId')}/fantasy_movies`, {
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': window.localStorage.getItem('token')
     },
     method: 'post',
-    body: JSON.stringify({ 
+    body: JSON.stringify({
       title: title,
       overview: overview,
       runtime: runtime,
       productionCompanies: productionCompanies,
       genres: genres,
       releaseDate: releaseDate
-     })
+    })
   }).then(res => res.json()).catch((error) => {
     console.log(error);
   });
@@ -45,14 +46,15 @@ export const addToFantasyMovies = (title, overview, runtime, productionCompanies
 export const addCastToFantasyMovie = (movieId, name, roleName, description) => {
   return fetch(`/api/accounts/${window.localStorage.getItem('accountId')}/fantasy_movies/${movieId}/cast`, {
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': window.localStorage.getItem('token')
     },
     method: 'post',
-    body: JSON.stringify({ 
+    body: JSON.stringify({
       name: name,
       roleName: roleName,
       description: description
-     })
+    })
   }).then(res => res.json()).catch((error) => {
     console.log(error);
   });
@@ -61,16 +63,23 @@ export const addCastToFantasyMovie = (movieId, name, roleName, description) => {
 export const removeFromFantasyMoviesCast = (movieId, castId) => {
   return fetch(`/api/accounts/${window.localStorage.getItem('accountId')}/fantasy_movies/${movieId}/cast/${castId}`, {
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': window.localStorage.getItem('token')
     },
     method: 'delete',
-  }).then(res => res.json())
+  }).then(response => {
+    if (!response.ok) {
+      throw new Error(response.json().message);
+    }
+    return {};
+  })
 };
 
 export const getFantasyMovies = () => {
   return fetch(`/api/accounts/${window.localStorage.getItem('accountId')}/fantasy_movies`, {
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': window.localStorage.getItem('token')
     },
     method: 'get',
   }).then(res => res.json())
@@ -79,7 +88,8 @@ export const getFantasyMovies = () => {
 export const getFantasyMovie = (movieId) => {
   return fetch(`/api/accounts/${window.localStorage.getItem('accountId')}/fantasy_movies/${movieId}`, {
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': window.localStorage.getItem('token')
     },
     method: 'get',
   }).then(res => res.json())
@@ -88,16 +98,23 @@ export const getFantasyMovie = (movieId) => {
 export const removeFromFantasyMovies = (movieId) => {
   return fetch(`/api/accounts/${window.localStorage.getItem('accountId')}/fantasy_movies/${movieId}`, {
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': window.localStorage.getItem('token')
     },
     method: 'delete',
-  }).then(res => res.json())
+  }).then(response => {
+    if (!response.ok) {
+      throw new Error(response.json().message);
+    }
+    return {};
+  })
 };
 
 export const getFavouriteCollection = (collection) => {
   return fetch(`/api/accounts/${window.localStorage.getItem('accountId')}/favourite_${collection}`, {
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': window.localStorage.getItem('token')
     },
     method: 'get',
   }).then(res => res.json())
@@ -107,7 +124,8 @@ export const addToFavouriteCollection = (id, collection) => {
 
   return fetch(`/api/accounts/${window.localStorage.getItem('accountId')}/favourite_${collection}`, {
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': window.localStorage.getItem('token')
     },
     method: 'post',
     body: JSON.stringify({ id: id })
@@ -119,10 +137,16 @@ export const addToFavouriteCollection = (id, collection) => {
 export const removeFromFavouriteCollection = (id, collection) => {
   return fetch(`/api/accounts/${window.localStorage.getItem('accountId')}/favourite_${collection}/${id}`, {
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': window.localStorage.getItem('token')
     },
     method: 'delete',
-  }).then(res => res.json())
+  }).then(response => {
+    if (!response.ok) {
+      throw new Error(response.json().message);
+    }
+    return {};
+  })
 };
 
 export const getSearchResults = (resource, query) => {
@@ -409,10 +433,10 @@ export const getMovieReviews = (id) => {
       'Authorization': window.localStorage.getItem('token')
     }
   })
-  .then((res) => res.json())
-  .then((json) => {
-    return json.results;
-  })
+    .then((res) => res.json())
+    .then((json) => {
+      return json.results;
+    })
     .catch((error) => {
       throw error
     })
