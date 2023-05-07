@@ -14,7 +14,7 @@ const FantasyMovieList = ({ title, movies }) => {
     <>
       <Grid container sx={styles.root}>
         <Grid key={title} item xs={12}>
-          <Header title={title} />
+          <Header key={title} title={title} />
         </Grid>
         {movies.map((m) => (
           <Grid key={m.id} item xs={12} sm={6} md={4} lg={3} xl={2}>

@@ -14,14 +14,12 @@ import { getGenres, addToFantasyMovies } from "../../api/tmdb-api";
 import Spinner from '../spinner';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
-import { useAuth } from "../../contexts/AuthProvider";
 import { useNavigate } from "react-router-dom";
 import Alert from '@mui/material/Alert';
 
 const CreateFantasyMovie = () => {
   const navigate = useNavigate();
   const [genresLoaded, setGenresLoaded] = React.useState(false);
-  const { user, loading } = useAuth();
   const [releaseDate, setReleaseDate] = useState(new Date());
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [selectedGenresDisplayValue, setSelectedGenresDisplayValue] = useState("");

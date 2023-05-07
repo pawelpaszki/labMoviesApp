@@ -13,7 +13,6 @@ import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from 'react-query/devtools';
 import MoviesContextProvider from "./contexts/moviesContext";
 import AddMovieReviewPage from './pages/addMovieReviewPage'
-import AuthProvider from "./contexts/AuthProvider";
 import AuthContextProvider from "./contexts/AuthenticationContext";
 import AuthRoute from "./components/authRoute";
 import RegisterPage from "./pages/registerPage";
@@ -44,7 +43,6 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <AuthProvider>
           <AuthContextProvider>
             <SiteHeader />
             <MoviesContextProvider>
@@ -78,7 +76,6 @@ const App = () => {
 
             </MoviesContextProvider>
           </AuthContextProvider>
-        </AuthProvider>
 
       </BrowserRouter>
       <ReactQueryDevtools initialIsOpen={false} />

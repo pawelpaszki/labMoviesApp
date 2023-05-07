@@ -6,7 +6,6 @@ import InputLabel from '@mui/material/InputLabel';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../../contexts/AuthProvider";
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
@@ -22,7 +21,6 @@ const LoginForm = () => {
   const [errorMsg, setErrorMsg] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { login } = useAuth();
   const unauthorizedMessage = "Incorrect credentials used or account don't exist";
 
   const handleSubmit = async (e) => {
@@ -34,21 +32,14 @@ const LoginForm = () => {
         setErrorMsg("Please provide all the fields");
         return;
       }
-      const {
-        data: { user, session },
-        error
-      } = await login(email, password);
-      if (error) {
+
+      const result = await context.authenticate(email, password);
+      if (result?.token !== undefined) {
+        setTimeout(() => navigate("/"), 500);
+      } else {
         setErrorMsg(unauthorizedMessage);
       }
-      if (user && session) {
-        const result = await context.authenticate(email, password);
-        if (result?.token !== undefined) {
-          setTimeout(() => navigate("/"), 500);
-        } else {
-          setErrorMsg(unauthorizedMessage);
-        }
-      }
+
     } catch (error) {
       setErrorMsg(unauthorizedMessage);
     }
