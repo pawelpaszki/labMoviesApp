@@ -26,7 +26,8 @@ export const login = (email, password) => {
 export const getRecommendedMovies = (favouriteMovies) => {
   return fetch('/api/movies/recommended', {
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': window.localStorage.getItem('token')
     },
     method: 'post',
     body: JSON.stringify({ favouriteMovies: favouriteMovies })
@@ -36,7 +37,8 @@ export const getRecommendedMovies = (favouriteMovies) => {
 export const getRecommendedTvSeries = (favouriteMovies) => {
   return fetch('/api/tv/recommended', {
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': window.localStorage.getItem('token')
     },
     method: 'post',
     body: JSON.stringify({ favouriteMovies: favouriteMovies })
