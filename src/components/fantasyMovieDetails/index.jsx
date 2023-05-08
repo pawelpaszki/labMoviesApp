@@ -60,8 +60,9 @@ const FantasyMovieDetails = ({ movie, movieCast, reload }) => {
   const [loaded, setLoaded] = React.useState(false);
 
   useEffect(() => {
-    if (movie.posterPath) {
-      setImagePath(movie.posterPath);
+    console.log(movie);
+    if (movie.moviePoster) {
+      setImagePath(`${import.meta.env.VITE_REACT_APP_SUPABASE_URL}/storage/v1/object/public/tmdb/${movie.moviePoster}`);
     } else {
       setImagePath(img);
     }

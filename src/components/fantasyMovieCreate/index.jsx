@@ -57,10 +57,11 @@ const CreateFantasyMovie = () => {
       title.trim(),
       overview.trim(),
       runtime,
-      // moviePoster.trim(),
+      moviePoster.trim(),
       productionCompanies.split(',').map(item => item.trim()),
       selectedGenres,
-      releaseDate
+      releaseDate,
+      fileName
     );
     setCreateInitiated(false);
     if (account === undefined || account.fantasyMovies?.length < 1) {
@@ -123,124 +124,124 @@ const CreateFantasyMovie = () => {
 
   return (
     <>
-    {genresLoaded ? (
-      <Container component="main" maxWidth="s">
-        <Box
-          sx={{
-            marginTop: 3,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Typography component="h1" variant="h5">
-            Create fantasy movie record
-          </Typography>
-          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  name="title"
-                  required
-                  fullWidth
-                  id="title"
-                  label="Title"
-                  autoFocus
-                  autoComplete="none"
-                  inputProps={{ minLength: 2 }}
-                  onChange={handleTitleChange}
-                />
+      {genresLoaded ? (
+        <Container component="main" maxWidth="s">
+          <Box
+            sx={{
+              marginTop: 3,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            <Typography component="h1" variant="h5">
+              Create fantasy movie record
+            </Typography>
+            <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <TextField
+                    name="title"
+                    required
+                    fullWidth
+                    id="title"
+                    label="Title"
+                    autoFocus
+                    autoComplete="none"
+                    inputProps={{ minLength: 2 }}
+                    onChange={handleTitleChange}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    id="overview"
+                    label="Overview"
+                    name="overview"
+                    autoComplete="none"
+                    inputProps={{ minLength: 80 }}
+                    onChange={handleOverviewChange}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <FormLabel id="release" style={{ display: "block", marginBottom: "6px", fontSize: "12px" }}>Release date*</FormLabel>
+                  <DatePicker selected={releaseDate} onChange={(date) => setReleaseDate(date)} />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    required
+                    fullWidth
+                    InputProps={{ inputProps: { min: 1, max: 600 } }}
+                    type="number"
+                    id="runtime"
+                    label="Runtime in minutes"
+                    name="runtime"
+                    autoComplete="none"
+                    onChange={handleSetRuntime}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    name="companies"
+                    label="Production company(ies) separated by commas"
+                    id="companies"
+                    autoComplete="none"
+                    onChange={handleSetProductionCompanies}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <FormLabel id="release" style={{ display: "block", marginBottom: "6px", fontSize: "12px" }}>Select genres* {selectedGenresDisplayValue}</FormLabel>
+                  <Select
+                    fullWidth
+                    labelId="genre-label"
+                    id="genre-select"
+                    value=""
+                  >
+                    {genres.map((genre) => {
+                      return (
+                        <MenuItem onClick={(genre) => updateSelectedGenres(genre)} key={genre.tmdbID} value={genre}>
+                          {genre.name}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </Grid>
+                <Grid item xs={12}>
+                  <FormLabel id="poster" style={{ display: "block", marginBottom: "6px", fontSize: "12px" }}>{uploading ? 'Uploading poster...' : 'Upload poster'}</FormLabel>
+                  <TextField
+                    type="file"
+                    id="moviePosterUrl"
+                    accept="image/*"
+                    onChange={handleSetMoviePoster}
+                    disabled={uploading}
+                  />
+                </Grid>
               </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="overview"
-                  label="Overview"
-                  name="overview"
-                  autoComplete="none"
-                  inputProps={{ minLength: 80 }}
-                  onChange={handleOverviewChange}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <FormLabel id="release" style={{ display: "block", marginBottom: "6px", fontSize: "12px" }}>Release date*</FormLabel>
-                <DatePicker selected={releaseDate} onChange={(date) => setReleaseDate(date)} />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  InputProps={{ inputProps: { min: 1, max: 600 } }}
-                  type="number"
-                  id="runtime"
-                  label="Runtime in minutes"
-                  name="runtime"
-                  autoComplete="none"
-                  onChange={handleSetRuntime}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="companies"
-                  label="Production company(ies) separated by commas"
-                  id="companies"
-                  autoComplete="none"
-                  onChange={handleSetProductionCompanies}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <FormLabel id="release" style={{ display: "block", marginBottom: "6px", fontSize: "12px" }}>Select genres* {selectedGenresDisplayValue}</FormLabel>
-                <Select
-                  fullWidth
-                  labelId="genre-label"
-                  id="genre-select"
-                  value=""
-                >
-                  {genres.map((genre) => {
-                    return (
-                      <MenuItem onClick={(genre) => updateSelectedGenres(genre)} key={genre.tmdbID} value={genre}>
-                        {genre.name}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-              </Grid>
-              {/* <Grid item xs={12}>
-              <FormLabel id="poster" style={{ display: "block", marginBottom: "6px", fontSize: "12px" }}>{uploading ? 'Uploading poster...' : 'Upload poster'}</FormLabel>
-              <TextField
-                type="file"
-                id="moviePosterUrl"
-                accept="image/*"
-                onChange={handleSetMoviePoster}
-                disabled={uploading}
-              />
-            </Grid> */}
-            </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Create
-            </Button>
-            {createFailed ? (
-              <Alert severity="error">{alertText}</Alert>
-            ) : (
-              <></>
-            )}
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Create
+              </Button>
+              {createFailed ? (
+                <Alert severity="error">{alertText}</Alert>
+              ) : (
+                <></>
+              )}
+            </Box>
           </Box>
-        </Box>
-      </Container>
-    ) : (
-      <></>
-    )
-  }
-  </>
-    
+        </Container>
+      ) : (
+        <></>
+      )
+      }
+    </>
+
   )
 }
 

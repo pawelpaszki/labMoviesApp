@@ -41,7 +41,7 @@ export default function FantasyMovieCard({ movie }) {
   }
   const remove = async (e) => {
     e.preventDefault();
-    await removeFromFantasyMovies(movie._id);
+    await removeFromFantasyMovies(movie._id, movie.moviePoster);
     window.location.reload(false);
   };
   return (
@@ -57,8 +57,8 @@ export default function FantasyMovieCard({ movie }) {
       <CardMedia
         sx={styles.media}
         image={
-          movie.posterPath
-            ? `https://image.tmdb.org/t/p/w500/${movie.posterPath}`
+          movie.moviePoster
+            ? `${import.meta.env.VITE_REACT_APP_SUPABASE_URL}/storage/v1/object/public/tmdb/${movie.moviePoster}`
             : img
         }
       />

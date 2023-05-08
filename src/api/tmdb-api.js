@@ -1,3 +1,11 @@
+import { createClient } from '@supabase/supabase-js'
+
+const supabaseUrl = import.meta.env.VITE_REACT_APP_SUPABASE_URL;
+
+const supabaseKey = import.meta.env.VITE_REACT_APP_SUPABASE_ANON_KEY;
+
+const supabase = createClient(supabaseUrl, supabaseKey)
+
 export const signup = (email, password, firstName, lastName) => {
   return fetch('/api/accounts', {
     headers: {
@@ -45,7 +53,8 @@ export const getRecommendedTvSeries = (favouriteMovies) => {
   }).then(res => res.json())
 };
 
-export const addToFantasyMovies = (title, overview, runtime, productionCompanies, genres, releaseDate) => {
+export const addToFantasyMovies = async (title, overview, runtime, poster_path, productionCompanies, genres, releaseDate, file) => {
+  await supabase.storage.from('tmdb').upload(poster_path, file);
   return fetch(`/api/accounts/${window.localStorage.getItem('accountId')}/fantasy_movies`, {
     headers: {
       'Content-Type': 'application/json',
@@ -56,6 +65,7 @@ export const addToFantasyMovies = (title, overview, runtime, productionCompanies
       title: title,
       overview: overview,
       runtime: runtime,
+      moviePoster: poster_path,
       productionCompanies: productionCompanies,
       genres: genres,
       releaseDate: releaseDate
@@ -117,7 +127,11 @@ export const getFantasyMovie = (movieId) => {
   }).then(res => res.json())
 };
 
-export const removeFromFantasyMovies = (movieId) => {
+export const removeFromFantasyMovies = async (movieId, moviePoster) => {
+  await supabase
+    .storage
+    .from('tmdb')
+    .remove([moviePoster]);
   return fetch(`/api/accounts/${window.localStorage.getItem('accountId')}/fantasy_movies/${movieId}`, {
     headers: {
       'Content-Type': 'application/json',
