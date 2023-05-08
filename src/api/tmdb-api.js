@@ -23,6 +23,26 @@ export const login = (email, password) => {
   }).then(res => res.json())
 };
 
+export const getRecommendedMovies = (favouriteMovies) => {
+  return fetch('/api/movies/recommended', {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    method: 'post',
+    body: JSON.stringify({ favouriteMovies: favouriteMovies })
+  }).then(res => res.json())
+};
+
+export const getRecommendedTvSeries = (favouriteMovies) => {
+  return fetch('/api/tv/recommended', {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    method: 'post',
+    body: JSON.stringify({ favouriteMovies: favouriteMovies })
+  }).then(res => res.json())
+};
+
 export const addToFantasyMovies = (title, overview, runtime, productionCompanies, genres, releaseDate) => {
   return fetch(`/api/accounts/${window.localStorage.getItem('accountId')}/fantasy_movies`, {
     headers: {

@@ -53,10 +53,12 @@ const SiteHeader = () => {
     { label: "Home", path: "/" },
     { label: "Favorite movies", path: "/movies/favourites" },
     { label: "Upcoming movies", path: "/upcoming" },
+    { label: "Recommended movies", path: "/movies/recommended" },
     { label: "Create fantasy movie", path: "/fantasy/create" },
     { label: "List fantasy movies", path: "/fantasy" },
     { label: "Tv series", path: "/tv" },
     { label: "Favorite tv series", path: "/tv/favourites" },
+    { label: "Recommended tv series", path: "/tv/recommended" },
     { label: "Popular actors", path: "/actors" },
     { label: "Favorite actors", path: "/actors/favourites" },
     { label: "Search actors", path: "/actors/search" },
@@ -107,6 +109,7 @@ const SiteHeader = () => {
         { label: "Discover movies", path: "/" },
         { label: "Favorite movies", path: "/movies/favourites" },
         { label: "Upcoming movies", path: "/upcoming" },
+        { label: "Recommended movies", path: "/movies/recommended" },
       ]
     },
     {
@@ -119,6 +122,7 @@ const SiteHeader = () => {
       id: 3, label: "Tv series", items: [
         { label: "Discover tv series", path: "/tv" },
         { label: "Favorite tv series", path: "/tv/favourites" },
+        { label: "Recommended tv series", path: "/tv/recommended" },
       ]
     },
     {
