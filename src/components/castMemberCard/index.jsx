@@ -18,8 +18,8 @@ const styles = {
 export default function CastMemberCard({ member, removeCastMember }) {
   const [imagePath, setImagePath] = React.useState("");
   React.useEffect(() => {
-    if (member.avatarUrl) {
-      setImagePath(member.avatarUrl);
+    if (member.avatar) {
+      setImagePath(`${import.meta.env.VITE_REACT_APP_SUPABASE_URL}/storage/v1/object/public/tmdb/${member.avatar}`);
     } else {
       setImagePath(img);
     }
@@ -34,8 +34,8 @@ export default function CastMemberCard({ member, removeCastMember }) {
           cols={1}
         >
           <img
-            src={img}
-            alt={img}
+            src={imagePath}
+            alt={imagePath}
           />
         </ImageListItem>
       </Grid>
@@ -52,7 +52,7 @@ export default function CastMemberCard({ member, removeCastMember }) {
             <IconButton
               id={member._id}
               aria-label="remove from cast"
-              onClick={() => removeCastMember(member._id)}
+              onClick={() => removeCastMember(member._id, member.avatar)}
             >
               <DeleteIcon color="primary" fontSize="large" />
             </IconButton>

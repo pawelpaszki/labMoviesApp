@@ -75,7 +75,8 @@ export const addToFantasyMovies = async (title, overview, runtime, poster_path, 
   });
 };
 
-export const addCastToFantasyMovie = (movieId, name, roleName, description) => {
+export const addCastToFantasyMovie = async (movieId, name, roleName, avatar, description, file) => {
+  await supabase.storage.from('tmdb').upload(avatar, file);
   return fetch(`/api/accounts/${window.localStorage.getItem('accountId')}/fantasy_movies/${movieId}/cast`, {
     headers: {
       'Content-Type': 'application/json',
@@ -85,14 +86,19 @@ export const addCastToFantasyMovie = (movieId, name, roleName, description) => {
     body: JSON.stringify({
       name: name,
       roleName: roleName,
-      description: description
+      description: description,
+      avatar: avatar
     })
   }).then(res => res.json()).catch((error) => {
     console.log(error);
   });
 };
 
-export const removeFromFantasyMoviesCast = (movieId, castId) => {
+export const removeFromFantasyMoviesCast = async (movieId, castId, avatar) => {
+  await supabase
+    .storage
+    .from('tmdb')
+    .remove([avatar]);
   return fetch(`/api/accounts/${window.localStorage.getItem('accountId')}/fantasy_movies/${movieId}/cast/${castId}`, {
     headers: {
       'Content-Type': 'application/json',
@@ -127,12 +133,18 @@ export const getFantasyMovie = (movieId) => {
   }).then(res => res.json())
 };
 
-export const removeFromFantasyMovies = async (movieId, moviePoster) => {
+export const removeFromFantasyMovies = async (movie) => {
   await supabase
     .storage
     .from('tmdb')
-    .remove([moviePoster]);
-  return fetch(`/api/accounts/${window.localStorage.getItem('accountId')}/fantasy_movies/${movieId}`, {
+    .remove([movie.moviePoster]);
+  for (let i = 0; i < movie.cast.length; i++) {
+    await supabase
+      .storage
+      .from('tmdb')
+      .remove([movie.cast[i].avatar]);
+  }
+  return fetch(`/api/accounts/${window.localStorage.getItem('accountId')}/fantasy_movies/${movie._id}`, {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': window.localStorage.getItem('token')

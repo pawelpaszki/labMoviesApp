@@ -66,13 +66,6 @@ const FantasyMovieDetails = ({ movie, movieCast, reload }) => {
     } else {
       setImagePath(img);
     }
-    // if (movieCast.length > 0) {
-    //   movieCast.forEach(c => {
-    //     if (!c.avatar_url.startsWith("http")) {
-    //       c.avatar_url = `${import.meta.env.VITE_REACT_APP_SUPABASE_URL}/storage/v1/object/public/tmdb/${c.avatar_url}`;
-    //     }
-    //   });
-    // }
     setCast(movieCast);
     setLoaded(true);
   });
@@ -100,9 +93,9 @@ const FantasyMovieDetails = ({ movie, movieCast, reload }) => {
       movie._id,
       name.trim(),
       roleName.trim(),
-      // avatar.trim(),
+      avatar.trim(),
       description.trim(),
-      // fileName
+      fileName
     );
     setCreateInitiated(false);
     if (error !== null) {
@@ -113,8 +106,8 @@ const FantasyMovieDetails = ({ movie, movieCast, reload }) => {
     setAddCastEnabled(false);
   };
 
-  const removeCastMember = async (id) => {
-    await removeFromFantasyMoviesCast(movie._id, id);
+  const removeCastMember = async (id, avatar) => {
+    await removeFromFantasyMoviesCast(movie._id, id, avatar);
     await reload();
   }
 
@@ -237,7 +230,7 @@ const FantasyMovieDetails = ({ movie, movieCast, reload }) => {
                     <CastMemberCard
                       member={c}
                       removeCastMember={removeCastMember}
-                      key={c.avatar_url} />
+                      key={c.avatar} />
                   ))}
                 </>
               ) : (
