@@ -71,7 +71,7 @@ export const addToFantasyMovies = async (title, overview, runtime, poster_path, 
       releaseDate: releaseDate
     })
   }).then(res => res.json()).catch((error) => {
-    console.log(error);
+    console.error(error);
   });
 };
 
@@ -90,7 +90,7 @@ export const addCastToFantasyMovie = async (movieId, name, roleName, avatar, des
       avatar: avatar
     })
   }).then(res => res.json()).catch((error) => {
-    console.log(error);
+    console.error(error);
   });
 };
 
@@ -178,7 +178,7 @@ export const addToFavouriteCollection = (id, collection) => {
     method: 'post',
     body: JSON.stringify({ id: id })
   }).then(res => res.json()).catch((error) => {
-    console.log(error);
+    console.error(error);
   });
 };
 

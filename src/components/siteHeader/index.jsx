@@ -81,7 +81,7 @@ const SiteHeader = () => {
       setHeaderMessage("Login to access the TMDB Client");
       await context.signout();
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
     navigate("/login");
   };

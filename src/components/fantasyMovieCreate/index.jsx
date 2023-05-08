@@ -51,7 +51,6 @@ const CreateFantasyMovie = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("handle submit");
     setCreateInitiated(true);
     const account = await addToFantasyMovies(
       title.trim(),
